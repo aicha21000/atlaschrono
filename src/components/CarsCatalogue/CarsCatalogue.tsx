@@ -25,11 +25,12 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
 
   return (
     <div className={styles.layout}>
-      <aside className={styles.filters}>
-        <h3>Filtres</h3>
+      <aside className={styles.filters} aria-label="Filtres du catalogue">
+        <h3>Filtres de recherche</h3>
         <div className={styles.filterGroup}>
-          <label>Marque</label>
+          <label htmlFor="marque-select">Marque</label>
           <select 
+            id="marque-select"
             className={styles.select} 
             value={marque} 
             onChange={(e) => setMarque(e.target.value)}
@@ -41,8 +42,9 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
           </select>
         </div>
         <div className={styles.filterGroup}>
-          <label>Énergie</label>
+          <label htmlFor="energie-select">Énergie</label>
           <select 
+            id="energie-select"
             className={styles.select} 
             value={energie} 
             onChange={(e) => setEnergie(e.target.value)}
@@ -59,36 +61,51 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
             setMarque("Toutes");
             setEnergie("Toutes");
           }}
+          aria-label="Réinitialiser tous les filtres de recherche"
         >
           Réinitialiser
         </button>
       </aside>
       
-      <main className={styles.carGrid}>
+      <section aria-label="Liste des véhicules en stock" className={styles.carGrid}>
         {filteredCars.map((car: any) => (
-          <div key={car.id} className={`glass-panel ${styles.carCard}`}>
+          <article key={car.id} className={`glass-panel ${styles.carCard}`}>
             <div className={styles.carImagePlaceholder}>
               {car.images && car.images.length > 0 ? (
-                <img src={car.images[0]} alt={`${car.marque} ${car.modele}`} style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 60%'}} />
+                <img 
+                  src={car.images[0]} 
+                  alt={`${car.marque} ${car.modele} (${car.annee})`} 
+                  loading="lazy"
+                  decoding="async"
+                  style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 60%'}} 
+                />
               ) : (
                 <span>Image {car.marque}</span>
               )}
             </div>
             <div className={styles.carInfo}>
               <h3>{car.marque} {car.modele}</h3>
-              <p className={styles.carDetails}>{car.annee} • {car.kilometrage} km • {car.energie}</p>
+              <p className={styles.carDetails}>
+                <span>{car.annee}</span> • <span>{Number(car.kilometrage).toLocaleString('fr-FR')} km</span> • <span>{car.energie}</span>
+              </p>
               <p className={styles.carPrice}>{car.prix}</p>
-              <Link href={`/cars/${car.id}`} className={styles.detailsBtn}>Voir détails</Link>
+              <Link 
+                href={`/cars/${car.id}`} 
+                className={styles.detailsBtn}
+                aria-label={`Consulter la fiche technique du véhicule ${car.marque} ${car.modele}`}
+              >
+                Voir détails &rarr;
+              </Link>
             </div>
-          </div>
+          </article>
         ))}
         
         {filteredCars.length === 0 && (
-          <div style={{gridColumn: '1 / -1', textAlign: 'center', padding: '3rem', color: '#a3a3a3'}}>
+          <div style={{gridColumn: '1 / -1', textAlign: 'center', padding: '3rem', color: 'var(--color-text-secondary)'}}>
             Aucun véhicule ne correspond à ces critères.
           </div>
         )}
-      </main>
+      </section>
     </div>
   );
 }
