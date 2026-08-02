@@ -6,6 +6,8 @@ import AdminLogoutBtn from '@/components/AdminLogoutBtn/AdminLogoutBtn';
 
 export default async function AdminDashboard() {
   const cars = await getCars();
+  const totalViews = cars.reduce((sum: number, c: any) => sum + (Number(c.views) || 0), 0);
+  const mostViewed = cars.length > 0 ? [...cars].sort((a: any, b: any) => (Number(b.views) || 0) - (Number(a.views) || 0))[0] : null;
 
   return (
     <AdminAuthGuard>
@@ -30,8 +32,14 @@ export default async function AdminDashboard() {
             <p className={styles.statValue}>{cars.length}</p>
            </div>
            <div className={`glass-panel ${styles.statCard}`}>
-            <h3>Vues ce mois-ci</h3>
-            <p className={styles.statValue}>124</p>
+            <h3>Vues totales des annonces</h3>
+            <p className={styles.statValue}>{totalViews}</p>
+           </div>
+           <div className={`glass-panel ${styles.statCard}`}>
+            <h3>Véhicule le plus vu</h3>
+            <p className={styles.statValue} style={{ fontSize: '1.25rem', color: 'var(--color-accent)' }}>
+              {mostViewed ? `${mostViewed.marque} ${mostViewed.modele} (${mostViewed.views || 0} vues)` : 'Aucun'}
+            </p>
            </div>
         </section>
 
@@ -44,6 +52,7 @@ export default async function AdminDashboard() {
                   <th>Modèle</th>
                   <th>Année</th>
                   <th>Prix</th>
+                  <th>Vues</th>
                   <th>Statut</th>
                   <th>Actions</th>
                 </tr>
@@ -54,6 +63,7 @@ export default async function AdminDashboard() {
                     <td>{car.marque} {car.modele}</td>
                     <td>{car.annee}</td>
                     <td>{car.prix}</td>
+                    <td><strong style={{ color: 'var(--color-accent)' }}>{car.views || 0}</strong></td>
                     <td><span className={styles.badgeSuccess}>{car.status}</span></td>
                     <td>
                       <button className={styles.actionBtn}>Modifier</button>
@@ -65,7 +75,7 @@ export default async function AdminDashboard() {
                 ))}
                 {cars.length === 0 && (
                   <tr>
-                    <td colSpan={5} style={{textAlign: 'center', padding: '2rem'}}>Aucun véhicule en stock.</td>
+                    <td colSpan={6} style={{textAlign: 'center', padding: '2rem'}}>Aucun véhicule en stock.</td>
                   </tr>
                 )}
               </tbody>

@@ -1,6 +1,6 @@
 import styles from './page.module.css';
 import Link from 'next/link';
-import { getCars } from '@/actions/cars';
+import { getCars, incrementCarViews } from '@/actions/cars';
 import { notFound } from 'next/navigation';
 import CarGallery from '@/components/CarGallery/CarGallery';
 
@@ -12,6 +12,8 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
   if (!car) {
     notFound();
   }
+
+  await incrementCarViews(resolvedParams.id);
 
   return (
     <div className={styles.detailsContainer}>

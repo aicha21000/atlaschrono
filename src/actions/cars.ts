@@ -46,7 +46,8 @@ export async function addCar(formData: FormData) {
     couleur: formData.get('couleur'),
     description: formData.get('description'),
     images: savedImages,
-    status: "En ligne"
+    status: "En ligne",
+    views: 0
   };
 
   cars.push(newCar);
@@ -57,6 +58,20 @@ export async function addCar(formData: FormData) {
   revalidatePath('/');
   
   return { success: true, carId: newCar.id };
+}
+
+export async function incrementCarViews(id: string) {
+  try {
+    const cars = await getCars();
+    const index = cars.findIndex((c: any) => c.id === id);
+    if (index !== -1) {
+      cars[index].views = (Number(cars[index].views) || 0) + 1;
+      fs.writeFileSync(filePath, JSON.stringify(cars, null, 2));
+      revalidatePath('/admin');
+    }
+  } catch (error) {
+    // Ignore error if file write fails
+  }
 }
 
 export async function deleteCar(id: string) {

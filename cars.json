@@ -18,7 +18,8 @@
       "/uploads/1785665721098-3253905.jpg",
       "/uploads/1785665721099-3253906.jpg"
     ],
-    "status": "En ligne"
+    "status": "En ligne",
+    "views": 15
   },
   {
     "id": "1785665892788",
@@ -39,6 +40,7 @@
       "/uploads/1785665892787-3279865.jpg",
       "/uploads/1785665892788-3279866.jpg"
     ],
-    "status": "En ligne"
+    "status": "En ligne",
+    "views": 8
   }
 ]
