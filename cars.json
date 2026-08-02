@@ -58,5 +58,26 @@
       "/uploads/1785665721099-3253906.jpg"
     ],
     "status": "En ligne"
+  },
+  {
+    "id": "1785665892788",
+    "marque": "Citroen",
+    "modele": "Ami",
+    "annee": 2025,
+    "prix": "20000",
+    "kilometrage": 288000,
+    "energie": "Essence",
+    "boite": "Automatique",
+    "couleur": "sds",
+    "description": "dsds",
+    "images": [
+      "/uploads/1785665892784-3279861.jpg",
+      "/uploads/1785665892785-3279862.jpg",
+      "/uploads/1785665892786-3279863.jpg",
+      "/uploads/1785665892787-3279864.jpg",
+      "/uploads/1785665892787-3279865.jpg",
+      "/uploads/1785665892788-3279866.jpg"
+    ],
+    "status": "En ligne"
   }
 ]

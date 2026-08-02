@@ -1,6 +1,9 @@
 import styles from './page.module.css';
 import Link from 'next/link';
+import Form from 'next/form';
 import { getCars } from '@/actions/cars';
+
+export const dynamic = 'force-dynamic';
 
 export default async function CarsPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
   const resolvedParams = await searchParams;
@@ -32,7 +35,7 @@ export default async function CarsPage({ searchParams }: { searchParams: Promise
         <div className={styles.layout}>
           <aside className={styles.filters}>
             <h3>Filtres</h3>
-            <form method="GET" action="/cars">
+            <Form action="/cars">
               <div className={styles.filterGroup}>
                 <label>Marque</label>
                 <select name="marque" className={styles.select} defaultValue={selectedMarque || "Toutes"}>
@@ -52,7 +55,7 @@ export default async function CarsPage({ searchParams }: { searchParams: Promise
                 </select>
               </div>
               <button type="submit" className={styles.applyBtn}>Appliquer les filtres</button>
-            </form>
+            </Form>
           </aside>
           
           <main className={styles.carGrid}>
