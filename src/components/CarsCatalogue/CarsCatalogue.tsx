@@ -12,6 +12,7 @@ interface CarsCatalogueProps {
 export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergies }: CarsCatalogueProps) {
   const [marque, setMarque] = useState("Toutes");
   const [energie, setEnergie] = useState("Toutes");
+  const [statut, setStatut] = useState("Tous");
 
   // Filtrage 100% côté client
   let filteredCars = initialCars;
@@ -21,6 +22,9 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
   }
   if (energie !== "Toutes") {
     filteredCars = filteredCars.filter(c => c.energie === energie);
+  }
+  if (statut !== "Tous") {
+    filteredCars = filteredCars.filter(c => (c.status || "Disponible") === statut);
   }
 
   return (
@@ -55,11 +59,26 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
             ))}
           </select>
         </div>
+        <div className={styles.filterGroup}>
+          <label htmlFor="statut-select">Disponibilité</label>
+          <select 
+            id="statut-select"
+            className={styles.select} 
+            value={statut} 
+            onChange={(e) => setStatut(e.target.value)}
+          >
+            <option value="Tous">Tous les véhicules</option>
+            <option value="Disponible">🟢 Disponibles uniquement</option>
+            <option value="Réservé">🟡 Réservés</option>
+            <option value="Vendu">🔴 Vendus</option>
+          </select>
+        </div>
         <button 
           className={styles.applyBtn} 
           onClick={() => {
             setMarque("Toutes");
             setEnergie("Toutes");
+            setStatut("Tous");
           }}
           aria-label="Réinitialiser tous les filtres de recherche"
         >
@@ -68,9 +87,33 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
       </aside>
       
       <section aria-label="Liste des véhicules en stock" className={styles.carGrid}>
-        {filteredCars.map((car: any) => (
+        {filteredCars.map((car: any) => {
+          const status = car.status || "Disponible";
+          const badgeText = status === "Réservé" ? "🟡 Réservé" : status === "Vendu" ? "🔴 Vendu" : "🟢 Disponible";
+          const badgeStyle = status === "Réservé" 
+            ? { background: '#fef9c3', color: '#854d0e', border: '1px solid #fde047' } 
+            : status === "Vendu" 
+            ? { background: '#fee2e2', color: '#991b1b', border: '1px solid #fca5a5' } 
+            : { background: 'rgba(15, 23, 42, 0.85)', color: '#ffffff' };
+
+          return (
           <article key={car.id} className={`glass-panel ${styles.carCard}`}>
-            <div className={styles.carImagePlaceholder}>
+            <div className={styles.carImagePlaceholder} style={{ position: 'relative' }}>
+              <span 
+                style={{
+                  position: 'absolute',
+                  top: '0.75rem',
+                  right: '0.75rem',
+                  padding: '0.3rem 0.75rem',
+                  borderRadius: '999px',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  zIndex: 2,
+                  ...badgeStyle
+                }}
+              >
+                {badgeText}
+              </span>
               {car.images && car.images.length > 0 ? (
                 <img 
                   src={car.images[0]} 
@@ -98,7 +141,8 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
               </Link>
             </div>
           </article>
-        ))}
+          );
+        })}
         
         {filteredCars.length === 0 && (
           <div style={{gridColumn: '1 / -1', textAlign: 'center', padding: '3rem', color: 'var(--color-text-secondary)'}}>

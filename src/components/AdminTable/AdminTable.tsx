@@ -89,7 +89,7 @@ export default function AdminTable({ cars }: AdminTableProps) {
         </div>
 
         <div className={styles.filterTabs} role="group" aria-label="Filtrer par statut">
-          {["Tous", "En ligne", "Réservé", "Vendu"].map((status) => (
+          {["Tous", "Disponible", "Réservé", "Vendu"].map((status) => (
             <button
               key={status}
               type="button"
@@ -135,12 +135,12 @@ export default function AdminTable({ cars }: AdminTableProps) {
                 <td>
                   <select
                     aria-label={`Changer le statut de ${car.marque} ${car.modele}`}
-                    value={car.status || "En ligne"}
+                    value={car.status || "Disponible"}
                     disabled={loadingId === car.id}
                     onChange={(e) => handleStatusChange(car.id, e.target.value)}
-                    className={`${styles.statusSelect} ${getStatusClass(car.status || "En ligne")}`}
+                    className={`${styles.statusSelect} ${getStatusClass(car.status || "Disponible")}`}
                   >
-                    <option value="En ligne">🟢 En ligne</option>
+                    <option value="Disponible">🟢 Disponible</option>
                     <option value="Réservé">🟡 Réservé</option>
                     <option value="Vendu">🔴 Vendu</option>
                   </select>

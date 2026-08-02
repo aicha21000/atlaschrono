@@ -85,8 +85,8 @@ export default function EditCar({ params }: { params: Promise<{ id: string }> })
                 </div>
                 <div className={styles.inputGroup}>
                   <label htmlFor="status">Statut dans le showroom</label>
-                  <select id="status" name="status" defaultValue={car.status} className={styles.select}>
-                    <option value="En ligne">🟢 En ligne (Disponible)</option>
+                  <select id="status" name="status" defaultValue={car.status || "Disponible"} className={styles.select}>
+                    <option value="Disponible">🟢 Disponible</option>
                     <option value="Réservé">🟡 Réservé</option>
                     <option value="Vendu">🔴 Vendu</option>
                   </select>

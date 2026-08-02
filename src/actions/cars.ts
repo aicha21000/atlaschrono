@@ -46,7 +46,7 @@ export async function addCar(formData: FormData) {
     couleur: formData.get('couleur'),
     description: formData.get('description'),
     images: savedImages,
-    status: "En ligne",
+    status: "Disponible",
     views: 0
   };
 

@@ -28,6 +28,22 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
           <CarGallery images={car.images} altText={`${car.marque} ${car.modele}`} />
           
           <div className={styles.infoPanel}>
+            {(() => {
+              const status = car.status || "Disponible";
+              const badgeText = status === "Réservé" ? "🟡 Véhicule Réservé" : status === "Vendu" ? "🔴 Véhicule Vendu" : "🟢 Disponible au showroom";
+              const badgeStyle = status === "Réservé" 
+                ? { background: '#fef9c3', color: '#854d0e', border: '1px solid #fde047' } 
+                : status === "Vendu" 
+                ? { background: '#fee2e2', color: '#991b1b', border: '1px solid #fca5a5' } 
+                : { background: '#dcfce7', color: '#166534', border: '1px solid #86efac' };
+
+              return (
+                <span style={{ display: 'inline-block', padding: '0.4rem 0.9rem', borderRadius: '999px', fontSize: '0.85rem', fontWeight: 700, marginBottom: '0.75rem', ...badgeStyle }}>
+                  {badgeText}
+                </span>
+              );
+            })()}
+
             <h1 className={styles.title}>{car.marque} {car.modele}</h1>
             <p className={styles.price}>{car.prix}</p>
             
@@ -51,7 +67,26 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
             </div>
             
             <div className={styles.contactCard}>
-              <h3>Intéressé par ce véhicule ?</h3>
+              <h3>
+                {(car.status || "Disponible") === "Vendu" 
+                  ? "Modèle similaire recherché ?" 
+                  : (car.status || "Disponible") === "Réservé" 
+                  ? "Véhicule sous réservation" 
+                  : "Intéressé par ce véhicule ?"}
+              </h3>
+              
+              {(car.status || "Disponible") === "Vendu" && (
+                <p style={{ color: '#991b1b', backgroundColor: '#fee2e2', padding: '0.75rem', borderRadius: '8px', marginBottom: '1rem', fontWeight: 600, fontSize: '0.9rem' }}>
+                  ❌ Ce véhicule est vendu. Notre équipe peut vous importer un modèle similaire sur commande !
+                </p>
+              )}
+              
+              {(car.status || "Disponible") === "Réservé" && (
+                <p style={{ color: '#854d0e', backgroundColor: '#fef9c3', padding: '0.75rem', borderRadius: '8px', marginBottom: '1rem', fontWeight: 600, fontSize: '0.9rem' }}>
+                  ⚠️ Ce véhicule est actuellement réservé. Contactez-nous en cas d&apos;annulation !
+                </p>
+              )}
+
               <p style={{ marginBottom: '0.5rem' }}>Contactez notre équipe au : <strong>{settings.phone}</strong></p>
               <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Ou venez nous rendre visite au showroom.</p>
               <Link href="/contact" style={{ display: 'block', textDecoration: 'none' }}>

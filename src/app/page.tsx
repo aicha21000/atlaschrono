@@ -77,10 +77,19 @@ export default async function Home() {
           </div>
 
           <div className={styles.grid}>
-            {recentCars.map((car: any) => (
+            {recentCars.map((car: any) => {
+              const status = car.status || "Disponible";
+              const badgeText = status === "Réservé" ? "🟡 Réservé" : status === "Vendu" ? "🔴 Vendu" : "🟢 Disponible";
+              const badgeStyle = status === "Réservé" 
+                ? { background: '#fef9c3', color: '#854d0e', border: '1px solid #fde047' } 
+                : status === "Vendu" 
+                ? { background: '#fee2e2', color: '#991b1b', border: '1px solid #fca5a5' } 
+                : { background: 'rgba(15, 23, 42, 0.85)', color: '#ffffff' };
+
+              return (
                <article key={car.id} className={`glass-panel ${styles.carCard}`}>
                 <div className={styles.carImagePlaceholder}>
-                  <span className={styles.stockBadge}>⚡ En stock</span>
+                  <span className={styles.stockBadge} style={badgeStyle}>{badgeText}</span>
                   {car.images && car.images.length > 0 ? (
                     <img 
                       src={car.images[0]} 
@@ -103,7 +112,8 @@ export default async function Home() {
                   </Link>
                 </div>
               </article>
-            ))}
+              );
+            })}
 
             {recentCars.length === 0 && (
               <div style={{gridColumn: '1 / -1', textAlign: 'center', padding: '4rem', color: 'var(--color-text-secondary)'}}>

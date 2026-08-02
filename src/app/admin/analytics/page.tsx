@@ -54,7 +54,7 @@ export default async function AnalyticsPage() {
                   <div className={styles.carInfo}>
                     <h3>{car.marque} {car.modele}</h3>
                     <p>
-                      {car.annee} • {car.energie} • {car.prix} • <strong style={{ color: 'var(--color-text-primary)' }}>{car.status || "En ligne"}</strong>
+                      {car.annee} • {car.energie} • {car.prix} • <strong style={{ color: 'var(--color-text-primary)' }}>{car.status || "Disponible"}</strong>
                     </p>
                   </div>
 
