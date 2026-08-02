@@ -1,7 +1,10 @@
 import styles from './page.module.css';
 import Link from 'next/link';
+import { getCars, deleteCar } from '@/actions/cars';
 
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
+  const cars = await getCars();
+
   return (
     <div className={styles.dashboardContainer}>
       <div className="container">
@@ -18,7 +21,7 @@ export default function AdminDashboard() {
         <section className={styles.statsRow}>
            <div className={`glass-panel ${styles.statCard}`}>
             <h3>Véhicules en ligne</h3>
-            <p className={styles.statValue}>2</p>
+            <p className={styles.statValue}>{cars.length}</p>
            </div>
            <div className={`glass-panel ${styles.statCard}`}>
             <h3>Vues ce mois-ci</h3>
@@ -40,26 +43,25 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Mercedes-Benz Classe A</td>
-                  <td>2022</td>
-                  <td>Sur commande</td>
-                  <td><span className={styles.badgeSuccess}>En ligne</span></td>
-                  <td>
-                    <button className={styles.actionBtn}>Modifier</button>
-                    <button className={`${styles.actionBtn} ${styles.danger}`}>Supprimer</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Audi A3 Sportback</td>
-                  <td>2023</td>
-                  <td>Sur commande</td>
-                  <td><span className={styles.badgeSuccess}>En ligne</span></td>
-                  <td>
-                    <button className={styles.actionBtn}>Modifier</button>
-                    <button className={`${styles.actionBtn} ${styles.danger}`}>Supprimer</button>
-                  </td>
-                </tr>
+                {cars.map((car: any) => (
+                  <tr key={car.id}>
+                    <td>{car.marque} {car.modele}</td>
+                    <td>{car.annee}</td>
+                    <td>{car.prix}</td>
+                    <td><span className={styles.badgeSuccess}>{car.status}</span></td>
+                    <td>
+                      <button className={styles.actionBtn}>Modifier</button>
+                      <form action={async () => { "use server"; await deleteCar(car.id); }} style={{ display: 'inline' }}>
+                        <button type="submit" className={`${styles.actionBtn} ${styles.danger}`}>Supprimer</button>
+                      </form>
+                    </td>
+                  </tr>
+                ))}
+                {cars.length === 0 && (
+                  <tr>
+                    <td colSpan={5} style={{textAlign: 'center', padding: '2rem'}}>Aucun véhicule en stock.</td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

@@ -1,18 +1,27 @@
 import styles from './page.module.css';
 import Link from 'next/link';
+import { getCars } from '@/actions/cars';
+import { notFound } from 'next/navigation';
 
-export default function CarDetails() {
+export default async function CarDetails({ params }: { params: { id: string } }) {
+  const cars = await getCars();
+  const car = cars.find((c: any) => c.id === params.id);
+
+  if (!car) {
+    notFound();
+  }
+
   return (
     <div className={styles.detailsContainer}>
       <div className="container">
         <div className={styles.breadcrumb}>
-          <Link href="/cars">Catalogue</Link> &gt; <span>Mercedes-Benz Classe A</span>
+          <Link href="/cars">Catalogue</Link> &gt; <span>{car.marque} {car.modele}</span>
         </div>
         
         <div className={styles.mainLayout}>
           <div className={styles.gallery}>
             <div className={styles.mainImage}>
-              Image Principale
+              Image Principale de {car.marque}
             </div>
             <div className={styles.thumbnails}>
               <div className={styles.thumb}>Img 1</div>
@@ -22,25 +31,25 @@ export default function CarDetails() {
           </div>
           
           <div className={styles.infoPanel}>
-            <h1 className={styles.title}>Mercedes-Benz Classe A</h1>
-            <p className={styles.price}>Sur commande</p>
+            <h1 className={styles.title}>{car.marque} {car.modele}</h1>
+            <p className={styles.price}>{car.prix}</p>
             
             <div className={`glass-panel ${styles.quickStats}`}>
               <div className={styles.statItem}>
                 <span className={styles.statLabel}>Année</span>
-                <span className={styles.statValue}>2022</span>
+                <span className={styles.statValue}>{car.annee}</span>
               </div>
               <div className={styles.statItem}>
                 <span className={styles.statLabel}>Kilométrage</span>
-                <span className={styles.statValue}>25 000 km</span>
+                <span className={styles.statValue}>{car.kilometrage} km</span>
               </div>
               <div className={styles.statItem}>
                 <span className={styles.statLabel}>Énergie</span>
-                <span className={styles.statValue}>Diesel</span>
+                <span className={styles.statValue}>{car.energie}</span>
               </div>
               <div className={styles.statItem}>
                 <span className={styles.statLabel}>Boîte</span>
-                <span className={styles.statValue}>Auto</span>
+                <span className={styles.statValue}>{car.boite}</span>
               </div>
             </div>
             
@@ -57,19 +66,19 @@ export default function CarDetails() {
           <div className={styles.featuresGrid}>
             <div className={styles.featureItem}>
               <span className={styles.featureLabel}>Marque</span>
-              <span className={styles.featureValue}>Mercedes-Benz</span>
+              <span className={styles.featureValue}>{car.marque}</span>
             </div>
             <div className={styles.featureItem}>
               <span className={styles.featureLabel}>Modèle</span>
-              <span className={styles.featureValue}>Classe A</span>
+              <span className={styles.featureValue}>{car.modele}</span>
             </div>
             <div className={styles.featureItem}>
               <span className={styles.featureLabel}>Couleur</span>
-              <span className={styles.featureValue}>Noir</span>
+              <span className={styles.featureValue}>{car.couleur}</span>
             </div>
             <div className={styles.featureItem}>
-              <span className={styles.featureLabel}>Puissance DIN</span>
-              <span className={styles.featureValue}>150 ch</span>
+              <span className={styles.featureLabel}>Description</span>
+              <span className={styles.featureValue}>{car.description || "Aucune description fournie"}</span>
             </div>
           </div>
         </div>

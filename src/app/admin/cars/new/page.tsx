@@ -3,22 +3,38 @@ import styles from './page.module.css';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { addCar } from '@/actions/cars';
 
 export default function NewCar() {
   const router = useRouter();
   const [images, setImages] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulation d'une requête vers Firebase (2 secondes)
-    setTimeout(() => {
-      setIsSubmitting(false);
-      alert("✅ Le véhicule a été publié avec succès ! (Mode Simulation)");
+    const formData = new FormData(e.currentTarget);
+    const carData = {
+      marque: formData.get('marque'),
+      modele: formData.get('modele'),
+      annee: Number(formData.get('annee')),
+      prix: formData.get('prix'),
+      kilometrage: Number(formData.get('kilometrage')),
+      energie: formData.get('energie'),
+      boite: formData.get('boite'),
+      couleur: formData.get('couleur'),
+      description: formData.get('description'),
+    };
+
+    try {
+      await addCar(carData);
+      alert("✅ Le véhicule a été publié avec succès !");
       router.push('/admin');
-    }, 1500);
+    } catch (error) {
+      alert("Erreur lors de la publication.");
+      setIsSubmitting(false);
+    }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,19 +63,19 @@ export default function NewCar() {
             <div className={styles.grid}>
               <div className={styles.inputGroup}>
                 <label>Marque</label>
-                <input type="text" placeholder="ex: Mercedes-Benz" className={styles.input} />
+                <input type="text" name="marque" placeholder="ex: Mercedes-Benz" className={styles.input} required />
               </div>
               <div className={styles.inputGroup}>
                 <label>Modèle</label>
-                <input type="text" placeholder="ex: Classe A" className={styles.input} />
+                <input type="text" name="modele" placeholder="ex: Classe A" className={styles.input} required />
               </div>
               <div className={styles.inputGroup}>
                 <label>Année Modèle (Max 3 ans)</label>
-                <input type="number" placeholder="ex: 2022" className={styles.input} />
+                <input type="number" name="annee" placeholder="ex: 2022" className={styles.input} required />
               </div>
               <div className={styles.inputGroup}>
                 <label>Prix (DZD / EUR)</label>
-                <input type="text" placeholder="ex: Sur commande" className={styles.input} />
+                <input type="text" name="prix" placeholder="ex: Sur commande" className={styles.input} required />
               </div>
             </div>
           </div>
@@ -69,11 +85,11 @@ export default function NewCar() {
             <div className={styles.grid}>
               <div className={styles.inputGroup}>
                 <label>Kilométrage</label>
-                <input type="number" placeholder="ex: 25000" className={styles.input} />
+                <input type="number" name="kilometrage" placeholder="ex: 25000" className={styles.input} required />
               </div>
               <div className={styles.inputGroup}>
                 <label>Énergie</label>
-                <select className={styles.select}>
+                <select name="energie" className={styles.select}>
                   <option>Essence</option>
                   <option>Diesel</option>
                   <option>Hybride</option>
@@ -82,14 +98,14 @@ export default function NewCar() {
               </div>
               <div className={styles.inputGroup}>
                 <label>Boîte de Vitesse</label>
-                <select className={styles.select}>
+                <select name="boite" className={styles.select}>
                   <option>Automatique</option>
                   <option>Manuelle</option>
                 </select>
               </div>
               <div className={styles.inputGroup}>
                 <label>Couleur</label>
-                <input type="text" placeholder="ex: Noir Obsidienne" className={styles.input} />
+                <input type="text" name="couleur" placeholder="ex: Noir Obsidienne" className={styles.input} required />
               </div>
             </div>
           </div>
@@ -98,13 +114,12 @@ export default function NewCar() {
             <h2>Médias & Description</h2>
             <div className={styles.inputGroup}>
               <label>Description Détaillée</label>
-              <textarea rows={5} placeholder="Décrivez les options, l'état du véhicule..." className={styles.textarea}></textarea>
+              <textarea name="description" rows={5} placeholder="Décrivez les options, l'état du véhicule..." className={styles.textarea}></textarea>
             </div>
             
             <div className={styles.inputGroup}>
               <label>Photos du véhicule</label>
               
-              {/* Zone d'upload cliquable */}
               <label className={styles.uploadArea}>
                 <input 
                   type="file" 
@@ -116,7 +131,6 @@ export default function NewCar() {
                 Cliquez pour ajouter des images ou glissez-les ici
               </label>
 
-              {/* Aperçu des images */}
               {images.length > 0 && (
                 <div className={styles.imagePreviewContainer}>
                   {images.map((img, idx) => (

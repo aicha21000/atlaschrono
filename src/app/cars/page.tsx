@@ -1,7 +1,10 @@
 import styles from './page.module.css';
 import Link from 'next/link';
+import { getCars } from '@/actions/cars';
 
-export default function CarsPage() {
+export default async function CarsPage() {
+  const cars = await getCars();
+
   return (
     <div className={styles.carsContainer}>
       <div className="container">
@@ -36,24 +39,23 @@ export default function CarsPage() {
           </aside>
           
           <main className={styles.carGrid}>
-             <div className={`glass-panel ${styles.carCard}`}>
-              <div className={styles.carImagePlaceholder}>Image Mercedes</div>
-              <div className={styles.carInfo}>
-                <h3>Mercedes-Benz Classe A</h3>
-                <p className={styles.carDetails}>2022 • 25 000 km • Diesel</p>
-                <p className={styles.carPrice}>Sur commande</p>
-                <Link href="/cars/1" className={styles.detailsBtn}>Voir détails</Link>
+            {cars.map((car: any) => (
+              <div key={car.id} className={`glass-panel ${styles.carCard}`}>
+                <div className={styles.carImagePlaceholder}>Image {car.marque}</div>
+                <div className={styles.carInfo}>
+                  <h3>{car.marque} {car.modele}</h3>
+                  <p className={styles.carDetails}>{car.annee} • {car.kilometrage} km • {car.energie}</p>
+                  <p className={styles.carPrice}>{car.prix}</p>
+                  <Link href={`/cars/${car.id}`} className={styles.detailsBtn}>Voir détails</Link>
+                </div>
               </div>
-            </div>
-            <div className={`glass-panel ${styles.carCard}`}>
-              <div className={styles.carImagePlaceholder}>Image Audi</div>
-              <div className={styles.carInfo}>
-                <h3>Audi A3 Sportback</h3>
-                <p className={styles.carDetails}>2023 • 12 000 km • Essence</p>
-                <p className={styles.carPrice}>Sur commande</p>
-                <Link href="/cars/2" className={styles.detailsBtn}>Voir détails</Link>
+            ))}
+            
+            {cars.length === 0 && (
+              <div style={{gridColumn: '1 / -1', textAlign: 'center', padding: '3rem', color: '#a3a3a3'}}>
+                Aucun véhicule disponible pour le moment.
               </div>
-            </div>
+            )}
           </main>
         </div>
       </div>

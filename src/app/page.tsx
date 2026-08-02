@@ -1,6 +1,12 @@
 import styles from './page.module.css';
+import Link from 'next/link';
+import { getCars } from '@/actions/cars';
 
-export default function Home() {
+export default async function Home() {
+  const allCars = await getCars();
+  // Afficher seulement les 3 plus récents (ceux à la fin du tableau)
+  const recentCars = allCars.slice(-3).reverse();
+
   return (
     <div className={styles.homeContainer}>
       <header className={styles.hero}>
@@ -20,23 +26,23 @@ export default function Home() {
         <div className="container">
           <h2 className={styles.sectionTitle}>Nouveautés en showroom</h2>
           <div className={styles.grid}>
-            {/* Placeholder for cars */}
-            <div className={`glass-panel ${styles.carCard}`}>
-              <div className={styles.carImagePlaceholder}>Image Mercedes</div>
-              <div className={styles.carInfo}>
-                <h3>Mercedes-Benz Classe A</h3>
-                <p className={styles.carDetails}>2022 • 25 000 km • Diesel</p>
-                <p className={styles.carPrice}>Sur commande</p>
+            {recentCars.map((car: any) => (
+               <div key={car.id} className={`glass-panel ${styles.carCard}`}>
+                <div className={styles.carImagePlaceholder}>Image {car.marque}</div>
+                <div className={styles.carInfo}>
+                  <h3>{car.marque} {car.modele}</h3>
+                  <p className={styles.carDetails}>{car.annee} • {car.kilometrage} km • {car.energie}</p>
+                  <p className={styles.carPrice}>{car.prix}</p>
+                  <Link href={`/cars/${car.id}`} style={{display:'block', textAlign:'center', marginTop:'1rem', padding:'0.5rem', border:'1px solid var(--color-border)', borderRadius:'6px', transition:'background 0.2s'}}>Voir détails</Link>
+                </div>
               </div>
-            </div>
-            <div className={`glass-panel ${styles.carCard}`}>
-              <div className={styles.carImagePlaceholder}>Image Audi</div>
-              <div className={styles.carInfo}>
-                <h3>Audi A3 Sportback</h3>
-                <p className={styles.carDetails}>2023 • 12 000 km • Essence</p>
-                <p className={styles.carPrice}>Sur commande</p>
+            ))}
+
+            {recentCars.length === 0 && (
+              <div style={{gridColumn: '1 / -1', textAlign: 'center', padding: '3rem', color: '#a3a3a3'}}>
+                Aucun véhicule disponible pour le moment.
               </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
