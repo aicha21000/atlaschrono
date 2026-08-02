@@ -1,19 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --color-bg-primary: #050505;
-  --color-bg-secondary: #111111;
-  --color-text-primary: #f0f0f0;
-  --color-text-secondary: #9ca3af;
-  --color-accent: #c4c4c4; /* Base silver/chrome */
-  --color-accent-hover: #ffffff;
-  --color-border: #2a2a2a;
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f4f4f5;
+  --color-text-primary: #09090b;
+  --color-text-secondary: #52525b;
+  --color-accent: #000000;
+  --color-accent-hover: #3f3f46;
+  --color-border: #e4e4e7;
   
   --font-primary: 'Outfit', sans-serif;
 }
 
 .chrome-text {
-  background: linear-gradient(to bottom right, #ffffff 0%, #a8a8a8 40%, #5e5e5e 50%, #d4d4d4 60%, #ffffff 100%);
+  background: linear-gradient(135deg, #1f1f1f 0%, #737373 50%, #1f1f1f 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
@@ -61,8 +61,9 @@ img {
 }
 
 .glass-panel {
-  background: rgba(20, 20, 20, 0.7);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
-  border: 1px solid var(--color-border);
+  border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }

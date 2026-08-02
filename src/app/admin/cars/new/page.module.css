@@ -75,13 +75,13 @@
   border-radius: 8px;
   color: var(--color-text-secondary);
   cursor: pointer;
-  transition: border-color 0.2s;
-  background: rgba(255, 255, 255, 0.02);
+  transition: border-color 0.2s, background 0.2s;
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .uploadArea:hover {
   border-color: var(--color-accent);
-  background: rgba(59, 130, 246, 0.05);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .hiddenInput {

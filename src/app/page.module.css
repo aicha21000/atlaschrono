@@ -6,7 +6,7 @@
 .hero {
   padding: 8rem 0 6rem;
   text-align: center;
-  background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.03) 0%, transparent 70%);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -88,7 +88,7 @@
 
 .carImagePlaceholder {
   height: 200px;
-  background: #262626;
+  background: #f4f4f5;
   display: flex;
   align-items: center;
   justify-content: center;
