@@ -26,7 +26,9 @@ export async function addCar(formData: FormData) {
     if (file && file.size > 0) {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const uniqueName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
+      const ext = path.extname(file.name) || '.jpg';
+      const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_') || `image${ext}`;
+      const uniqueName = `${Date.now()}-${safeName}`;
       const savePath = path.join(uploadsDir, uniqueName);
       
       fs.writeFileSync(savePath, buffer);
@@ -39,7 +41,9 @@ export async function addCar(formData: FormData) {
   if (ctFile && ctFile.size > 0) {
     const bytes = await ctFile.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const uniqueName = `CT-${Date.now()}-${ctFile.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
+    const ext = path.extname(ctFile.name) || '.pdf';
+    const safeName = ctFile.name.replace(/[^a-zA-Z0-9.-]/g, '_') || `ct-doc${ext}`;
+    const uniqueName = `CT-${Date.now()}-${safeName}`;
     const savePath = path.join(uploadsDir, uniqueName);
     fs.writeFileSync(savePath, buffer);
     controleTechniquePath = `/uploads/${uniqueName}`;
@@ -123,7 +127,9 @@ export async function updateCar(id: string, formData: FormData) {
       if (file && file.size > 0) {
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
-        const uniqueName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
+        const ext = path.extname(file.name) || '.jpg';
+        const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_') || `image${ext}`;
+        const uniqueName = `${Date.now()}-${safeName}`;
         const savePath = path.join(uploadsDir, uniqueName);
         fs.writeFileSync(savePath, buffer);
         newImages.push(`/uploads/${uniqueName}`);
@@ -135,7 +141,9 @@ export async function updateCar(id: string, formData: FormData) {
     if (ctFile && ctFile.size > 0) {
       const bytes = await ctFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const uniqueName = `CT-${Date.now()}-${ctFile.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
+      const ext = path.extname(ctFile.name) || '.pdf';
+      const safeName = ctFile.name.replace(/[^a-zA-Z0-9.-]/g, '_') || `ct-doc${ext}`;
+      const uniqueName = `CT-${Date.now()}-${safeName}`;
       const savePath = path.join(uploadsDir, uniqueName);
       fs.writeFileSync(savePath, buffer);
       ctPath = `/uploads/${uniqueName}`;
