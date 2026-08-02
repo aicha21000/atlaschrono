@@ -30,11 +30,20 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
           <div className={styles.infoPanel}>
             {(() => {
               const status = car.status || "Disponible";
-              const badgeText = status === "Réservé" ? "🟡 Véhicule Réservé" : status === "Vendu" ? "🔴 Véhicule Vendu" : "🟢 Disponible au showroom";
+              const badgeText = status === "Réservé" 
+                ? "🟡 Véhicule Réservé" 
+                : status === "Vendu" 
+                ? "🔴 Véhicule Vendu" 
+                : status === "En arrivage"
+                ? "⏳ En arrivage prochainement"
+                : "🟢 Disponible au showroom";
+
               const badgeStyle = status === "Réservé" 
                 ? { background: '#fef9c3', color: '#854d0e', border: '1px solid #fde047' } 
                 : status === "Vendu" 
                 ? { background: '#fee2e2', color: '#991b1b', border: '1px solid #fca5a5' } 
+                : status === "En arrivage"
+                ? { background: '#eff6ff', color: '#1e40af', border: '1px solid #93c5fd' }
                 : { background: '#dcfce7', color: '#166534', border: '1px solid #86efac' };
 
               return (
@@ -72,6 +81,8 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
                   ? "Modèle similaire recherché ?" 
                   : (car.status || "Disponible") === "Réservé" 
                   ? "Véhicule sous réservation" 
+                  : (car.status || "Disponible") === "En arrivage"
+                  ? "Pré-réserver ce véhicule ?"
                   : "Intéressé par ce véhicule ?"}
               </h3>
               
@@ -84,6 +95,12 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
               {(car.status || "Disponible") === "Réservé" && (
                 <p style={{ color: '#854d0e', backgroundColor: '#fef9c3', padding: '0.75rem', borderRadius: '8px', marginBottom: '1rem', fontWeight: 600, fontSize: '0.9rem' }}>
                   ⚠️ Ce véhicule est actuellement réservé. Contactez-nous en cas d&apos;annulation !
+                </p>
+              )}
+
+              {(car.status || "Disponible") === "En arrivage" && (
+                <p style={{ color: '#1e40af', backgroundColor: '#eff6ff', padding: '0.75rem', borderRadius: '8px', marginBottom: '1rem', fontWeight: 600, fontSize: '0.9rem', border: '1px solid #bfdbfe' }}>
+                  ⏳ Ce véhicule est en cours d&apos;acheminement vers notre showroom. Pré-réservez-le dès maintenant avant son arrivée !
                 </p>
               )}
 

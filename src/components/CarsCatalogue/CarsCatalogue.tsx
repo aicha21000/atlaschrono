@@ -69,6 +69,7 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
           >
             <option value="Tous">Tous les véhicules</option>
             <option value="Disponible">🟢 Disponibles uniquement</option>
+            <option value="En arrivage">⏳ En arrivage</option>
             <option value="Réservé">🟡 Réservés</option>
             <option value="Vendu">🔴 Vendus</option>
           </select>
@@ -89,11 +90,13 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
       <section aria-label="Liste des véhicules en stock" className={styles.carGrid}>
         {filteredCars.map((car: any) => {
           const status = car.status || "Disponible";
-          const badgeText = status === "Réservé" ? "🟡 Réservé" : status === "Vendu" ? "🔴 Vendu" : "🟢 Disponible";
+          const badgeText = status === "Réservé" ? "🟡 Réservé" : status === "Vendu" ? "🔴 Vendu" : status === "En arrivage" ? "⏳ En arrivage" : "🟢 Disponible";
           const badgeStyle = status === "Réservé" 
             ? { background: '#fef9c3', color: '#854d0e', border: '1px solid #fde047' } 
             : status === "Vendu" 
             ? { background: '#fee2e2', color: '#991b1b', border: '1px solid #fca5a5' } 
+            : status === "En arrivage"
+            ? { background: '#eff6ff', color: '#1e40af', border: '1px solid #93c5fd' }
             : { background: 'rgba(15, 23, 42, 0.85)', color: '#ffffff' };
 
           return (

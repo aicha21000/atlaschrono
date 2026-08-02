@@ -27,6 +27,7 @@ export default async function AdminDashboard() {
 
   // 5. Répartition par statut dans le showroom
   const availableCount = cars.filter((c: any) => !c.status || c.status === "Disponible" || c.status === "En ligne").length;
+  const arrivingCount = cars.filter((c: any) => c.status === "En arrivage").length;
   const reservedCount = cars.filter((c: any) => c.status === "Réservé").length;
   const soldCount = cars.filter((c: any) => c.status === "Vendu").length;
 
@@ -64,7 +65,7 @@ export default async function AdminDashboard() {
               </div>
               <p className={styles.statValue}>{cars.length}</p>
               <p className={styles.statBadge}>
-                {availableCount} disponibles • {reservedCount} réservés • {soldCount} vendus
+                {availableCount} disp. • {arrivingCount} en arrivage • {reservedCount} rés. • {soldCount} vendus
               </p>
             </div>
 

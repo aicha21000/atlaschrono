@@ -54,6 +54,7 @@ export default function AdminTable({ cars }: AdminTableProps) {
   const getStatusClass = (status: string) => {
     if (status === "Réservé") return styles.statusReserved;
     if (status === "Vendu") return styles.statusSold;
+    if (status === "En arrivage") return styles.statusArriving;
     return styles.statusOnline;
   };
 
@@ -89,7 +90,7 @@ export default function AdminTable({ cars }: AdminTableProps) {
         </div>
 
         <div className={styles.filterTabs} role="group" aria-label="Filtrer par statut">
-          {["Tous", "Disponible", "Réservé", "Vendu"].map((status) => (
+          {["Tous", "Disponible", "En arrivage", "Réservé", "Vendu"].map((status) => (
             <button
               key={status}
               type="button"
@@ -141,6 +142,7 @@ export default function AdminTable({ cars }: AdminTableProps) {
                     className={`${styles.statusSelect} ${getStatusClass(car.status || "Disponible")}`}
                   >
                     <option value="Disponible">🟢 Disponible</option>
+                    <option value="En arrivage">⏳ En arrivage</option>
                     <option value="Réservé">🟡 Réservé</option>
                     <option value="Vendu">🔴 Vendu</option>
                   </select>
