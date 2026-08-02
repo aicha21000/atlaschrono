@@ -22,13 +22,21 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
         <div className={styles.mainLayout}>
           <div className={styles.gallery}>
             <div className={styles.mainImage}>
-              Image Principale de {car.marque}
+              {car.images && car.images.length > 0 ? (
+                <img src={car.images[0]} alt={`${car.marque} ${car.modele}`} style={{width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px'}} />
+              ) : (
+                <span>Aucune image</span>
+              )}
             </div>
-            <div className={styles.thumbnails}>
-              <div className={styles.thumb}>Img 1</div>
-              <div className={styles.thumb}>Img 2</div>
-              <div className={styles.thumb}>Img 3</div>
-            </div>
+            {car.images && car.images.length > 1 && (
+              <div className={styles.thumbnails}>
+                {car.images.slice(1, 5).map((img: string, idx: number) => (
+                  <div key={idx} className={styles.thumb}>
+                    <img src={img} alt={`Miniature ${idx}`} style={{width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px'}} />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           
           <div className={styles.infoPanel}>

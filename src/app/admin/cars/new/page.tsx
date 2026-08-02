@@ -15,20 +15,10 @@ export default function NewCar() {
     setIsSubmitting(true);
     
     const formData = new FormData(e.currentTarget);
-    const carData = {
-      marque: formData.get('marque'),
-      modele: formData.get('modele'),
-      annee: Number(formData.get('annee')),
-      prix: formData.get('prix'),
-      kilometrage: Number(formData.get('kilometrage')),
-      energie: formData.get('energie'),
-      boite: formData.get('boite'),
-      couleur: formData.get('couleur'),
-      description: formData.get('description'),
-    };
+    // On ajoute explicitement les fichiers si nécessaire, mais le <form> le fera seul si l'input a un name="images".
 
     try {
-      await addCar(carData);
+      await addCar(formData);
       alert("✅ Le véhicule a été publié avec succès !");
       router.push('/admin');
     } catch (error) {
@@ -123,6 +113,7 @@ export default function NewCar() {
               <label className={styles.uploadArea}>
                 <input 
                   type="file" 
+                  name="images"
                   multiple 
                   accept="image/*" 
                   onChange={handleImageUpload} 

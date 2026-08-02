@@ -28,7 +28,13 @@ export default async function Home() {
           <div className={styles.grid}>
             {recentCars.map((car: any) => (
                <div key={car.id} className={`glass-panel ${styles.carCard}`}>
-                <div className={styles.carImagePlaceholder}>Image {car.marque}</div>
+                <div className={styles.carImagePlaceholder}>
+                  {car.images && car.images.length > 0 ? (
+                    <img src={car.images[0]} alt={`${car.marque} ${car.modele}`} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                  ) : (
+                    <span>Image {car.marque}</span>
+                  )}
+                </div>
                 <div className={styles.carInfo}>
                   <h3>{car.marque} {car.modele}</h3>
                   <p className={styles.carDetails}>{car.annee} • {car.kilometrage} km • {car.energie}</p>
