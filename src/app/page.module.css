@@ -118,14 +118,26 @@
 }
 
 .secondaryBtn {
-  background-color: transparent;
+  background: rgba(255, 255, 255, 0.9);
   border: 1px solid var(--color-border);
   color: var(--color-text-primary);
+  padding: 1rem 2.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.125rem;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .secondaryBtn:hover {
-  border-color: var(--color-text-secondary);
-  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--color-text-primary);
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
 .recentCars {

@@ -120,15 +120,21 @@
 .contactBtn {
   width: 100%;
   padding: 1rem;
-  background: var(--color-accent);
+  background: linear-gradient(135deg, var(--color-accent) 0%, #0099ff 100%);
   color: white;
+  border: none;
   border-radius: 8px;
   font-weight: 600;
-  transition: background 0.2s;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 85, 255, 0.3);
 }
 
 .contactBtn:hover {
-  background: var(--color-accent-hover);
+  opacity: 0.95;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 85, 255, 0.4);
 }
 
 .detailsSection {
