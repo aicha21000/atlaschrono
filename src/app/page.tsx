@@ -38,7 +38,7 @@ export default async function Home() {
                <div key={car.id} className={`glass-panel ${styles.carCard}`}>
                 <div className={styles.carImagePlaceholder}>
                   {car.images && car.images.length > 0 ? (
-                    <img src={car.images[0]} alt={`${car.marque} ${car.modele}`} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                    <img src={car.images[0]} alt={`${car.marque} ${car.modele}`} style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center center'}} />
                   ) : (
                     <span>Image {car.marque}</span>
                   )}
