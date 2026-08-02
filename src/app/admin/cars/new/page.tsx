@@ -2,9 +2,24 @@
 import styles from './page.module.css';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function NewCar() {
+  const router = useRouter();
   const [images, setImages] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulation d'une requête vers Firebase (2 secondes)
+    setTimeout(() => {
+      setIsSubmitting(false);
+      alert("✅ Le véhicule a été publié avec succès ! (Mode Simulation)");
+      router.push('/admin');
+    }, 1500);
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -26,7 +41,7 @@ export default function NewCar() {
           <h1 className={styles.title}>Ajouter un nouveau véhicule</h1>
         </header>
 
-        <form className={`glass-panel ${styles.form}`}>
+        <form className={`glass-panel ${styles.form}`} onSubmit={handleSubmit}>
           <div className={styles.formSection}>
             <h2>Informations Générales</h2>
             <div className={styles.grid}>
@@ -124,7 +139,9 @@ export default function NewCar() {
 
           <div className={styles.actions}>
             <Link href="/admin" className={styles.cancelBtn}>Annuler</Link>
-            <button type="button" className={styles.submitBtn}>Publier l'annonce</button>
+            <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
+              {isSubmitting ? "Publication en cours..." : "Publier l'annonce"}
+            </button>
           </div>
         </form>
       </div>
