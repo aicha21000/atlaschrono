@@ -2,18 +2,18 @@
 
 :root {
   --color-bg-primary: #ffffff;
-  --color-bg-secondary: #f4f4f5;
-  --color-text-primary: #09090b;
-  --color-text-secondary: #52525b;
-  --color-accent: #000000;
-  --color-accent-hover: #3f3f46;
-  --color-border: #e4e4e7;
+  --color-bg-secondary: #f8fafc;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-accent: #0055ff; /* Vibrant Electric Blue */
+  --color-accent-hover: #003cd6;
+  --color-border: #e2e8f0;
   
   --font-primary: 'Outfit', sans-serif;
 }
 
 .chrome-text {
-  background: linear-gradient(135deg, #1f1f1f 0%, #737373 50%, #1f1f1f 100%);
+  background: linear-gradient(135deg, #94a3b8 0%, #0f172a 40%, #0055ff 50%, #0f172a 60%, #cbd5e1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
@@ -61,9 +61,15 @@ img {
 }
 
 .glass-panel {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 85, 255, 0.1);
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 10px 30px -10px rgba(0, 85, 255, 0.12);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.glass-panel:hover {
+  box-shadow: 0 20px 40px -10px rgba(0, 85, 255, 0.2);
+  transform: translateY(-2px);
 }

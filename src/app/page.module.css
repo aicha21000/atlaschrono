@@ -6,7 +6,7 @@
 .hero {
   padding: 8rem 0 6rem;
   text-align: center;
-  background: radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.03) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% -20%, rgba(0, 85, 255, 0.15) 0%, transparent 60%);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -32,21 +32,21 @@
   justify-content: center;
 }
 
-.primaryBtn, .secondaryBtn {
-  padding: 0.75rem 1.5rem;
+.primaryBtn {
+  background: linear-gradient(135deg, var(--color-accent) 0%, #0099ff 100%);
+  color: #ffffff;
+  padding: 1rem 2.5rem;
   border-radius: 8px;
   font-weight: 600;
-  transition: all 0.2s ease;
-}
-
-.primaryBtn {
-  background-color: var(--color-accent);
-  color: #fff;
+  font-size: 1.125rem;
+  transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 85, 255, 0.3);
 }
 
 .primaryBtn:hover {
-  background-color: var(--color-accent-hover);
+  opacity: 0.9;
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 85, 255, 0.4);
 }
 
 .secondaryBtn {
