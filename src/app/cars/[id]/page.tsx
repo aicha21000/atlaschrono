@@ -74,6 +74,174 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
                 <span className={styles.statValue}>{car.boite}</span>
               </div>
             </div>
+
+            {/* CARTE CONTRÔLE TECHNIQUE & INSPECTION OFFICIELLE */}
+            <div className="glass-panel" style={{ 
+              padding: '1.25rem', 
+              borderRadius: '16px', 
+              marginBottom: '1.5rem',
+              border: '1px solid rgba(0, 85, 255, 0.25)',
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(240,248,255,0.95) 100%)',
+              boxShadow: '0 8px 25px rgba(0, 85, 255, 0.08)'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                  <span style={{ fontSize: '1.6rem' }}>🛡️</span>
+                  <div>
+                    <h3 style={{ fontSize: '1.05rem', fontWeight: 800, margin: 0, color: 'var(--color-text-primary)' }}>
+                      Contrôle Technique
+                    </h3>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', margin: 0 }}>
+                      Rapport officiel d&apos;expertise et de conformité
+                    </p>
+                  </div>
+                </div>
+                {car.controleTechnique ? (
+                  <span style={{
+                    padding: '0.25rem 0.65rem',
+                    borderRadius: '999px',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    background: '#dcfce7',
+                    color: '#166534',
+                    border: '1px solid #86efac'
+                  }}>
+                    ✅ Vérifié
+                  </span>
+                ) : (
+                  <span style={{
+                    padding: '0.25rem 0.65rem',
+                    borderRadius: '999px',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    background: 'var(--color-bg-secondary)',
+                    color: 'var(--color-text-secondary)'
+                  }}>
+                    Sur demande
+                  </span>
+                )}
+              </div>
+
+              {car.controleTechnique ? (
+                <div>
+                  {/* Aperçu visuel si c'est une image (jpg/png/webp) */}
+                  {!car.controleTechnique.toLowerCase().endsWith('.pdf') ? (
+                    <div style={{ 
+                      borderRadius: '12px', 
+                      overflow: 'hidden', 
+                      marginBottom: '1rem', 
+                      height: '150px', 
+                      border: '1px solid var(--color-border)',
+                      position: 'relative',
+                      background: '#000'
+                    }}>
+                      <img 
+                        src={car.controleTechnique} 
+                        alt="Aperçu du certificat de contrôle technique" 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                      <div style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        background: 'linear-gradient(0deg, rgba(0,0,0,0.85) 0%, transparent 100%)',
+                        padding: '0.5rem',
+                        color: '#fff',
+                        fontSize: '0.75rem',
+                        textAlign: 'center',
+                        fontWeight: 600
+                      }}>
+                        📄 Document original certifié conforme
+                      </div>
+                    </div>
+                  ) : (
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.75rem',
+                      padding: '0.85rem',
+                      background: 'rgba(0, 85, 255, 0.06)',
+                      borderRadius: '10px',
+                      marginBottom: '1rem',
+                      border: '1px solid rgba(0, 85, 255, 0.15)'
+                    }}>
+                      <span style={{ fontSize: '2rem' }}>📑</span>
+                      <div>
+                        <strong style={{ display: 'block', fontSize: '0.9rem', color: 'var(--color-text-primary)' }}>
+                          Rapport_Inspection_CT.pdf
+                        </strong>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)' }}>
+                          Document officiel PDF téléchargeable
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  <div style={{ display: 'flex', gap: '0.6rem' }}>
+                    <a 
+                      href={car.controleTechnique} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      style={{
+                        flex: 1,
+                        textAlign: 'center',
+                        padding: '0.65rem 0.5rem',
+                        borderRadius: '10px',
+                        background: '#ffffff',
+                        border: '1px solid var(--color-border)',
+                        color: 'var(--color-text-primary)',
+                        fontWeight: 700,
+                        fontSize: '0.85rem',
+                        textDecoration: 'none',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      👁️ Consulter
+                    </a>
+                    <a 
+                      href={car.controleTechnique} 
+                      download={`Controle-Technique-${car.marque}-${car.modele}`}
+                      style={{
+                        flex: 1.2,
+                        textAlign: 'center',
+                        padding: '0.65rem 0.5rem',
+                        borderRadius: '10px',
+                        background: 'linear-gradient(135deg, var(--color-accent) 0%, #0099ff 100%)',
+                        color: '#ffffff',
+                        fontWeight: 700,
+                        fontSize: '0.85rem',
+                        textDecoration: 'none',
+                        boxShadow: '0 4px 12px rgba(0, 85, 255, 0.25)',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      📥 Télécharger
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <div style={{ 
+                  textAlign: 'center', 
+                  padding: '0.85rem', 
+                  background: 'var(--color-bg-secondary)', 
+                  borderRadius: '10px',
+                  color: 'var(--color-text-secondary)'
+                }}>
+                  <p style={{ fontSize: '0.85rem', margin: '0 0 0.4rem 0' }}>
+                    Rapport d&apos;inspection technique disponible en agence.
+                  </p>
+                  <Link href="/contact" style={{ 
+                    color: 'var(--color-accent)', 
+                    fontWeight: 700, 
+                    fontSize: '0.85rem',
+                    textDecoration: 'none'
+                  }}>
+                    Demander le rapport par e-mail &rarr;
+                  </Link>
+                </div>
+              )}
+            </div>
             
             <div className={styles.contactCard}>
               <h3>

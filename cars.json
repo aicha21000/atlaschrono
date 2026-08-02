@@ -19,7 +19,7 @@
       "/uploads/1785665721099-3253906.jpg"
     ],
     "status": "Disponible",
-    "views": 19
+    "views": 38
   },
   {
     "id": "1785665892788",
@@ -41,6 +41,7 @@
       "/uploads/1785665892788-3279866.jpg"
     ],
     "status": "Disponible",
+    "controleTechnique": "/uploads/1785665892784-3279861.jpg",
     "views": 12
   }
 ]

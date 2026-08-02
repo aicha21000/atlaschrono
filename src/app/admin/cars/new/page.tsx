@@ -142,6 +142,29 @@ export default function NewCar() {
               )}
 
             </div>
+
+            <div className={styles.inputGroup} style={{ marginTop: '1.5rem' }}>
+              <label htmlFor="controleTechnique" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700 }}>
+                <span>🛡️</span> Certificat de Contrôle Technique (Optionnel - Image ou PDF)
+              </label>
+              <input 
+                type="file" 
+                id="controleTechnique" 
+                name="controleTechnique" 
+                accept="image/*,.pdf" 
+                style={{
+                  padding: '0.75rem',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: '10px',
+                  background: 'var(--color-bg-secondary)',
+                  color: 'var(--color-text-primary)',
+                  width: '100%'
+                }}
+              />
+              <small style={{ color: 'var(--color-text-secondary)', display: 'block', marginTop: '0.4rem' }}>
+                Fichier JPG, PNG ou PDF officiel de contrôle technique qui s&apos;affichera sur le côté de l&apos;annonce.
+              </small>
+            </div>
           </div>
 
           <div className={styles.actions}>

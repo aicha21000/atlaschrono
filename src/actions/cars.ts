@@ -34,6 +34,17 @@ export async function addCar(formData: FormData) {
     }
   }
 
+  let controleTechniquePath: string | undefined = undefined;
+  const ctFile = formData.get('controleTechnique') as File | null;
+  if (ctFile && ctFile.size > 0) {
+    const bytes = await ctFile.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const uniqueName = `CT-${Date.now()}-${ctFile.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
+    const savePath = path.join(uploadsDir, uniqueName);
+    fs.writeFileSync(savePath, buffer);
+    controleTechniquePath = `/uploads/${uniqueName}`;
+  }
+
   const newCar = {
     id: Date.now().toString(),
     marque: formData.get('marque'),
@@ -46,6 +57,7 @@ export async function addCar(formData: FormData) {
     couleur: formData.get('couleur'),
     description: formData.get('description'),
     images: savedImages,
+    controleTechnique: controleTechniquePath,
     status: "Disponible",
     views: 0
   };
@@ -118,6 +130,17 @@ export async function updateCar(id: string, formData: FormData) {
       }
     }
 
+    let ctPath = currentCar.controleTechnique;
+    const ctFile = formData.get('controleTechnique') as File | null;
+    if (ctFile && ctFile.size > 0) {
+      const bytes = await ctFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const uniqueName = `CT-${Date.now()}-${ctFile.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
+      const savePath = path.join(uploadsDir, uniqueName);
+      fs.writeFileSync(savePath, buffer);
+      ctPath = `/uploads/${uniqueName}`;
+    }
+
     cars[index] = {
       ...currentCar,
       marque: formData.get('marque') || currentCar.marque,
@@ -130,6 +153,7 @@ export async function updateCar(id: string, formData: FormData) {
       couleur: formData.get('couleur') || currentCar.couleur,
       description: formData.get('description') || currentCar.description,
       status: formData.get('status') || currentCar.status,
+      controleTechnique: ctPath,
       images: newImages.length > 0 ? [...currentCar.images, ...newImages] : currentCar.images
     };
 

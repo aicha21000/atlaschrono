@@ -121,6 +121,34 @@ export default function EditCar({ params }: { params: Promise<{ id: string }> })
                 <label htmlFor="description">Présentation complète</label>
                 <textarea id="description" name="description" rows={5} defaultValue={car.description} required className={styles.textarea} />
               </div>
+
+              <div className={styles.inputGroup} style={{ marginTop: '1.5rem' }}>
+                <label htmlFor="controleTechnique" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700 }}>
+                  <span>🛡️</span> Certificat de Contrôle Technique / Rapport d&apos;inspection (Image ou PDF)
+                </label>
+                {car.controleTechnique && (
+                  <div style={{ marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--color-accent)', fontWeight: 600 }}>
+                    ✓ Document actuel : <a href={car.controleTechnique} target="_blank" rel="noreferrer" style={{ textDecoration: 'underline', color: 'var(--color-accent)' }}>Consulter le rapport existant</a>
+                  </div>
+                )}
+                <input 
+                  type="file" 
+                  id="controleTechnique" 
+                  name="controleTechnique" 
+                  accept="image/*,.pdf" 
+                  style={{
+                    padding: '0.75rem',
+                    border: '1px solid var(--color-border)',
+                    borderRadius: '10px',
+                    background: 'var(--color-bg-secondary)',
+                    color: 'var(--color-text-primary)',
+                    width: '100%'
+                  }}
+                />
+                <small style={{ color: 'var(--color-text-secondary)', display: 'block', marginTop: '0.4rem' }}>
+                  Laissez vide pour conserver le document actuel, ou sélectionnez un nouveau fichier pour le modifier.
+                </small>
+              </div>
             </div>
 
             <div className={styles.actions}>
