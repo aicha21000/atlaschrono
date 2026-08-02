@@ -1,0 +1,362 @@
+.container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.75rem;
+}
+
+/* CARTE DE PRÉSENTATION AVEC EFFET ÉVENTAIL */
+.card {
+  padding: 1.35rem;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 85, 255, 0.25);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 248, 255, 0.95) 100%);
+  box-shadow: 0 10px 30px rgba(0, 85, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: 0 15px 40px rgba(0, 85, 255, 0.18);
+  border-color: var(--color-accent);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.titleGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.icon {
+  font-size: 1.6rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 85, 255, 0.2));
+}
+
+.title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.verifiedBadge {
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* CONTAINER DE L'EFFET ÉVENTAIL (FAN EFFECT) */
+.fanContainer {
+  position: relative;
+  height: 140px;
+  margin: 1.5rem 0 1.25rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  perspective: 1000px;
+}
+
+/* PAGES DE L'ÉVENTAIL (CARD STACK) */
+.fanPage {
+  position: absolute;
+  width: 170px;
+  height: 115px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 85, 255, 0.25);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem;
+  text-align: center;
+  transform-origin: bottom center;
+}
+
+/* 1ère page (gauche) */
+.fanLeft {
+  transform: rotate(-10deg) translateX(-24px) translateY(4px);
+  z-index: 1;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-color: #86efac;
+}
+
+/* 2ème page (droite) */
+.fanRight {
+  transform: rotate(10deg) translateX(24px) translateY(4px);
+  z-index: 2;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border-color: #93c5fd;
+}
+
+/* 3ème page (centre - principale) */
+.fanCenter {
+  transform: rotate(0deg) translateY(-4px);
+  z-index: 3;
+  width: 185px;
+  height: 125px;
+  background: #ffffff;
+  border: 2px solid var(--color-accent);
+  box-shadow: 0 10px 25px rgba(0, 85, 255, 0.2);
+}
+
+/* ANIMATION AU SURVOL : L'ÉVENTAIL S'OUVRE PLUS LARGEMENT */
+.fanContainer:hover .fanLeft {
+  transform: rotate(-22deg) translateX(-50px) translateY(8px) scale(1.03);
+  box-shadow: -8px 12px 25px rgba(15, 23, 42, 0.18);
+}
+
+.fanContainer:hover .fanRight {
+  transform: rotate(22deg) translateX(50px) translateY(8px) scale(1.03);
+  box-shadow: 8px 12px 25px rgba(15, 23, 42, 0.18);
+}
+
+.fanContainer:hover .fanCenter {
+  transform: rotate(0deg) translateY(-10px) scale(1.06);
+  box-shadow: 0 16px 35px rgba(0, 85, 255, 0.3);
+}
+
+.fanBadge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.fanText {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  line-height: 1.2;
+}
+
+.previewThumb {
+  width: 100%;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-top: 0.35rem;
+}
+
+/* BOUTONS D'ACTION DU RAPPORT */
+.actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.viewBtn {
+  flex: 1.3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #0088ff 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.88rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 85, 255, 0.3);
+  transition: all 0.25s ease;
+}
+
+.viewBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 85, 255, 0.45);
+}
+
+.downloadBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.downloadBtn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(0, 85, 255, 0.04);
+}
+
+/* MODAL OVERLAY (AU DESSUS DE LA PAGE) */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalContent {
+  width: 100%;
+  max-width: 950px;
+  height: 90vh;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+}
+
+.modalTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.modalTitle h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.modalTitle span {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.modalActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.closeBtn {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+  background: #f87171;
+  color: #ffffff;
+  transform: rotate(90deg);
+}
+
+.modalBody {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdfFrame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #ffffff;
+}
+
+.imageViewer {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  padding: 1rem;
+}
+
+/* BANNIÈRE INFÉRIEURE AVEC ÉVENTAIL DE CERTIFICATION */
+.modalFooter {
+  padding: 1rem 1.75rem;
+  background: #ffffff;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.checklistRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.checkItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #166534;
+  background: #f0fdf4;
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid #bbf7d0;
+}
