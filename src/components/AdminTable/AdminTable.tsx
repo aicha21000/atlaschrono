@@ -12,15 +12,32 @@ interface AdminTableProps {
 export default function AdminTable({ cars }: AdminTableProps) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("Tous");
+  const [sortBy, setSortBy] = useState("recent");
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
-  const filteredCars = cars.filter(car => {
-    const matchesSearch = `${car.marque} ${car.modele} ${car.annee}`
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    const matchesStatus = statusFilter === "Tous" || car.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+  const filteredCars = cars
+    .filter(car => {
+      const matchesSearch = `${car.marque} ${car.modele} ${car.annee}`
+        .toLowerCase()
+        .includes(search.toLowerCase());
+      const matchesStatus = statusFilter === "Tous" || car.status === statusFilter;
+      return matchesSearch && matchesStatus;
+    })
+    .sort((a, b) => {
+      if (sortBy === "views-desc") return (Number(b.views) || 0) - (Number(a.views) || 0);
+      if (sortBy === "views-asc") return (Number(a.views) || 0) - (Number(b.views) || 0);
+      if (sortBy === "price-desc") {
+        const pA = Number(a.prix.toString().replace(/[^0-9]/g, '')) || 0;
+        const pB = Number(b.prix.toString().replace(/[^0-9]/g, '')) || 0;
+        return pB - pA;
+      }
+      if (sortBy === "price-asc") {
+        const pA = Number(a.prix.toString().replace(/[^0-9]/g, '')) || 0;
+        const pB = Number(b.prix.toString().replace(/[^0-9]/g, '')) || 0;
+        return pA - pB;
+      }
+      return 0;
+    });
 
   const handleStatusChange = async (carId: string, newStatus: string) => {
     setLoadingId(carId);
@@ -43,16 +60,32 @@ export default function AdminTable({ cars }: AdminTableProps) {
   return (
     <div className={styles.container}>
       <div className={styles.toolbar}>
-        <div className={styles.searchBox}>
-          <span>🔍</span>
-          <input
-            type="text"
-            placeholder="Rechercher par marque, modèle ou année..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className={styles.searchInput}
-            aria-label="Rechercher un véhicule"
-          />
+        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', flexGrow: 1 }}>
+          <div className={styles.searchBox}>
+            <span>🔍</span>
+            <input
+              type="text"
+              placeholder="Rechercher par marque, modèle ou année..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className={styles.searchInput}
+              aria-label="Rechercher un véhicule"
+            />
+          </div>
+
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className={styles.statusSelect}
+            aria-label="Trier la liste des véhicules"
+            style={{ padding: '0.65rem 1rem', borderRadius: '10px' }}
+          >
+            <option value="recent">📅 Plus récents (Par défaut)</option>
+            <option value="views-desc">🔥 Plus populaires (Vues ↓)</option>
+            <option value="views-asc">❄️ Moins populaires (Vues ↑)</option>
+            <option value="price-desc">💰 Prix décroissant (↓)</option>
+            <option value="price-asc">💰 Prix croissant (↑)</option>
+          </select>
         </div>
 
         <div className={styles.filterTabs} role="group" aria-label="Filtrer par statut">

@@ -41,6 +41,9 @@ export default async function AdminDashboard() {
               <p className={styles.subtitle}>Pilotage en temps réel du stock, de la valeur financière et de la popularité</p>
             </div>
             <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center', flexWrap: 'wrap' }}>
+              <Link href="/admin/analytics" className={styles.secondaryBtn}>
+                <span>🏆</span> Classement popularité
+              </Link>
               <Link href="/admin/settings" className={styles.secondaryBtn}>
                 <span>⚙️</span> Paramètres
               </Link>
@@ -100,7 +103,7 @@ export default async function AdminDashboard() {
             </div>
 
             {/* KPI 5 : MODÈLE LE PLUS POPULAIRE */}
-            <div className={`glass-panel ${styles.statCard}`}>
+            <div className={`glass-panel ${styles.statCard}`} style={{ position: 'relative' }}>
               <div className={styles.statCardHeader}>
                 <h3>Véhicule #1 Consulté</h3>
                 <div className={styles.statIcon}>🏆</div>
@@ -108,9 +111,14 @@ export default async function AdminDashboard() {
               <p className={styles.statValue} style={{ fontSize: '1.45rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {mostViewedCar ? `${mostViewedCar.marque} ${mostViewedCar.modele}` : "Aucun"}
               </p>
-              <p className={styles.statBadge}>
-                {mostViewedCar ? `${mostViewedCar.views || 0} vues sur l'annonce` : "En attente de visites"}
-              </p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.4rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                <span className={styles.statBadge}>
+                  {mostViewedCar ? `${mostViewedCar.views || 0} vues sur l'annonce` : "0 vue"}
+                </span>
+                <Link href="/admin/analytics" style={{ color: 'var(--color-accent)', fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none' }}>
+                  Voir tout le classement &rarr;
+                </Link>
+              </div>
             </div>
           </section>
 
