@@ -5,6 +5,7 @@ import { getSettings } from '@/actions/settings';
 import { notFound } from 'next/navigation';
 import CarGallery from '@/components/CarGallery/CarGallery';
 import ControleTechniqueViewer from '@/components/ControleTechniqueViewer/ControleTechniqueViewer';
+import StripeReservationButton from '@/components/StripeReservationButton/StripeReservationButton';
 
 export default async function CarDetails({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -80,6 +81,14 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
             <ControleTechniqueViewer 
               fileUrl={car.controleTechnique} 
               carTitle={`${car.marque} ${car.modele}`} 
+            />
+
+            {/* CARTE DE RÉSERVATION EN LIGNE AVEC ACOMPTE DE 50 EUR STRIPE */}
+            <StripeReservationButton
+              carId={car.id}
+              carTitle={`${car.marque} ${car.modele}`}
+              carPrice={car.prix}
+              carStatus={car.status || "Disponible"}
             />
             
             <div className={styles.contactCard}>
