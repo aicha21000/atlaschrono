@@ -68,6 +68,7 @@
 }
 
 .uploadArea {
+  display: block;
   border: 2px dashed var(--color-border);
   padding: 3rem;
   text-align: center;
@@ -75,10 +76,60 @@
   color: var(--color-text-secondary);
   cursor: pointer;
   transition: border-color 0.2s;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .uploadArea:hover {
   border-color: var(--color-accent);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.imagePreviewContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.imagePreview {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.imagePreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.removeImgBtn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.removeImgBtn:hover {
+  transform: scale(1.1);
 }
 
 .actions {

@@ -1,7 +1,23 @@
+"use client";
 import styles from './page.module.css';
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function NewCar() {
+  const [images, setImages] = useState<string[]>([]);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const newImages = Array.from(files).map(file => URL.createObjectURL(file));
+      setImages(prev => [...prev, ...newImages]);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setImages(prev => prev.filter((_, i) => i !== index));
+  };
+
   return (
     <div className={styles.newCarContainer}>
       <div className="container">
@@ -69,17 +85,46 @@ export default function NewCar() {
               <label>Description Détaillée</label>
               <textarea rows={5} placeholder="Décrivez les options, l'état du véhicule..." className={styles.textarea}></textarea>
             </div>
+            
             <div className={styles.inputGroup}>
               <label>Photos du véhicule</label>
-              <div className={styles.uploadArea}>
+              
+              {/* Zone d'upload cliquable */}
+              <label className={styles.uploadArea}>
+                <input 
+                  type="file" 
+                  multiple 
+                  accept="image/*" 
+                  onChange={handleImageUpload} 
+                  className={styles.hiddenInput} 
+                />
                 Cliquez pour ajouter des images ou glissez-les ici
-              </div>
+              </label>
+
+              {/* Aperçu des images */}
+              {images.length > 0 && (
+                <div className={styles.imagePreviewContainer}>
+                  {images.map((img, idx) => (
+                    <div key={idx} className={styles.imagePreview}>
+                      <img src={img} alt={`Preview ${idx}`} />
+                      <button 
+                        type="button" 
+                        onClick={() => removeImage(idx)}
+                        className={styles.removeImgBtn}
+                      >
+                        X
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
             </div>
           </div>
 
           <div className={styles.actions}>
             <Link href="/admin" className={styles.cancelBtn}>Annuler</Link>
-            <button type="submit" className={styles.submitBtn}>Publier l'annonce</button>
+            <button type="button" className={styles.submitBtn}>Publier l'annonce</button>
           </div>
         </form>
       </div>
