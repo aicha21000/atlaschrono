@@ -2,6 +2,7 @@ import styles from './page.module.css';
 import Link from 'next/link';
 import { getCars } from '@/actions/cars';
 import { notFound } from 'next/navigation';
+import CarGallery from '@/components/CarGallery/CarGallery';
 
 export default async function CarDetails({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -20,24 +21,7 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
         </div>
         
         <div className={styles.mainLayout}>
-          <div className={styles.gallery}>
-            <div className={styles.mainImage}>
-              {car.images && car.images.length > 0 ? (
-                <img src={car.images[0]} alt={`${car.marque} ${car.modele}`} style={{width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px'}} />
-              ) : (
-                <span>Aucune image</span>
-              )}
-            </div>
-            {car.images && car.images.length > 1 && (
-              <div className={styles.thumbnails}>
-                {car.images.slice(1, 5).map((img: string, idx: number) => (
-                  <div key={idx} className={styles.thumb}>
-                    <img src={img} alt={`Miniature ${idx}`} style={{width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px'}} />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <CarGallery images={car.images} altText={`${car.marque} ${car.modele}`} />
           
           <div className={styles.infoPanel}>
             <h1 className={styles.title}>{car.marque} {car.modele}</h1>

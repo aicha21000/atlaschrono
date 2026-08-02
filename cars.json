@@ -37,5 +37,26 @@
     "couleur": "sds",
     "description": "dsds",
     "status": "En ligne"
+  },
+  {
+    "id": "1785665721099",
+    "marque": "dsd",
+    "modele": "dsd",
+    "annee": 2022,
+    "prix": "2000",
+    "kilometrage": 288000,
+    "energie": "Essence",
+    "boite": "Automatique",
+    "couleur": "sds",
+    "description": "dsdsds",
+    "images": [
+      "/uploads/1785665721095-3253901.jpg",
+      "/uploads/1785665721096-3253902.jpg",
+      "/uploads/1785665721097-3253903.jpg",
+      "/uploads/1785665721098-3253904.jpg",
+      "/uploads/1785665721098-3253905.jpg",
+      "/uploads/1785665721099-3253906.jpg"
+    ],
+    "status": "En ligne"
   }
 ]
