@@ -41,6 +41,7 @@ export default function NewCar() {
   };
 
   return (
+    <AdminAuthGuard>
     <div className={styles.newCarContainer}>
       <div className="container">
         <header className={styles.header}>
