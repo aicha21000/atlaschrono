@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { addCar } from '@/actions/cars';
+import AdminAuthGuard from '@/components/AdminAuthGuard/AdminAuthGuard';
 
 export default function NewCar() {
   const router = useRouter();
@@ -151,5 +152,6 @@ export default function NewCar() {
         </form>
       </div>
     </div>
+    </AdminAuthGuard>
   );
 }

@@ -1,13 +1,20 @@
 "use client";
 import styles from './page.module.css';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function AdminLogin() {
   const router = useRouter();
 
+  useEffect(() => {
+    if (localStorage.getItem('admin_logged_in') === 'true') {
+      router.replace('/admin');
+    }
+  }, [router]);
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulation d'une connexion réussie pour le prototype
+    localStorage.setItem('admin_logged_in', 'true');
     router.push('/admin');
   };
 

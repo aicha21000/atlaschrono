@@ -1,22 +1,28 @@
 import styles from './page.module.css';
 import Link from 'next/link';
 import { getCars, deleteCar } from '@/actions/cars';
+import AdminAuthGuard from '@/components/AdminAuthGuard/AdminAuthGuard';
+import AdminLogoutBtn from '@/components/AdminLogoutBtn/AdminLogoutBtn';
 
 export default async function AdminDashboard() {
   const cars = await getCars();
 
   return (
-    <div className={styles.dashboardContainer}>
-      <div className="container">
-        <header className={styles.header}>
-          <div>
-            <h1 className={styles.title}>Tableau de bord</h1>
-            <p className={styles.subtitle}>Gérez votre catalogue de véhicules</p>
-          </div>
-          <Link href="/admin/cars/new" className={styles.addBtn}>
-            + Ajouter un véhicule
-          </Link>
-        </header>
+    <AdminAuthGuard>
+      <div className={styles.dashboardContainer}>
+        <div className="container">
+          <header className={styles.header}>
+            <div>
+              <h1 className={styles.title}>Tableau de bord</h1>
+              <p className={styles.subtitle}>Gérez votre catalogue de véhicules</p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <AdminLogoutBtn />
+              <Link href="/admin/cars/new" className={styles.addBtn}>
+                + Ajouter un véhicule
+              </Link>
+            </div>
+          </header>
 
         <section className={styles.statsRow}>
            <div className={`glass-panel ${styles.statCard}`}>
@@ -68,5 +74,6 @@ export default async function AdminDashboard() {
         </section>
       </div>
     </div>
+    </AdminAuthGuard>
   );
 }
