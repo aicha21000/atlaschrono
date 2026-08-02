@@ -10,14 +10,22 @@ export default async function Home() {
   return (
     <div className={styles.homeContainer}>
       <header className={styles.hero}>
-        <div className="container">
-          <h1 className={`${styles.title} chrome-text`}>Premium Auto DZ</h1>
-          <p className={styles.subtitle}>
-            Véhicules d'occasion de prestige, importés pour vous.
-          </p>
-          <div className={styles.actions}>
-            <a href="/cars" className={styles.primaryBtn}>Voir le catalogue</a>
-            <a href="/contact" className={styles.secondaryBtn}>Nous contacter</a>
+        <div className={`container ${styles.heroLayout}`}>
+          <div className={styles.heroText}>
+            <h1 className={`${styles.title} chrome-text`}>Premium Auto DZ</h1>
+            <p className={styles.subtitle}>
+              Véhicules d'occasion de prestige, importés pour vous.
+            </p>
+            <div className={styles.actions}>
+              <a href="/cars" className={styles.primaryBtn}>Voir le catalogue</a>
+              <a href="/contact" className={styles.secondaryBtn}>Nous contacter</a>
+            </div>
+          </div>
+          <div className={styles.heroImageWrapper}>
+            <div className={styles.heroImageContainer}>
+              <img src="/images/banner.png" alt="Showroom Premium Auto DZ" className={styles.heroImage} />
+              <div className={styles.heroImageOverlay}></div>
+            </div>
           </div>
         </div>
       </header>

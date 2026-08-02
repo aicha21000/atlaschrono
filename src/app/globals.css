@@ -13,7 +13,7 @@
 }
 
 .chrome-text {
-  background: linear-gradient(135deg, #94a3b8 0%, #0f172a 40%, #0055ff 50%, #0f172a 60%, #cbd5e1 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #334155 35%, #0055ff 50%, #1e293b 65%, #0f172a 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;

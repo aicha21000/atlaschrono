@@ -4,32 +4,100 @@
 }
 
 .hero {
-  padding: 8rem 0 6rem;
-  text-align: center;
-  background: radial-gradient(circle at 50% -20%, rgba(0, 85, 255, 0.15) 0%, transparent 60%);
+  padding: 4rem 0 6rem;
+  background: radial-gradient(circle at 50% -20%, rgba(0, 85, 255, 0.05) 0%, transparent 60%);
   border-bottom: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.heroLayout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.heroText {
+  text-align: left;
+}
+
+.heroImageWrapper {
+  position: relative;
+  border-radius: 24px;
+  overflow: visible;
+}
+
+.heroImageContainer {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 85, 255, 0.25);
+  transform: perspective(1000px) rotateY(-5deg);
+  transition: transform 0.5s ease;
+}
+
+.heroImageContainer:hover {
+  transform: perspective(1000px) rotateY(0deg) scale(1.02);
+}
+
+.heroImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.heroImageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 85, 255, 0.1) 0%, transparent 100%);
+  pointer-events: none;
 }
 
 .title {
-  font-size: 4rem;
+  font-size: 4.5rem;
   font-weight: 800;
-  margin-bottom: 1rem;
-  background: linear-gradient(90deg, #fff, #a3a3a3);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+  color: var(--color-text-primary);
 }
 
 .subtitle {
-  font-size: 1.25rem;
   color: var(--color-text-secondary);
-  max-width: 600px;
-  margin: 0 auto 2rem;
+  font-size: 1.25rem;
+  margin-bottom: 2.5rem;
+  max-width: 90%;
+  line-height: 1.6;
 }
 
 .actions {
   display: flex;
   gap: 1rem;
-  justify-content: center;
+  justify-content: flex-start;
+}
+
+@media (max-width: 992px) {
+  .heroLayout {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .heroText {
+    text-align: center;
+  }
+  
+  .subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .actions {
+    justify-content: center;
+  }
+  
+  .heroImageContainer {
+    transform: none;
+  }
 }
 
 .primaryBtn {
