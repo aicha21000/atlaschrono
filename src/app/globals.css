@@ -1,15 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --color-bg-primary: #0a0a0a;
-  --color-bg-secondary: #141414;
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #a3a3a3;
-  --color-accent: #3b82f6;
-  --color-accent-hover: #2563eb;
-  --color-border: #262626;
+  --color-bg-primary: #050505;
+  --color-bg-secondary: #111111;
+  --color-text-primary: #f0f0f0;
+  --color-text-secondary: #9ca3af;
+  --color-accent: #c4c4c4; /* Base silver/chrome */
+  --color-accent-hover: #ffffff;
+  --color-border: #2a2a2a;
   
   --font-primary: 'Outfit', sans-serif;
+}
+
+.chrome-text {
+  background: linear-gradient(to bottom right, #ffffff 0%, #a8a8a8 40%, #5e5e5e 50%, #d4d4d4 60%, #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
 
 * {

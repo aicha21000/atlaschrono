@@ -11,7 +11,7 @@ export default async function Home() {
     <div className={styles.homeContainer}>
       <header className={styles.hero}>
         <div className="container">
-          <h1 className={styles.title}>Premium Auto DZ</h1>
+          <h1 className={`${styles.title} chrome-text`}>Premium Auto DZ</h1>
           <p className={styles.subtitle}>
             Véhicules d'occasion de prestige, importés pour vous.
           </p>
