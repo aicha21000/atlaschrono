@@ -1,0 +1,151 @@
+.carsContainer {
+  padding: 4rem 0;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+  font-size: 1.125rem;
+}
+
+.layout {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+.filters {
+  width: 250px;
+  flex-shrink: 0;
+  background: var(--color-bg-secondary);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+
+.filters h3 {
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.filterGroup {
+  margin-bottom: 1rem;
+}
+
+.filterGroup label {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.select {
+  width: 100%;
+  padding: 0.5rem;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+.applyBtn {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--color-accent);
+  color: white;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-top: 1rem;
+  transition: background 0.2s;
+}
+
+.applyBtn:hover {
+  background: var(--color-accent-hover);
+}
+
+.carGrid {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.carCard {
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.carCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-text-secondary);
+}
+
+.carImagePlaceholder {
+  height: 200px;
+  background: #262626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.carInfo {
+  padding: 1.5rem;
+}
+
+.carInfo h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.carDetails {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.carPrice {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--color-accent);
+  margin-bottom: 1rem;
+}
+
+.detailsBtn {
+  display: block;
+  text-align: center;
+  width: 100%;
+  padding: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.detailsBtn:hover {
+  border-color: var(--color-text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+  .filters {
+    width: 100%;
+  }
+}
