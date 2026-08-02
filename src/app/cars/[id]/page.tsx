@@ -1,12 +1,14 @@
 import styles from './page.module.css';
 import Link from 'next/link';
 import { getCars, incrementCarViews } from '@/actions/cars';
+import { getSettings } from '@/actions/settings';
 import { notFound } from 'next/navigation';
 import CarGallery from '@/components/CarGallery/CarGallery';
 
 export default async function CarDetails({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const cars = await getCars();
+  const settings = await getSettings();
   const car = cars.find((c: any) => c.id === resolvedParams.id);
 
   if (!car) {
@@ -50,8 +52,11 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
             
             <div className={styles.contactCard}>
               <h3>Intéressé par ce véhicule ?</h3>
-              <p>Contactez-nous pour l'importation de ce modèle.</p>
-              <button className={styles.contactBtn}>Nous contacter</button>
+              <p style={{ marginBottom: '0.5rem' }}>Contactez notre équipe au : <strong>{settings.phone}</strong></p>
+              <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Ou venez nous rendre visite au showroom.</p>
+              <Link href="/contact" style={{ display: 'block', textDecoration: 'none' }}>
+                <button className={styles.contactBtn}>Nous envoyer un message</button>
+              </Link>
             </div>
           </div>
         </div>

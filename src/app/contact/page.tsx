@@ -1,6 +1,9 @@
 import styles from './page.module.css';
+import { getSettings } from '@/actions/settings';
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const settings = await getSettings();
+
   return (
     <div className={styles.contactContainer}>
       <div className="container">
@@ -18,28 +21,28 @@ export default function ContactPage() {
                   <span className={styles.icon}>📍</span>
                   <div>
                     <strong>Adresse</strong>
-                    <p>Alger Centre, Algérie<br/>(Adresse exacte à définir)</p>
+                    <p>{settings.address}</p>
                   </div>
                 </li>
                 <li>
                   <span className={styles.icon}>📞</span>
                   <div>
                     <strong>Téléphone</strong>
-                    <p>+213 XX XX XX XX</p>
+                    <p>{settings.phone}</p>
                   </div>
                 </li>
                 <li>
                   <span className={styles.icon}>✉️</span>
                   <div>
                     <strong>Email</strong>
-                    <p>contact@premiumautodz.com</p>
+                    <p>{settings.email}</p>
                   </div>
                 </li>
                 <li>
                   <span className={styles.icon}>🕒</span>
                   <div>
                     <strong>Heures d'ouverture</strong>
-                    <p>Dimanche - Jeudi : 09h00 - 18h00<br/>Samedi : 10h00 - 16h00</p>
+                    <p>{settings.openingHours}</p>
                   </div>
                 </li>
               </ul>

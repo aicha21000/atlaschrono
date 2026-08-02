@@ -18,7 +18,10 @@ export default async function AdminDashboard() {
               <h1 className={styles.title}>Tableau de bord</h1>
               <p className={styles.subtitle}>Gérez votre catalogue de véhicules</p>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <Link href="/admin/settings" className={styles.actionBtn} style={{ padding: '0.65rem 1.25rem', fontSize: '0.95rem', background: '#ffffff' }}>
+                ⚙️ Paramètres
+              </Link>
               <AdminLogoutBtn />
               <Link href="/admin/cars/new" className={styles.addBtn}>
                 + Ajouter un véhicule
