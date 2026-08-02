@@ -83,3 +83,63 @@ export async function deleteCar(id: string) {
   revalidatePath('/cars');
   revalidatePath('/');
 }
+
+export async function updateCarStatus(id: string, newStatus: string) {
+  const cars = await getCars();
+  const index = cars.findIndex((c: any) => c.id === id);
+  if (index !== -1) {
+    cars[index].status = newStatus;
+    fs.writeFileSync(filePath, JSON.stringify(cars, null, 2));
+    revalidatePath('/admin');
+    revalidatePath('/cars');
+    revalidatePath('/');
+    revalidatePath(`/cars/${id}`);
+    return { success: true };
+  }
+  return { success: false };
+}
+
+export async function updateCar(id: string, formData: FormData) {
+  const cars = await getCars();
+  const index = cars.findIndex((c: any) => c.id === id);
+  if (index !== -1) {
+    const currentCar = cars[index];
+    
+    const imageFiles = formData.getAll('images') as File[];
+    const newImages: string[] = [];
+    for (const file of imageFiles) {
+      if (file && file.size > 0) {
+        const bytes = await file.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        const uniqueName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
+        const savePath = path.join(uploadsDir, uniqueName);
+        fs.writeFileSync(savePath, buffer);
+        newImages.push(`/uploads/${uniqueName}`);
+      }
+    }
+
+    cars[index] = {
+      ...currentCar,
+      marque: formData.get('marque') || currentCar.marque,
+      modele: formData.get('modele') || currentCar.modele,
+      annee: Number(formData.get('annee')) || currentCar.annee,
+      prix: formData.get('prix') || currentCar.prix,
+      kilometrage: Number(formData.get('kilometrage')) || currentCar.kilometrage,
+      energie: formData.get('energie') || currentCar.energie,
+      boite: formData.get('boite') || currentCar.boite,
+      couleur: formData.get('couleur') || currentCar.couleur,
+      description: formData.get('description') || currentCar.description,
+      status: formData.get('status') || currentCar.status,
+      images: newImages.length > 0 ? [...currentCar.images, ...newImages] : currentCar.images
+    };
+
+    fs.writeFileSync(filePath, JSON.stringify(cars, null, 2));
+    revalidatePath('/admin');
+    revalidatePath('/cars');
+    revalidatePath('/');
+    revalidatePath(`/cars/${id}`);
+    return { success: true };
+  }
+  return { success: false };
+}
+
