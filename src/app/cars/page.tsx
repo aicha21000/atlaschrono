@@ -2,8 +2,24 @@ import styles from './page.module.css';
 import Link from 'next/link';
 import { getCars } from '@/actions/cars';
 
-export default async function CarsPage() {
-  const cars = await getCars();
+export default async function CarsPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
+  const resolvedParams = await searchParams;
+  let cars = await getCars();
+
+  // Extraire les options uniques existantes dans la base de données
+  const uniqueBrands = Array.from(new Set(cars.map((c: any) => c.marque).filter(Boolean)));
+  const uniqueEnergies = Array.from(new Set(cars.map((c: any) => c.energie).filter(Boolean)));
+
+  // Appliquer les filtres
+  const selectedMarque = resolvedParams.marque;
+  const selectedEnergie = resolvedParams.energie;
+
+  if (selectedMarque && selectedMarque !== "Toutes") {
+    cars = cars.filter((c: any) => c.marque === selectedMarque);
+  }
+  if (selectedEnergie && selectedEnergie !== "Toutes") {
+    cars = cars.filter((c: any) => c.energie === selectedEnergie);
+  }
 
   return (
     <div className={styles.carsContainer}>
@@ -16,26 +32,27 @@ export default async function CarsPage() {
         <div className={styles.layout}>
           <aside className={styles.filters}>
             <h3>Filtres</h3>
-            <div className={styles.filterGroup}>
-              <label>Marque</label>
-              <select className={styles.select}>
-                <option>Toutes les marques</option>
-                <option>Mercedes-Benz</option>
-                <option>BMW</option>
-                <option>Audi</option>
-              </select>
-            </div>
-            <div className={styles.filterGroup}>
-              <label>Énergie</label>
-              <select className={styles.select}>
-                <option>Toutes</option>
-                <option>Essence</option>
-                <option>Diesel</option>
-                <option>Hybride</option>
-                <option>Électrique</option>
-              </select>
-            </div>
-            <button className={styles.applyBtn}>Appliquer les filtres</button>
+            <form method="GET" action="/cars">
+              <div className={styles.filterGroup}>
+                <label>Marque</label>
+                <select name="marque" className={styles.select} defaultValue={selectedMarque || "Toutes"}>
+                  <option value="Toutes">Toutes les marques</option>
+                  {uniqueBrands.map((brand: any) => (
+                    <option key={brand} value={brand}>{brand}</option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.filterGroup}>
+                <label>Énergie</label>
+                <select name="energie" className={styles.select} defaultValue={selectedEnergie || "Toutes"}>
+                  <option value="Toutes">Toutes les énergies</option>
+                  {uniqueEnergies.map((energie: any) => (
+                    <option key={energie} value={energie}>{energie}</option>
+                  ))}
+                </select>
+              </div>
+              <button type="submit" className={styles.applyBtn}>Appliquer les filtres</button>
+            </form>
           </aside>
           
           <main className={styles.carGrid}>
@@ -53,7 +70,7 @@ export default async function CarsPage() {
             
             {cars.length === 0 && (
               <div style={{gridColumn: '1 / -1', textAlign: 'center', padding: '3rem', color: '#a3a3a3'}}>
-                Aucun véhicule disponible pour le moment.
+                Aucun véhicule ne correspond à ces critères.
               </div>
             )}
           </main>

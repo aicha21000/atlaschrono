@@ -3,9 +3,10 @@ import Link from 'next/link';
 import { getCars } from '@/actions/cars';
 import { notFound } from 'next/navigation';
 
-export default async function CarDetails({ params }: { params: { id: string } }) {
+export default async function CarDetails({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
   const cars = await getCars();
-  const car = cars.find((c: any) => c.id === params.id);
+  const car = cars.find((c: any) => c.id === resolvedParams.id);
 
   if (!car) {
     notFound();
