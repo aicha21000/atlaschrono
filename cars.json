@@ -1,44 +1,5 @@
 [
   {
-    "id": "1",
-    "marque": "Mercedes-Benz",
-    "modele": "Classe A",
-    "annee": 2022,
-    "kilometrage": 25000,
-    "energie": "Diesel",
-    "boite": "Automatique",
-    "couleur": "Noir",
-    "prix": "Sur commande",
-    "description": "Véhicule en parfait état...",
-    "status": "En ligne"
-  },
-  {
-    "id": "2",
-    "marque": "Audi",
-    "modele": "A3 Sportback",
-    "annee": 2023,
-    "kilometrage": 12000,
-    "energie": "Essence",
-    "boite": "Automatique",
-    "couleur": "Gris Nardo",
-    "prix": "Sur commande",
-    "description": "Véhicule quasi neuf...",
-    "status": "En ligne"
-  },
-  {
-    "id": "1785665474015",
-    "marque": "sdsd",
-    "modele": "dsds",
-    "annee": 2022,
-    "prix": "2000",
-    "kilometrage": 25000,
-    "energie": "Essence",
-    "boite": "Automatique",
-    "couleur": "sds",
-    "description": "dsds",
-    "status": "En ligne"
-  },
-  {
     "id": "1785665721099",
     "marque": "dsd",
     "modele": "dsd",
