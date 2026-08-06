@@ -11,6 +11,7 @@ export const dictionaries = {
       quickLinks: "Liens Rapides",
       contactTitle: "Contact",
       facebook: "📘 Suivre Atlas Chrono Cars sur Facebook →",
+      copyright: "Votre partenaire de confiance pour l'importation de véhicules."
     },
     home: {
       heroBadge: "✨ Votre importateur automobile de confiance",
@@ -150,6 +151,7 @@ export const dictionaries = {
       quickLinks: "روابط سريعة",
       contactTitle: "اتصل بنا",
       facebook: "📘 تابع أطلس كرونو كارز على فيسبوك ←",
+      copyright: "شريكك الموثوق لاستيراد السيارات."
     },
     home: {
       heroBadge: "✨ مستورد السيارات الموثوق بك",

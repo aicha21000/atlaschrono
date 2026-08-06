@@ -53,7 +53,7 @@ export default async function Footer() {
       </div>
       <div className={styles.bottom}>
         <div className="container">
-          <p>{settings.footerText}</p>
+          <p>© {new Date().getFullYear()} {settings.companyName}. {dict.footer.copyright}</p>
         </div>
       </div>
     </footer>
