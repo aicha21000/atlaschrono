@@ -3,6 +3,7 @@
 import styles from './page.module.css';
 import Link from 'next/link';
 import { useState, useEffect, use } from 'react';
+import { dictionaries } from '@/i18n/dictionaries';
 import { useRouter } from 'next/navigation';
 import { getCars, updateCar } from '@/actions/cars';
 import AdminAuthGuard from '@/components/AdminAuthGuard/AdminAuthGuard';
@@ -12,6 +13,15 @@ export default function EditCar({ params }: { params: Promise<{ id: string }> })
   const router = useRouter();
   const [car, setCar] = useState<any>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [lang, setLang] = useState<'fr' | 'ar'>('fr');
+
+  useEffect(() => {
+    if (document.documentElement.lang === 'ar') {
+      setLang('ar');
+    }
+  }, []);
+
+  const dict = dictionaries[lang];
 
   useEffect(() => {
     getCars().then(cars => {
@@ -61,7 +71,7 @@ export default function EditCar({ params }: { params: Promise<{ id: string }> })
 
           <form className={`glass-panel ${styles.form}`} onSubmit={handleSubmit}>
             <div className={styles.formSection}>
-              <h2>Informations du véhicule</h2>
+              <h2>{dict.adminForm?.presentationLabel || "Informations du véhicule"}</h2>
               <div className={styles.grid}>
                 <div className={styles.inputGroup}>
                   <label htmlFor="marque">Marque</label>
@@ -80,45 +90,45 @@ export default function EditCar({ params }: { params: Promise<{ id: string }> })
                   <input type="number" id="kilometrage" name="kilometrage" defaultValue={car.kilometrage} required className={styles.input} />
                 </div>
                 <div className={styles.inputGroup}>
-                  <label htmlFor="prix">Prix affiché (ex: 18 500 000 DZD)</label>
+                  <label htmlFor="prix">{dict.adminForm?.priceLabel || "Prix affiché (ex: 18 500 000 DZD)"}</label>
                   <input type="text" id="prix" name="prix" defaultValue={car.prix} required className={styles.input} />
                 </div>
                 <div className={styles.inputGroup}>
-                  <label htmlFor="status">Statut dans le showroom</label>
+                  <label htmlFor="status">{dict.adminForm?.statusLabel || "Statut dans le showroom"}</label>
                   <select id="status" name="status" defaultValue={car.status || "Disponible"} className={styles.select}>
-                    <option value="Disponible">🟢 Disponible</option>
-                    <option value="En arrivage">⏳ En arrivage</option>
-                    <option value="Réservé">🟡 Réservé</option>
-                    <option value="Vendu">🔴 Vendu</option>
+                    <option value="Disponible">{dict.adminForm?.statusAvailable || "🟢 Disponible"}</option>
+                    <option value="En arrivage">{dict.adminForm?.statusIncoming || "⏳ En arrivage"}</option>
+                    <option value="Réservé">{dict.adminForm?.statusReserved || "🟡 Réservé"}</option>
+                    <option value="Vendu">{dict.adminForm?.statusSold || "🔴 Vendu"}</option>
                   </select>
                 </div>
                 <div className={styles.inputGroup}>
-                  <label htmlFor="energie">Énergie</label>
+                  <label htmlFor="energie">{dict.adminForm?.energyLabel || "Énergie"}</label>
                   <select id="energie" name="energie" defaultValue={car.energie} className={styles.select}>
-                    <option value="Essence">Essence</option>
-                    <option value="Diesel">Diesel</option>
-                    <option value="Hybride">Hybride</option>
-                    <option value="Électrique">Électrique</option>
+                    <option value="Essence">{dict.adminForm?.energyGasoline || "Essence"}</option>
+                    <option value="Diesel">{dict.adminForm?.energyDiesel || "Diesel"}</option>
+                    <option value="Hybride">{dict.adminForm?.energyHybrid || "Hybride"}</option>
+                    <option value="Électrique">{dict.adminForm?.energyElectric || "Électrique"}</option>
                   </select>
                 </div>
                 <div className={styles.inputGroup}>
-                  <label htmlFor="boite">Boîte de vitesses</label>
+                  <label htmlFor="boite">{dict.adminForm?.gearboxLabel || "Boîte de vitesses"}</label>
                   <select id="boite" name="boite" defaultValue={car.boite} className={styles.select}>
-                    <option value="Automatique">Automatique</option>
-                    <option value="Manuelle">Manuelle</option>
+                    <option value="Automatique">{dict.adminForm?.gearboxAuto || "Automatique"}</option>
+                    <option value="Manuelle">{dict.adminForm?.gearboxManual || "Manuelle"}</option>
                   </select>
                 </div>
                 <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
-                  <label htmlFor="couleur">Couleur extérieure & intérieure</label>
+                  <label htmlFor="couleur">{dict.adminForm?.colorLabel || "Couleur extérieure & intérieure"}</label>
                   <input type="text" id="couleur" name="couleur" defaultValue={car.couleur} required className={styles.input} />
                 </div>
               </div>
             </div>
 
             <div className={styles.formSection}>
-              <h2>Description & Détails</h2>
+              <h2>{dict.adminForm?.descLabel || "Description & Détails"}</h2>
               <div className={styles.inputGroup}>
-                <label htmlFor="description">Présentation complète</label>
+                <label htmlFor="description">{dict.adminForm?.presentationLabel || "Présentation complète"}</label>
                 <textarea id="description" name="description" rows={5} defaultValue={car.description} required className={styles.textarea} />
               </div>
 
