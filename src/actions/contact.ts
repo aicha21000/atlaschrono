@@ -47,8 +47,8 @@ export async function sendContactEmail(formData: FormData) {
 
     await transporter.sendMail(mailOptions);
     return { success: true };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Erreur lors de l'envoi de l'email:", error);
-    return { success: false, error: "Erreur lors de l'envoi de l'email." };
+    return { success: false, error: "Erreur de messagerie : " + (error.message || "Impossible de contacter Gmail.") };
   }
 }
