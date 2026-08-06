@@ -9,7 +9,9 @@ export default async function Footer() {
     <footer className={styles.footer}>
       <div className={`container ${styles.footerContainer}`}>
         <div className={styles.brand}>
-          <h3 className={styles.logo}>Atlas<span className={styles.accent}>Chrono</span> Cars</h3>
+          <div style={{ marginBottom: '1rem' }}>
+            <img src="/logo.svg" alt="Atlas Chrono Cars Logo" style={{ height: '60px', width: 'auto', display: 'block' }} />
+          </div>
           <p className={styles.desc}>{settings.companyName} - Votre partenaire de prestige pour l&apos;importation et la vente de véhicules sélectionnés.</p>
           <a 
             href="https://www.facebook.com/atlas.chrono.fr" 
