@@ -44,7 +44,7 @@ export default async function ContactPage() {
                   <span className={styles.icon}>🕒</span>
                   <div>
                     <strong>{dict.contact.hours}</strong>
-                    <p>{settings.openingHours}</p>
+                    <p>{settings.openingHours === "Samedi - Jeudi : 09h00 - 19h00" ? (dict.contact.hoursValue || settings.openingHours) : settings.openingHours}</p>
                   </div>
                 </li>
               </ul>
