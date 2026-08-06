@@ -133,11 +133,12 @@ export const dictionaries = {
       subject: "Sujet",
       subject1: "Demande d'information générale",
       subject2: "Acheter un véhicule en stock",
-      subject3: "Demande d'importation spécifique",
+      subject3: "Assistance ou SAV",
       subject4: "Autre",
       message: "Message",
       messagePlaceholder: "Comment pouvons-nous vous aider ?",
-      submit: "Envoyer le message"
+      submit: "Envoyer le message",
+      successMessage: "Votre message a été envoyé avec succès ! Nous vous recontacterons très vite."
     }
   },
   ar: {
@@ -274,11 +275,12 @@ export const dictionaries = {
       subject: "الموضوع",
       subject1: "طلب معلومات عامة",
       subject2: "شراء سيارة من المخزون",
-      subject3: "طلب استيراد خاص",
+      subject3: "المساعدة أو خدمة ما بعد البيع",
       subject4: "أخرى",
       message: "الرسالة",
       messagePlaceholder: "كيف يمكننا مساعدتك؟",
-      submit: "إرسال الرسالة"
+      submit: "إرسال الرسالة",
+      successMessage: "تم إرسال رسالتك بنجاح! سنتصل بك قريباً جداً."
     }
   }
 };
