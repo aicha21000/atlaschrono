@@ -43,6 +43,10 @@ export const dictionaries = {
     cars: {
       pageTitle: "Notre Catalogue",
       pageSubtitle: "Tous nos véhicules disponibles et en arrivage",
+      filterTitle: "Filtres de recherche",
+      filterBrand: "Marque",
+      filterAvailability: "Disponibilité",
+      filterReset: "Réinitialiser",
       filterAll: "Toutes",
       filterAvailable: "Disponibles",
       statusAvailable: "🟢 Disponible",
@@ -178,6 +182,10 @@ export const dictionaries = {
     cars: {
       pageTitle: "مخزون السيارات",
       pageSubtitle: "جميع سياراتنا المتاحة وفي طور الوصول",
+      filterTitle: "خيارات البحث",
+      filterBrand: "العلامة",
+      filterAvailability: "التوفر",
+      filterReset: "إعادة ضبط",
       filterAll: "الكل",
       filterAvailable: "متاحة",
       statusAvailable: "🟢 متاحة",

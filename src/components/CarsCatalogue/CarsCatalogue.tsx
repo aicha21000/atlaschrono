@@ -40,9 +40,9 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
   return (
     <div className={styles.layout}>
       <aside className={styles.filters} aria-label="Filtres du catalogue">
-        <h3>{dict.home?.trust2Desc ? "Filtres de recherche" : "خيارات البحث"}</h3>
+        <h3>{dict.cars.filterTitle || "Filtres de recherche"}</h3>
         <div className={styles.filterGroup}>
-          <label htmlFor="marque-select">{dict.home?.trust2Desc ? "Marque" : "العلامة"}</label>
+          <label htmlFor="marque-select">{dict.cars.filterBrand || "Marque"}</label>
           <select 
             id="marque-select"
             className={styles.select} 
@@ -70,7 +70,7 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
           </select>
         </div>
         <div className={styles.filterGroup}>
-          <label htmlFor="statut-select">{dict.home?.trust2Desc ? "Disponibilité" : "التوفر"}</label>
+          <label htmlFor="statut-select">{dict.cars.filterAvailability || "Disponibilité"}</label>
           <select 
             id="statut-select"
             className={styles.select} 
@@ -93,7 +93,7 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
           }}
           aria-label="Réinitialiser tous les filtres de recherche"
         >
-          {dict.home?.trust2Desc ? "Réinitialiser" : "إعادة ضبط"}
+          {dict.cars.filterReset || "Réinitialiser"}
         </button>
       </aside>
       
