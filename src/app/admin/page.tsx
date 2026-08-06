@@ -134,7 +134,7 @@ export default async function AdminDashboard() {
               </p>
             </div>
             
-            <AdminTable cars={cars} />
+            <AdminTable cars={cars} dict={dict} />
           </section>
         </div>
       </div>

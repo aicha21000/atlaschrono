@@ -93,6 +93,25 @@ export const dictionaries = {
       settings: "Paramètres",
       logout: "Déconnexion"
     },
+    adminForm: {
+      priceLabel: "Prix affiché (ex: 18 500 000 DZD)",
+      statusLabel: "Statut dans le showroom",
+      statusAvailable: "🟢 Disponible",
+      statusIncoming: "⏳ En arrivage",
+      statusReserved: "🟡 Réservé",
+      statusSold: "🔴 Vendu",
+      energyLabel: "Énergie",
+      energyGasoline: "Essence",
+      energyDiesel: "Diesel",
+      energyHybrid: "Hybride",
+      energyElectric: "Électrique",
+      gearboxLabel: "Boîte de vitesses",
+      gearboxAuto: "Automatique",
+      gearboxManual: "Manuelle",
+      colorLabel: "Couleur extérieure & intérieure",
+      descLabel: "Description & Détails",
+      presentationLabel: "Présentation complète"
+    },
     contact: {
       title: "Contactez-Nous",
       subtitle: "Nous sommes à votre disposition pour toute demande d'importation ou d'information.",
@@ -208,6 +227,25 @@ export const dictionaries = {
       addCar: "إضافة سيارة",
       settings: "الإعدادات",
       logout: "تسجيل الخروج"
+    },
+    adminForm: {
+      priceLabel: "السعر المعروض (مثال: 18 500 000 دج)",
+      statusLabel: "الحالة في صالة العرض",
+      statusAvailable: "🟢 متاح",
+      statusIncoming: "⏳ قيد الوصول",
+      statusReserved: "🟡 محجوز",
+      statusSold: "🔴 مباع",
+      energyLabel: "الوقود",
+      energyGasoline: "بنزين",
+      energyDiesel: "ديزل",
+      energyHybrid: "هجين",
+      energyElectric: "كهربائي",
+      gearboxLabel: "علبة السرعة",
+      gearboxAuto: "أوتوماتيكي",
+      gearboxManual: "يدوي",
+      colorLabel: "اللون الخارجي والداخلي",
+      descLabel: "الوصف والتفاصيل",
+      presentationLabel: "عرض كامل"
     },
     contact: {
       title: "اتصل بنا",

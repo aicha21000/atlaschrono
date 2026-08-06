@@ -1,7 +1,8 @@
 "use client";
 import styles from './page.module.css';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { dictionaries } from '@/i18n/dictionaries';
 import { useRouter } from 'next/navigation';
 import { addCar } from '@/actions/cars';
 import AdminAuthGuard from '@/components/AdminAuthGuard/AdminAuthGuard';
@@ -10,6 +11,15 @@ export default function NewCar() {
   const router = useRouter();
   const [images, setImages] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [lang, setLang] = useState<'fr' | 'ar'>('fr');
+
+  useEffect(() => {
+    if (document.documentElement.lang === 'ar') {
+      setLang('ar');
+    }
+  }, []);
+
+  const dict = dictionaries[lang];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -66,37 +76,37 @@ export default function NewCar() {
                 <input type="number" name="annee" placeholder="ex: 2022" className={styles.input} required />
               </div>
               <div className={styles.inputGroup}>
-                <label>Prix (DZD / EUR)</label>
-                <input type="text" name="prix" placeholder="ex: Sur commande" className={styles.input} required />
+                <label>{dict.adminForm?.priceLabel || "Prix affiché"}</label>
+                <input type="text" name="prix" placeholder="ex: 18 500 000" className={styles.input} required />
               </div>
             </div>
           </div>
 
           <div className={styles.formSection}>
-            <h2>Caractéristiques Techniques</h2>
+            <h2>{dict.adminForm?.presentationLabel || "Caractéristiques Techniques"}</h2>
             <div className={styles.grid}>
               <div className={styles.inputGroup}>
                 <label>Kilométrage</label>
                 <input type="number" name="kilometrage" placeholder="ex: 25000" className={styles.input} required />
               </div>
               <div className={styles.inputGroup}>
-                <label>Énergie</label>
+                <label>{dict.adminForm?.energyLabel || "Énergie"}</label>
                 <select name="energie" className={styles.select}>
-                  <option>Essence</option>
-                  <option>Diesel</option>
-                  <option>Hybride</option>
-                  <option>Électrique</option>
+                  <option value="Essence">{dict.adminForm?.energyGasoline || "Essence"}</option>
+                  <option value="Diesel">{dict.adminForm?.energyDiesel || "Diesel"}</option>
+                  <option value="Hybride">{dict.adminForm?.energyHybrid || "Hybride"}</option>
+                  <option value="Électrique">{dict.adminForm?.energyElectric || "Électrique"}</option>
                 </select>
               </div>
               <div className={styles.inputGroup}>
-                <label>Boîte de Vitesse</label>
+                <label>{dict.adminForm?.gearboxLabel || "Boîte de Vitesse"}</label>
                 <select name="boite" className={styles.select}>
-                  <option>Automatique</option>
-                  <option>Manuelle</option>
+                  <option value="Automatique">{dict.adminForm?.gearboxAuto || "Automatique"}</option>
+                  <option value="Manuelle">{dict.adminForm?.gearboxManual || "Manuelle"}</option>
                 </select>
               </div>
               <div className={styles.inputGroup}>
-                <label>Couleur</label>
+                <label>{dict.adminForm?.colorLabel || "Couleur"}</label>
                 <input type="text" name="couleur" placeholder="ex: Noir Obsidienne" className={styles.input} required />
               </div>
             </div>
@@ -105,7 +115,7 @@ export default function NewCar() {
           <div className={styles.formSection}>
             <h2>Médias & Description</h2>
             <div className={styles.inputGroup}>
-              <label>Description Détaillée</label>
+              <label>{dict.adminForm?.descLabel || "Description Détaillée"}</label>
               <textarea name="description" rows={5} placeholder="Décrivez les options, l'état du véhicule..." className={styles.textarea}></textarea>
             </div>
             

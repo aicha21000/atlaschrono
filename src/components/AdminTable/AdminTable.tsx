@@ -7,9 +7,10 @@ import { updateCarStatus, deleteCar } from '@/actions/cars';
 
 interface AdminTableProps {
   cars: any[];
+  dict: any;
 }
 
-export default function AdminTable({ cars }: AdminTableProps) {
+export default function AdminTable({ cars, dict }: AdminTableProps) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("Tous");
   const [sortBy, setSortBy] = useState("recent");
@@ -111,7 +112,7 @@ export default function AdminTable({ cars }: AdminTableProps) {
               <th>Prix affiché</th>
               <th>Kilométrage</th>
               <th>Vues</th>
-              <th>Statut showroom</th>
+              <th>{dict?.adminForm?.statusLabel || "Statut showroom"}</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -141,10 +142,10 @@ export default function AdminTable({ cars }: AdminTableProps) {
                     onChange={(e) => handleStatusChange(car.id, e.target.value)}
                     className={`${styles.statusSelect} ${getStatusClass(car.status || "Disponible")}`}
                   >
-                    <option value="Disponible">🟢 Disponible</option>
-                    <option value="En arrivage">⏳ En arrivage</option>
-                    <option value="Réservé">🟡 Réservé</option>
-                    <option value="Vendu">🔴 Vendu</option>
+                    <option value="Disponible">{dict?.adminForm?.statusAvailable || "🟢 Disponible"}</option>
+                    <option value="En arrivage">{dict?.adminForm?.statusIncoming || "⏳ En arrivage"}</option>
+                    <option value="Réservé">{dict?.adminForm?.statusReserved || "🟡 Réservé"}</option>
+                    <option value="Vendu">{dict?.adminForm?.statusSold || "🔴 Vendu"}</option>
                   </select>
                 </td>
                 <td>
