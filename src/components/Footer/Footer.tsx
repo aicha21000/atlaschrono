@@ -14,7 +14,7 @@ export default async function Footer() {
           <div style={{ marginBottom: '1rem' }}>
             <img src="/logo.svg" alt="Atlas Chrono Cars Logo" style={{ height: '60px', width: 'auto', display: 'block' }} />
           </div>
-          <p className={styles.desc}>{settings.companyName} - L&apos;importation automobile de confiance, avec une sélection de véhicules contrôlés et garantis.</p>
+          <p className={styles.desc}>{settings.companyName} {dict.footer.description}</p>
           <a 
             href="https://www.facebook.com/atlas.chrono.fr" 
             target="_blank" 

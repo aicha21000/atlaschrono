@@ -7,6 +7,7 @@ export const dictionaries = {
       admin: "Espace Admin",
     },
     footer: {
+      description: "- L'importation automobile de confiance, avec une sélection de véhicules contrôlés et garantis.",
       quickLinks: "Liens Rapides",
       contactTitle: "Contact",
       facebook: "📘 Suivre Atlas Chrono Cars sur Facebook →",
@@ -122,6 +123,7 @@ export const dictionaries = {
       admin: "لوحة التحكم",
     },
     footer: {
+      description: "- استيراد السيارات بثقة، مع مجموعة مختارة من السيارات المفحوصة والمضمونة.",
       quickLinks: "روابط سريعة",
       contactTitle: "اتصل بنا",
       facebook: "📘 تابع أطلس كرونو كارز على فيسبوك ←",
