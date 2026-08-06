@@ -27,7 +27,7 @@ export default function AdminLogin() {
         <form className={styles.form} onSubmit={handleLogin}>
           <div className={styles.inputGroup}>
             <label htmlFor="email">Adresse Email</label>
-            <input type="email" id="email" placeholder="admin@premiumautodz.com" defaultValue="admin@premiumautodz.com" required className={styles.input} />
+            <input type="email" id="email" placeholder="admin@atlas-chrono.com" defaultValue="admin@atlas-chrono.com" required className={styles.input} />
           </div>
           <div className={styles.inputGroup}>
             <label htmlFor="password">Mot de passe</label>

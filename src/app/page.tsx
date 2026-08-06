@@ -14,13 +14,13 @@ export default async function Home() {
         <div className={`container ${styles.heroLayout}`}>
           <div className={styles.heroText}>
             <div className={styles.heroBadge}>
-              <span>✨</span> Spécialiste de l'Importation Prestige en Algérie
+              <span>✨</span> Votre importateur automobile de confiance
             </div>
             <h1 id="hero-title" className={`${styles.title} chrome-text`}>
-              Premium Auto DZ
+              Atlas Chrono Cars
             </h1>
             <p className={styles.subtitle}>
-              Une sélection exclusive de véhicules d&apos;occasion récents de moins de 3 ans, inspectés et certifiés. Qualité allemande, transparence totale et accompagnement sur-mesure.
+              Une sélection soignée de véhicules d&apos;occasion récents, inspectés avec passion. Transparence totale, qualité certifiée et un accompagnement de proximité pour votre projet auto.
             </p>
             <div className={styles.actions}>
               <Link href="/cars" className={styles.primaryBtn} aria-label="Explorer le stock de véhicules">
@@ -51,7 +51,7 @@ export default async function Home() {
             <div className={styles.heroImageContainer}>
               <img 
                 src="/images/banner.png" 
-                alt="Showroom Premium Auto DZ - Véhicules de prestige en Algérie" 
+                alt="Showroom Atlas Chrono Cars - Importation de véhicules en Algérie" 
                 className={styles.heroImage}
                 loading="eager"
                 fetchPriority="high"
@@ -130,27 +130,27 @@ export default async function Home() {
       <section className={styles.featuresSection} aria-labelledby="engagements-title">
         <div className="container">
           <div className={styles.featuresHeader}>
-            <h2 id="engagements-title" className={styles.sectionTitle}>L&apos;Excellence Premium Auto DZ</h2>
-            <p className={styles.sectionSubtitle}>Pourquoi les passionnés d&apos;automobile en Algérie nous font confiance pour leur prochain véhicule</p>
+            <h2 id="engagements-title" className={styles.sectionTitle}>L&apos;Engagement Atlas Chrono Cars</h2>
+            <p className={styles.sectionSubtitle}>Pourquoi choisir notre équipe pour l&apos;achat de votre prochain véhicule</p>
           </div>
 
           <div className={styles.featuresGrid}>
             <div className={`glass-panel ${styles.featureCard}`}>
-              <div className={styles.featureIcon} aria-hidden="true">💎</div>
-              <h3>Sélection Rigoureuse</h3>
-              <p>Chaque véhicule fait l&apos;objet d&apos;une inspection technique complète en 120 points par nos experts avant l&apos;expédition vers l&apos;Algérie.</p>
+              <div className={styles.featureIcon} aria-hidden="true">🔍</div>
+              <h3>Sélection Soignée</h3>
+              <p>Chaque véhicule est inspecté avec soin avant l&apos;expédition vers l&apos;Algérie pour vous garantir une totale tranquillité d&apos;esprit.</p>
             </div>
 
             <div className={`glass-panel ${styles.featureCard}`}>
               <div className={styles.featureIcon} aria-hidden="true">🛡️</div>
-              <h3>Transparence Absolue</h3>
-              <p>Aucune mauvaise surprise : carnet d&apos;entretien complet vérifié, kilométrage réel certifié et traçabilité européenne limpide.</p>
+              <h3>Transparence Totale</h3>
+              <p>Nous mettons un point d&apos;honneur à vous fournir un historique limpide, un carnet d&apos;entretien vérifié et un kilométrage garanti.</p>
             </div>
 
             <div className={`glass-panel ${styles.featureCard}`}>
-              <div className={styles.featureIcon} aria-hidden="true">🚀</div>
-              <h3>Accompagnement VIP</h3>
-              <p>Nous gérons pour vous l&apos;intégralité du processus : logistique, transport maritime, formalités douanières et livraison en showroom.</p>
+              <div className={styles.featureIcon} aria-hidden="true">🤝</div>
+              <h3>Accompagnement Personnalisé</h3>
+              <p>Nous restons à vos côtés à chaque étape : de la recherche du véhicule jusqu&apos;à la livraison, en passant par les démarches administratives.</p>
             </div>
           </div>
         </div>

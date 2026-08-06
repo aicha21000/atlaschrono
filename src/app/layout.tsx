@@ -17,8 +17,8 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Atlas Chrono Cars | Showroom Voitures de Prestige & Importation Directe",
-  description: "Atlas Chrono Cars : Importation et vente de véhicules de prestige et d'occasion récente. Mercedes-Benz, BMW, Audi, Porsche. Transparence, conformité et garantie certifiée.",
+  title: "Atlas Chrono Cars | Importation Directe & Vente Auto",
+  description: "Atlas Chrono Cars : Votre partenaire de confiance pour l'importation et la vente de véhicules d'occasion récents. Transparence, conformité et accompagnement sur-mesure.",
 };
 
 export default function RootLayout({
