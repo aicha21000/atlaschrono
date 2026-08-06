@@ -22,7 +22,10 @@
 }
 
 .heroText {
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: start;
 }
 
 .heroBadge {
@@ -381,6 +384,7 @@
   
   .heroText {
     text-align: center;
+    align-items: center;
   }
   
   .subtitle {
