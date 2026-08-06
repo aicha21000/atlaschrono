@@ -1,18 +1,20 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { verifyAdmin } from '@/actions/auth';
 
 export default function AdminAuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem('admin_logged_in') === 'true';
-    if (!isLoggedIn) {
-      router.replace('/admin/login');
-    } else {
-      setAuthorized(true);
-    }
+    verifyAdmin().then(isLoggedIn => {
+      if (!isLoggedIn) {
+        router.replace('/admin/login');
+      } else {
+        setAuthorized(true);
+      }
+    });
   }, [router]);
 
   if (!authorized) {

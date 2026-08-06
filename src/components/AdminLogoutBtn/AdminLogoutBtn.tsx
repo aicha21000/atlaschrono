@@ -1,11 +1,12 @@
 "use client";
 import { useRouter } from 'next/navigation';
+import { logoutAdmin } from '@/actions/auth';
 
 export default function AdminLogoutBtn({ logoutText = "Se déconnecter" }: { logoutText?: string }) {
   const router = useRouter();
 
-  const handleLogout = () => {
-    localStorage.removeItem('admin_logged_in');
+  const handleLogout = async () => {
+    await logoutAdmin();
     router.push('/admin/login');
   };
 
