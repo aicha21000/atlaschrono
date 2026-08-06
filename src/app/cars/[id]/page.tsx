@@ -81,7 +81,7 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
               </div>
               <div className={styles.statItem}>
                 <span className={styles.statLabel}>{dict.cars.specKm}</span>
-                <span className={styles.statValue}>{car.kilometrage} km</span>
+                <span className={styles.statValue}>{car.kilometrage} {dict.home.cardKm}</span>
               </div>
               <div className={styles.statItem}>
                 <span className={styles.statLabel}>{dict.cars.specEnergy}</span>
