@@ -20,9 +20,10 @@ export default function AdminLogin() {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     
-    const res = await loginAdmin(password);
+    const res = await loginAdmin(email, password);
     if (res.success) {
       router.push('/admin');
     } else {
@@ -40,7 +41,7 @@ export default function AdminLogin() {
           {errorMsg && <div style={{ color: '#ef4444', marginBottom: '1rem', fontSize: '0.85rem' }}>{errorMsg}</div>}
           <div className={styles.inputGroup}>
             <label htmlFor="email">Adresse Email</label>
-            <input type="email" id="email" defaultValue="admin@atlas-chrono.com" disabled className={styles.input} style={{ opacity: 0.6 }} />
+            <input type="email" id="email" name="email" placeholder="admin@atlas-chrono.com" required className={styles.input} />
           </div>
           <div className={styles.inputGroup}>
             <label htmlFor="password">Mot de passe</label>
