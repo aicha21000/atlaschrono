@@ -21,6 +21,20 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
 
   await incrementCarViews(resolvedParams.id);
 
+  const translateEnergy = (energy: string) => {
+    if (energy === "Essence") return dict.adminForm?.energyGasoline || energy;
+    if (energy === "Diesel") return dict.adminForm?.energyDiesel || energy;
+    if (energy === "Hybride") return dict.adminForm?.energyHybrid || energy;
+    if (energy === "Électrique") return dict.adminForm?.energyElectric || energy;
+    return energy;
+  };
+
+  const translateGearbox = (gearbox: string) => {
+    if (gearbox === "Automatique") return dict.adminForm?.gearboxAuto || gearbox;
+    if (gearbox === "Manuelle") return dict.adminForm?.gearboxManual || gearbox;
+    return gearbox;
+  };
+
   return (
     <div className={styles.detailsContainer}>
       <div className="container">
@@ -71,11 +85,11 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
               </div>
               <div className={styles.statItem}>
                 <span className={styles.statLabel}>{dict.cars.specEnergy}</span>
-                <span className={styles.statValue}>{car.energie}</span>
+                <span className={styles.statValue}>{translateEnergy(car.energie)}</span>
               </div>
               <div className={styles.statItem}>
                 <span className={styles.statLabel}>{dict.cars.specGearbox}</span>
-                <span className={styles.statValue}>{car.boite}</span>
+                <span className={styles.statValue}>{translateGearbox(car.boite)}</span>
               </div>
             </div>
 

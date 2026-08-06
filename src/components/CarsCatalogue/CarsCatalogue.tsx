@@ -17,6 +17,15 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
 
   // Filtrage 100% côté client
   let filteredCars = initialCars;
+
+  const translateEnergy = (energy: string) => {
+    if (energy === "Essence") return dict.adminForm?.energyGasoline || energy;
+    if (energy === "Diesel") return dict.adminForm?.energyDiesel || energy;
+    if (energy === "Hybride") return dict.adminForm?.energyHybrid || energy;
+    if (energy === "Électrique") return dict.adminForm?.energyElectric || energy;
+    return energy;
+  };
+  
   
   if (marque !== "Toutes") {
     filteredCars = filteredCars.filter(c => c.marque === marque);
@@ -56,7 +65,7 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
           >
             <option value="Toutes">{dict.cars.filterAll}</option>
             {uniqueEnergies.map((en: any) => (
-              <option key={en} value={en}>{en}</option>
+              <option key={en} value={en}>{translateEnergy(en)}</option>
             ))}
           </select>
         </div>
@@ -133,7 +142,7 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
             <div className={styles.carInfo}>
               <h3>{car.marque} {car.modele}</h3>
               <p className={styles.carDetails}>
-                <span>{car.annee}</span> • <span>{Number(car.kilometrage).toLocaleString('fr-FR')} {dict.home.cardKm}</span> • <span>{car.energie}</span>
+                <span>{car.annee}</span> • <span>{Number(car.kilometrage).toLocaleString('fr-FR')} {dict.home.cardKm}</span> • <span>{translateEnergy(car.energie)}</span>
               </p>
               <p className={styles.carPrice}>{car.prix}</p>
               <Link 
