@@ -26,7 +26,7 @@ export default async function Home() {
             </p>
             <div className={styles.actions}>
               <Link href="/cars" className={styles.primaryBtn} aria-label="Explorer le stock de véhicules">
-                {dict.home.btnStock.replace(' →', '')} <span>&rarr;</span>
+                {dict.home.btnStock}
               </Link>
               <Link href="/contact" className={styles.secondaryBtn} aria-label="Demander une importation sur mesure">
                 {dict.home.btnContact}
@@ -74,7 +74,7 @@ export default async function Home() {
               <p className={styles.sectionSubtitle}>{dict.home.recentSubtitle}</p>
             </div>
             <Link href="/cars" className={styles.viewAllLink} aria-label="Voir l'ensemble du catalogue">
-              {dict.home.viewAll.replace(' →', '')} <span>&rarr;</span>
+              {dict.home.viewAll}
             </Link>
           </div>
 
@@ -112,7 +112,7 @@ export default async function Home() {
                   </p>
                   <p className={styles.carPrice}>{car.prix}</p>
                   <Link href={`/cars/${car.id}`} className={styles.cardCta} aria-label={`Consulter la fiche technique de la ${car.marque} ${car.modele}`}>
-                    {dict.home.cardCta.replace(' →', '')} &rarr;
+                    {dict.home.cardCta}
                   </Link>
                 </div>
               </article>

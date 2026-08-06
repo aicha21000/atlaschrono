@@ -141,7 +141,7 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
                 className={styles.detailsBtn}
                 aria-label={`Consulter la fiche technique du véhicule ${car.marque} ${car.modele}`}
               >
-                {dict.home.cardCta.replace(' →', '')} &rarr;
+                {dict.home.cardCta}
               </Link>
             </div>
           </article>
