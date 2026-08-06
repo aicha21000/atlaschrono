@@ -18,8 +18,8 @@
       "/uploads/1785665721098-3253905.jpg",
       "/uploads/1785665721099-3253906.jpg"
     ],
-    "status": "Réservé",
-    "views": 72,
+    "status": "Disponible",
+    "views": 94,
     "controleTechnique": "/uploads/CT-1785669311471-3169_-_ford_fiesta.pdf"
   },
   {
@@ -41,8 +41,8 @@
       "/uploads/1785665892787-3279865.jpg",
       "/uploads/1785665892788-3279866.jpg"
     ],
-    "status": "Disponible",
+    "status": "Réservé",
     "controleTechnique": "/uploads/1785665892784-3279861.jpg",
-    "views": 19
+    "views": 35
   }
 ]

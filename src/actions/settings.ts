@@ -16,12 +16,12 @@ export interface Settings {
 }
 
 const defaultSettings: Settings = {
-  companyName: "Premium Auto DZ",
-  address: "123 Boulevard Colonel Amirouche, Alger Centre, Algérie",
+  companyName: "Atlas Chrono Cars",
+  address: "Alger Centre, Algérie / France (Importation directe)",
   phone: "+213 555 12 34 56",
-  email: "contact@premiumautodz.com",
-  openingHours: "Samedi - Jeudi : 09h00 - 18h00",
-  footerText: "© 2026 Premium Auto DZ. Votre partenaire de confiance pour l'importation de véhicules de prestige en Algérie."
+  email: "contact@atlas-chrono.com",
+  openingHours: "Samedi - Jeudi : 09h00 - 19h00",
+  footerText: "© 2026 Atlas Chrono Cars. Votre spécialiste pour l'importation et la vente de véhicules d'occasion récente et de prestige."
 };
 
 export async function getSettings(): Promise<Settings> {

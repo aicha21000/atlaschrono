@@ -77,13 +77,13 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
               </div>
             </div>
 
-            {/* CARTE CONTRÔLE TECHNIQUE (EFFET ÉVENTAIL & OVERLAY AU-DESSUS DE LA PAGE) */}
+            {/* CARTE CONTRÔLE TECHNIQUE */}
             <ControleTechniqueViewer 
               fileUrl={car.controleTechnique} 
               carTitle={`${car.marque} ${car.modele}`} 
             />
 
-            {/* CARTE DE RÉSERVATION EN LIGNE AVEC ACOMPTE DE 50 EUR STRIPE */}
+            {/* CARTE DE RÉSERVATION EN LIGNE AVEC ACOMPTE DE 100 EUR STRIPE */}
             <StripeReservationButton
               carId={car.id}
               carTitle={`${car.marque} ${car.modele}`}

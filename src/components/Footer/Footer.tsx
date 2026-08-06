@@ -9,8 +9,29 @@ export default async function Footer() {
     <footer className={styles.footer}>
       <div className={`container ${styles.footerContainer}`}>
         <div className={styles.brand}>
-          <h3 className={styles.logo}>Premium<span className={styles.accent}>Auto</span> DZ</h3>
-          <p className={styles.desc}>{settings.companyName} - Votre partenaire de confiance pour l'importation de véhicules récents en Algérie.</p>
+          <h3 className={styles.logo}>Atlas<span className={styles.accent}>Chrono</span> Cars</h3>
+          <p className={styles.desc}>{settings.companyName} - Votre partenaire de prestige pour l&apos;importation et la vente de véhicules sélectionnés.</p>
+          <a 
+            href="https://www.facebook.com/atlas.chrono.fr" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              marginTop: '0.85rem',
+              padding: '0.45rem 0.9rem',
+              borderRadius: '8px',
+              background: 'rgba(0, 85, 255, 0.1)',
+              color: 'var(--color-accent)',
+              fontWeight: 700,
+              fontSize: '0.85rem',
+              textDecoration: 'none',
+              border: '1px solid rgba(0, 85, 255, 0.2)'
+            }}
+          >
+            📘 Suivre Atlas Chrono Cars sur Facebook &rarr;
+          </a>
         </div>
         <div className={styles.links}>
           <h4>Liens Rapides</h4>

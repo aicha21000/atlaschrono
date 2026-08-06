@@ -36,7 +36,7 @@ export default async function ReservationSuccessPage({
 
         <h1 className={styles.title}>Félicitations, réservation confirmée !</h1>
         <p className={styles.subtitle}>
-          Votre acompte sécurisé de <strong>50,00 €</strong> a été validé. Le véhicule est officiellement bloqué.
+          Votre acompte sécurisé de <strong>100,00 €</strong> a été validé. Le véhicule est officiellement bloqué à votre nom pendant <strong>8 jours</strong>.
         </p>
 
         {/* REÇU OFFICIEL DE RÉSERVATION STRIPE */}
@@ -47,7 +47,11 @@ export default async function ReservationSuccessPage({
           </div>
           <div className={styles.receiptRow}>
             <span className={styles.label}>Acompte Stripe versé</span>
-            <span className={styles.value} style={{ color: '#166534' }}>50,00 € (Payé)</span>
+            <span className={styles.value} style={{ color: '#166534' }}>100,00 € (Payé)</span>
+          </div>
+          <div className={styles.receiptRow}>
+            <span className={styles.label}>Durée de validité</span>
+            <span className={styles.value} style={{ color: '#0284c7', fontWeight: 800 }}>⏳ 8 jours consécutifs</span>
           </div>
           <div className={styles.receiptRow}>
             <span className={styles.label}>Statut showroom</span>
@@ -64,9 +68,9 @@ export default async function ReservationSuccessPage({
         {/* PROCHAINES ÉTAPES DU SHOWROOM */}
         <div className={styles.nextSteps}>
           <strong style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.95rem' }}>
-            📌 Prochaines étapes avec notre équipe :
+            📌 Engagement Atlas Chrono Cars (8 Jours) :
           </strong>
-          Un conseiller commercial vous contactera par téléphone sous 24h ouvrées pour vous transmettre le contrat officiel et organiser le règlement du solde ({car.prix}) ou planifier une visite au showroom.
+          Ce véhicule est immédiatement retiré de la vente pendant <strong>8 jours</strong>. Un conseiller commercial va vous contacter sous 24h ouvrées pour organiser le règlement du solde ({car.prix}) ou planifier une visite à notre showroom.
         </div>
 
         {/* BOUTONS DE RETOUR */}

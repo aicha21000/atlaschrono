@@ -17,8 +17,8 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Premium Auto DZ | Showroom Voitures de Prestige & Occasion Récente",
-  description: "Importation et vente de véhicules d'occasion de prestige (moins de 3 ans) en Algérie. Mercedes-Benz, BMW, Audi, Porsche. Transparence et garantie 100% certifiée.",
+  title: "Atlas Chrono Cars | Showroom Voitures de Prestige & Importation Directe",
+  description: "Atlas Chrono Cars : Importation et vente de véhicules de prestige et d'occasion récente. Mercedes-Benz, BMW, Audi, Porsche. Transparence, conformité et garantie certifiée.",
 };
 
 export default function RootLayout({

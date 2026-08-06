@@ -11,7 +11,7 @@ export async function createReservationSession(carId: string, carTitle: string, 
   const protocol = host.includes('localhost') ? 'http' : 'https';
   const baseUrl = `${protocol}://${host}`;
 
-  // 1. Si une clé secrète Stripe est configurée, on crée une vraie session de paiement Stripe Checkout (50 EUR)
+  // 1. Si une clé secrète Stripe est configurée, on crée une vraie session de paiement Stripe Checkout (100 EUR / 8 jours)
   if (stripeSecretKey && stripeSecretKey.startsWith('sk_')) {
     try {
       const stripe = new Stripe(stripeSecretKey, {
@@ -25,10 +25,10 @@ export async function createReservationSession(carId: string, carTitle: string, 
             price_data: {
               currency: 'eur',
               product_data: {
-                name: `Réservation Showroom : ${carTitle}`,
-                description: `Acompte officiel de 50,00 € pour réserver le véhicule ${carTitle} (Prix : ${carPrice}). Réservation garantie par le Showroom.`,
+                name: `Réservation 8 Jours : ${carTitle}`,
+                description: `Acompte de 100,00 € pour la réservation exclusive de 8 jours du véhicule ${carTitle} (Prix : ${carPrice}). Montant déductible lors de l'achat.`,
               },
-              unit_amount: 5000, // 50.00 EUR en centimes
+              unit_amount: 10000, // 100.00 EUR en centimes
             },
             quantity: 1,
           },
@@ -39,7 +39,8 @@ export async function createReservationSession(carId: string, carTitle: string, 
         metadata: {
           carId: carId,
           carTitle: carTitle,
-          reservationAmount: '50 EUR',
+          reservationAmount: '100 EUR',
+          duration: '8 jours',
         },
       });
 

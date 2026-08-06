@@ -6,7 +6,7 @@ export default function Navbar() {
     <nav className={styles.navbar}>
       <div className={`container ${styles.navContainer}`}>
         <Link href="/" className={`${styles.logo} chrome-text`}>
-          Premium<span className={styles.accent}>Auto</span> DZ
+          Atlas<span className={styles.accent}>Chrono</span> Cars
         </Link>
         <div className={styles.links}>
           <Link href="/" className={styles.link}>Accueil</Link>

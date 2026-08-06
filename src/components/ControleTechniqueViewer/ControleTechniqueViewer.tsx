@@ -69,12 +69,12 @@ export default function ControleTechniqueViewer({ fileUrl, carTitle }: ControleT
           <div className={styles.titleGroup}>
             <span className={styles.icon}>🛡️</span>
             <div>
-              <h3 className={styles.title}>Contrôle Technique</h3>
-              <p className={styles.subtitle}>100 points d&apos;inspection vérifiés</p>
+              <h3 className={styles.title}>Contrôle Technique Réglementaire</h3>
+              <p className={styles.subtitle}>Procès-verbal de contrôle & conformité légale</p>
             </div>
           </div>
           <span className={styles.verifiedBadge}>
-            ✅ Certifié
+            ✅ Favorable (A)
           </span>
         </div>
 
@@ -82,20 +82,20 @@ export default function ControleTechniqueViewer({ fileUrl, carTitle }: ControleT
         <div 
           className={styles.fanContainer} 
           onClick={() => setIsOpen(true)}
-          title="Cliquez pour ouvrir le rapport en superposition au-dessus de la page"
+          title="Cliquez pour ouvrir le rapport"
         >
           {/* Page gauche de l'éventail */}
           <div className={`${styles.fanPage} ${styles.fanLeft}`}>
-            <span style={{ fontSize: '1.25rem' }}>✅</span>
-            <div className={styles.fanBadge} style={{ color: '#166534' }}>Moteur & Mécanique</div>
-            <div className={styles.fanText}>100% Conforme</div>
+            <span style={{ fontSize: '1.15rem' }}>📋</span>
+            <div className={styles.fanBadge} style={{ color: '#166534' }}>Procès-Verbal CT</div>
+            <div className={styles.fanText}>Résultat : Favorable (A)</div>
           </div>
 
           {/* Page droite de l'éventail */}
           <div className={`${styles.fanPage} ${styles.fanRight}`}>
-            <span style={{ fontSize: '1.25rem' }}>🔍</span>
-            <div className={styles.fanBadge} style={{ color: '#1e40af' }}>Carrosserie & Châssis</div>
-            <div className={styles.fanText}>Aucune anomalie</div>
+            <span style={{ fontSize: '1.15rem' }}>🔬</span>
+            <div className={styles.fanBadge} style={{ color: '#1e40af' }}>Validité légale</div>
+            <div className={styles.fanText}>Conforme à la circulation</div>
           </div>
 
           {/* Page centrale (Document principal) */}
@@ -103,13 +103,13 @@ export default function ControleTechniqueViewer({ fileUrl, carTitle }: ControleT
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.2rem' }}>
               <span style={{ fontSize: '1rem' }}>🛡️</span>
               <strong style={{ fontSize: '0.75rem', color: 'var(--color-text-primary)' }}>
-                {isPdf ? "RAPPORT OFFICIEL PDF" : "CERTIFICAT D'INSPECTION"}
+                {isPdf ? "PROCÈS-VERBAL AU FORMAT PDF" : "PROCÈS-VERBAL DE CONTRÔLE"}
               </strong>
             </div>
             {!isPdf ? (
               <img 
                 src={fileUrl} 
-                alt="Aperçu du certificat" 
+                alt="Aperçu du rapport de contrôle technique" 
                 className={styles.previewThumb}
               />
             ) : (
@@ -130,15 +130,6 @@ export default function ControleTechniqueViewer({ fileUrl, carTitle }: ControleT
                 </span>
               </div>
             )}
-            <span style={{ 
-              fontSize: '0.65rem', 
-              color: 'var(--color-accent)', 
-              fontWeight: 800, 
-              marginTop: '0.35rem', 
-              textTransform: 'uppercase' 
-            }}>
-              ⚡ Effet éventail • Voir en overlay
-            </span>
           </div>
         </div>
 
@@ -149,7 +140,7 @@ export default function ControleTechniqueViewer({ fileUrl, carTitle }: ControleT
             className={styles.viewBtn} 
             onClick={() => setIsOpen(true)}
           >
-            <span>👁️</span> Afficher le rapport (Overlay)
+            <span>👁️</span> Consulter le rapport
           </button>
           <a 
             href={fileUrl} 
@@ -211,16 +202,16 @@ export default function ControleTechniqueViewer({ fileUrl, carTitle }: ControleT
               )}
             </div>
 
-            {/* Bandeau inférieur avec les points de contrôle certifiés */}
+            {/* Bandeau inférieur du rapport CT réglementaire */}
             <div className={styles.modalFooter}>
               <div className={styles.checklistRow}>
-                <span className={styles.checkItem}>✅ Moteur & Transmission OK</span>
-                <span className={styles.checkItem}>✅ Freinage & ABS OK</span>
-                <span className={styles.checkItem}>✅ Carrosserie & Peinture OK</span>
-                <span className={styles.checkItem}>✅ Électronique & Capteurs OK</span>
+                <span className={styles.checkItem}>📋 Procès-Verbal CT</span>
+                <span className={styles.checkItem}>✅ Résultat : Favorable (A)</span>
+                <span className={styles.checkItem}>🔍 Circulation autorisée</span>
+                <span className={styles.checkItem}>🛡️ Conformité vérifiée</span>
               </div>
               <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>
-                🛡️ Garantie Showroom Premium DZ
+                📋 Procès-verbal de contrôle technique réglementaire • Garantie Atlas Chrono Cars
               </span>
             </div>
           </div>
