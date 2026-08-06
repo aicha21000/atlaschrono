@@ -6,11 +6,13 @@ import { notFound } from 'next/navigation';
 import CarGallery from '@/components/CarGallery/CarGallery';
 import ControleTechniqueViewer from '@/components/ControleTechniqueViewer/ControleTechniqueViewer';
 import StripeReservationButton from '@/components/StripeReservationButton/StripeReservationButton';
+import { getDictionary } from '@/i18n/getLang';
 
 export default async function CarDetails({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const cars = await getCars();
   const settings = await getSettings();
+  const dict = await getDictionary();
   const car = cars.find((c: any) => c.id === resolvedParams.id);
 
   if (!car) {
@@ -23,7 +25,7 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
     <div className={styles.detailsContainer}>
       <div className="container">
         <div className={styles.breadcrumb}>
-          <Link href="/cars">Catalogue</Link> &gt; <span>{car.marque} {car.modele}</span>
+          <Link href="/cars">{dict.navbar.stock}</Link> &gt; <span>{car.marque} {car.modele}</span>
         </div>
         
         <div className={styles.mainLayout}>
@@ -33,12 +35,12 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
             {(() => {
               const status = car.status || "Disponible";
               const badgeText = status === "Réservé" 
-                ? "🟡 Véhicule Réservé" 
+                ? dict.cars.statusReserved 
                 : status === "Vendu" 
-                ? "🔴 Véhicule Vendu" 
+                ? dict.cars.statusSold 
                 : status === "En arrivage"
-                ? "⏳ En arrivage prochainement"
-                : "🟢 Disponible au showroom";
+                ? dict.cars.statusIncoming
+                : dict.cars.statusAvailable;
 
               const badgeStyle = status === "Réservé" 
                 ? { background: '#fef9c3', color: '#854d0e', border: '1px solid #fde047' } 
@@ -60,19 +62,19 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
             
             <div className={`glass-panel ${styles.quickStats}`}>
               <div className={styles.statItem}>
-                <span className={styles.statLabel}>Année</span>
+                <span className={styles.statLabel}>{dict.cars.specYear}</span>
                 <span className={styles.statValue}>{car.annee}</span>
               </div>
               <div className={styles.statItem}>
-                <span className={styles.statLabel}>Kilométrage</span>
+                <span className={styles.statLabel}>{dict.cars.specKm}</span>
                 <span className={styles.statValue}>{car.kilometrage} km</span>
               </div>
               <div className={styles.statItem}>
-                <span className={styles.statLabel}>Énergie</span>
+                <span className={styles.statLabel}>{dict.cars.specEnergy}</span>
                 <span className={styles.statValue}>{car.energie}</span>
               </div>
               <div className={styles.statItem}>
-                <span className={styles.statLabel}>Boîte</span>
+                <span className={styles.statLabel}>{dict.cars.specGearbox}</span>
                 <span className={styles.statValue}>{car.boite}</span>
               </div>
             </div>
@@ -81,6 +83,7 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
             <ControleTechniqueViewer 
               fileUrl={car.controleTechnique} 
               carTitle={`${car.marque} ${car.modele}`} 
+              dict={dict}
             />
 
             {/* CARTE DE RÉSERVATION EN LIGNE AVEC ACOMPTE DE 100 EUR STRIPE */}
@@ -89,48 +92,22 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
               carTitle={`${car.marque} ${car.modele}`}
               carPrice={car.prix}
               carStatus={car.status || "Disponible"}
+              dict={dict}
             />
             
             <div className={styles.contactCard}>
-              <h3>
-                {(car.status || "Disponible") === "Vendu" 
-                  ? "Modèle similaire recherché ?" 
-                  : (car.status || "Disponible") === "Réservé" 
-                  ? "Véhicule sous réservation" 
-                  : (car.status || "Disponible") === "En arrivage"
-                  ? "Pré-réserver ce véhicule ?"
-                  : "Intéressé par ce véhicule ?"}
-              </h3>
-              
-              {(car.status || "Disponible") === "Vendu" && (
-                <p style={{ color: '#991b1b', backgroundColor: '#fee2e2', padding: '0.75rem', borderRadius: '8px', marginBottom: '1rem', fontWeight: 600, fontSize: '0.9rem' }}>
-                  ❌ Ce véhicule est vendu. Notre équipe peut vous importer un modèle similaire sur commande !
-                </p>
-              )}
-              
-              {(car.status || "Disponible") === "Réservé" && (
-                <p style={{ color: '#854d0e', backgroundColor: '#fef9c3', padding: '0.75rem', borderRadius: '8px', marginBottom: '1rem', fontWeight: 600, fontSize: '0.9rem' }}>
-                  ⚠️ Ce véhicule est actuellement réservé. Contactez-nous en cas d&apos;annulation !
-                </p>
-              )}
-
-              {(car.status || "Disponible") === "En arrivage" && (
-                <p style={{ color: '#1e40af', backgroundColor: '#eff6ff', padding: '0.75rem', borderRadius: '8px', marginBottom: '1rem', fontWeight: 600, fontSize: '0.9rem', border: '1px solid #bfdbfe' }}>
-                  ⏳ Ce véhicule est en cours d&apos;acheminement vers notre showroom. Pré-réservez-le dès maintenant avant son arrivée !
-                </p>
-              )}
-
-              <p style={{ marginBottom: '0.5rem' }}>Contactez notre équipe au : <strong>{settings.phone}</strong></p>
-              <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Ou venez nous rendre visite au showroom.</p>
+              <h3>{dict.navbar.contact}</h3>
+              <p style={{ marginBottom: '0.5rem' }}>{settings.phone}</p>
+              <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>{settings.email}</p>
               <Link href="/contact" style={{ display: 'block', textDecoration: 'none' }}>
-                <button className={styles.contactBtn}>Nous envoyer un message</button>
+                <button className={styles.contactBtn}>{dict.navbar.contact}</button>
               </Link>
             </div>
           </div>
         </div>
         
         <div className={styles.detailsSection}>
-          <h2>Toutes les caractéristiques</h2>
+          <h2>{dict.cars.detailsTitle}</h2>
           <div className={styles.featuresGrid}>
             <div className={styles.featureItem}>
               <span className={styles.featureLabel}>Marque</span>
@@ -141,12 +118,12 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
               <span className={styles.featureValue}>{car.modele}</span>
             </div>
             <div className={styles.featureItem}>
-              <span className={styles.featureLabel}>Couleur</span>
+              <span className={styles.featureLabel}>{dict.cars.specColor}</span>
               <span className={styles.featureValue}>{car.couleur}</span>
             </div>
             <div className={styles.featureItem}>
               <span className={styles.featureLabel}>Description</span>
-              <span className={styles.featureValue}>{car.description || "Aucune description fournie"}</span>
+              <span className={styles.featureValue}>{car.description || "-"}</span>
             </div>
           </div>
         </div>

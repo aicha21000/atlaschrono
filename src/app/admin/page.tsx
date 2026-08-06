@@ -4,9 +4,11 @@ import { getCars } from '@/actions/cars';
 import AdminAuthGuard from '@/components/AdminAuthGuard/AdminAuthGuard';
 import AdminLogoutBtn from '@/components/AdminLogoutBtn/AdminLogoutBtn';
 import AdminTable from '@/components/AdminTable/AdminTable';
+import { getDictionary } from '@/i18n/getLang';
 
 export default async function AdminDashboard() {
   const cars = await getCars();
+  const dict = await getDictionary();
   
   // 1. Calcul du total des vues
   const totalViews = cars.reduce((acc: number, car: any) => acc + (Number(car.views) || 0), 0);
@@ -43,15 +45,15 @@ export default async function AdminDashboard() {
             </div>
             <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center', flexWrap: 'wrap' }}>
               <Link href="/admin/analytics" className={styles.secondaryBtn}>
-                <span>🏆</span> Classement popularité
+                <span>🏆</span> {dict.admin.dashboard}
               </Link>
               <Link href="/admin/settings" className={styles.secondaryBtn}>
-                <span>⚙️</span> Paramètres
+                <span>⚙️</span> {dict.admin.settings}
               </Link>
               <Link href="/admin/cars/new" className={styles.addBtn}>
-                <span>+</span> Ajouter un véhicule
+                <span>+</span> {dict.admin.addCar}
               </Link>
-              <AdminLogoutBtn />
+              <AdminLogoutBtn logoutText={dict.admin.logout} />
             </div>
           </header>
 

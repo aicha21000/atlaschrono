@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from 'next/navigation';
 
-export default function AdminLogoutBtn() {
+export default function AdminLogoutBtn({ logoutText = "Se déconnecter" }: { logoutText?: string }) {
   const router = useRouter();
 
   const handleLogout = () => {
@@ -24,7 +24,7 @@ export default function AdminLogoutBtn() {
         transition: 'all 0.2s ease'
       }}
     >
-      Se déconnecter
+      {logoutText}
     </button>
   );
 }

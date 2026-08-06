@@ -1,9 +1,11 @@
 import styles from './Footer.module.css';
 import Link from 'next/link';
 import { getSettings } from '@/actions/settings';
+import { getDictionary } from '@/i18n/getLang';
 
 export default async function Footer() {
   const settings = await getSettings();
+  const dict = await getDictionary();
 
   return (
     <footer className={styles.footer}>
@@ -32,19 +34,19 @@ export default async function Footer() {
               border: '1px solid rgba(0, 85, 255, 0.2)'
             }}
           >
-            📘 Suivre Atlas Chrono Cars sur Facebook &rarr;
+            {dict.footer.facebook}
           </a>
         </div>
         <div className={styles.links}>
-          <h4>Liens Rapides</h4>
+          <h4>{dict.footer.quickLinks}</h4>
           <ul>
-            <li><Link href="/cars">Véhicules en stock</Link></li>
-            <li><Link href="/contact">Nous contacter</Link></li>
-            <li><Link href="/admin">Espace Admin</Link></li>
+            <li><Link href="/cars">{dict.navbar.stock}</Link></li>
+            <li><Link href="/contact">{dict.navbar.contact}</Link></li>
+            <li><Link href="/admin">{dict.navbar.admin}</Link></li>
           </ul>
         </div>
         <div className={styles.contact}>
-          <h4>Contact</h4>
+          <h4>{dict.footer.contactTitle}</h4>
           <p>📍 {settings.address}</p>
           <p>📞 {settings.phone}</p>
           <p>✉️ {settings.email}</p>

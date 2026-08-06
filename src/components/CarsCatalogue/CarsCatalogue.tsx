@@ -7,9 +7,10 @@ interface CarsCatalogueProps {
   initialCars: any[];
   uniqueBrands: string[];
   uniqueEnergies: string[];
+  dict: any;
 }
 
-export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergies }: CarsCatalogueProps) {
+export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergies, dict }: CarsCatalogueProps) {
   const [marque, setMarque] = useState("Toutes");
   const [energie, setEnergie] = useState("Toutes");
   const [statut, setStatut] = useState("Tous");
@@ -30,48 +31,48 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
   return (
     <div className={styles.layout}>
       <aside className={styles.filters} aria-label="Filtres du catalogue">
-        <h3>Filtres de recherche</h3>
+        <h3>{dict.home?.trust2Desc ? "Filtres de recherche" : "خيارات البحث"}</h3>
         <div className={styles.filterGroup}>
-          <label htmlFor="marque-select">Marque</label>
+          <label htmlFor="marque-select">{dict.home?.trust2Desc ? "Marque" : "العلامة"}</label>
           <select 
             id="marque-select"
             className={styles.select} 
             value={marque} 
             onChange={(e) => setMarque(e.target.value)}
           >
-            <option value="Toutes">Toutes les marques</option>
+            <option value="Toutes">{dict.cars.filterAll}</option>
             {uniqueBrands.map((brand: any) => (
               <option key={brand} value={brand}>{brand}</option>
             ))}
           </select>
         </div>
         <div className={styles.filterGroup}>
-          <label htmlFor="energie-select">Énergie</label>
+          <label htmlFor="energie-select">{dict.home?.cardEnergy || "Énergie"}</label>
           <select 
             id="energie-select"
             className={styles.select} 
             value={energie} 
             onChange={(e) => setEnergie(e.target.value)}
           >
-            <option value="Toutes">Toutes les énergies</option>
+            <option value="Toutes">{dict.cars.filterAll}</option>
             {uniqueEnergies.map((en: any) => (
               <option key={en} value={en}>{en}</option>
             ))}
           </select>
         </div>
         <div className={styles.filterGroup}>
-          <label htmlFor="statut-select">Disponibilité</label>
+          <label htmlFor="statut-select">{dict.home?.trust2Desc ? "Disponibilité" : "التوفر"}</label>
           <select 
             id="statut-select"
             className={styles.select} 
             value={statut} 
             onChange={(e) => setStatut(e.target.value)}
           >
-            <option value="Tous">Tous les véhicules</option>
-            <option value="Disponible">🟢 Disponibles uniquement</option>
-            <option value="En arrivage">⏳ En arrivage</option>
-            <option value="Réservé">🟡 Réservés</option>
-            <option value="Vendu">🔴 Vendus</option>
+            <option value="Tous">{dict.cars.filterAll}</option>
+            <option value="Disponible">{dict.cars.statusAvailable}</option>
+            <option value="En arrivage">{dict.cars.statusIncoming}</option>
+            <option value="Réservé">{dict.cars.statusReserved}</option>
+            <option value="Vendu">{dict.cars.statusSold}</option>
           </select>
         </div>
         <button 
@@ -83,14 +84,14 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
           }}
           aria-label="Réinitialiser tous les filtres de recherche"
         >
-          Réinitialiser
+          {dict.home?.trust2Desc ? "Réinitialiser" : "إعادة ضبط"}
         </button>
       </aside>
       
       <section aria-label="Liste des véhicules en stock" className={styles.carGrid}>
         {filteredCars.map((car: any) => {
           const status = car.status || "Disponible";
-          const badgeText = status === "Réservé" ? "🟡 Réservé" : status === "Vendu" ? "🔴 Vendu" : status === "En arrivage" ? "⏳ En arrivage" : "🟢 Disponible";
+          const badgeText = status === "Réservé" ? dict.cars.statusReserved : status === "Vendu" ? dict.cars.statusSold : status === "En arrivage" ? dict.cars.statusIncoming : dict.cars.statusAvailable;
           const badgeStyle = status === "Réservé" 
             ? { background: '#fef9c3', color: '#854d0e', border: '1px solid #fde047' } 
             : status === "Vendu" 
@@ -132,7 +133,7 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
             <div className={styles.carInfo}>
               <h3>{car.marque} {car.modele}</h3>
               <p className={styles.carDetails}>
-                <span>{car.annee}</span> • <span>{Number(car.kilometrage).toLocaleString('fr-FR')} km</span> • <span>{car.energie}</span>
+                <span>{car.annee}</span> • <span>{Number(car.kilometrage).toLocaleString('fr-FR')} {dict.home.cardKm}</span> • <span>{car.energie}</span>
               </p>
               <p className={styles.carPrice}>{car.prix}</p>
               <Link 
@@ -140,7 +141,7 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
                 className={styles.detailsBtn}
                 aria-label={`Consulter la fiche technique du véhicule ${car.marque} ${car.modele}`}
               >
-                Voir détails &rarr;
+                {dict.home.cardCta.replace(' →', '')} &rarr;
               </Link>
             </div>
           </article>
@@ -149,7 +150,7 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
         
         {filteredCars.length === 0 && (
           <div style={{gridColumn: '1 / -1', textAlign: 'center', padding: '3rem', color: 'var(--color-text-secondary)'}}>
-            Aucun véhicule ne correspond à ces critères.
+            {dict.home.noCars}
           </div>
         )}
       </section>

@@ -10,14 +10,14 @@ interface StripeReservationButtonProps {
   carTitle: string;
   carPrice: string;
   carStatus?: string;
+  dict: any;
 }
 
-export default function StripeReservationButton({ carId, carTitle, carPrice, carStatus }: StripeReservationButtonProps) {
+export default function StripeReservationButton({ carId, carTitle, carPrice, carStatus, dict }: StripeReservationButtonProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Nous permettons la réservation uniquement si le véhicule est Disponible ou En arrivage
   if (carStatus === "Réservé" || carStatus === "Vendu") {
     return null;
   }
@@ -29,7 +29,6 @@ export default function StripeReservationButton({ carId, carTitle, carPrice, car
     try {
       const res = await createReservationSession(carId, carTitle, carPrice);
       if (res.success && res.url) {
-        // Redirection vers Stripe Checkout (ou mode Sandbox/Démo si pas de clé configurée)
         window.location.href = res.url;
       } else {
         setErrorMessage(res.error || "Impossible d'initialiser la réservation.");
@@ -44,20 +43,19 @@ export default function StripeReservationButton({ carId, carTitle, carPrice, car
   return (
     <div className={styles.container}>
       <div className={styles.badge}>
-        <span>⏳</span> Réservation exclusive de 8 jours
+        <span>⏳</span> {dict.reservation.term1}
       </div>
 
-      <h3 className={styles.title}>Réserver ce véhicule en ligne</h3>
+      <h3 className={styles.title}>{dict.reservation.btnTitle}</h3>
       <p className={styles.description}>
-        Bloquez ce véhicule exclusivement à votre nom avec un acompte officiel de 100 €.
+        {dict.reservation.depositAmount} 100 €
       </p>
 
       <div className={styles.priceTag}>
         <span className={styles.amount}>100,00 €</span>
-        <span className={styles.amountLabel}>• Acompte garanti pendant 8 jours</span>
+        <span className={styles.amountLabel}>• {dict.reservation.term1}</span>
       </div>
 
-      {/* ENCADRÉ EXPLICITE DU MESSAGE DE RÉSERVATION DE 8 JOURS */}
       <div style={{
         padding: '0.95rem 1.1rem',
         background: 'rgba(56, 189, 248, 0.14)',
@@ -69,9 +67,9 @@ export default function StripeReservationButton({ carId, carTitle, carPrice, car
         lineHeight: '1.5'
       }}>
         <strong style={{ display: 'block', color: '#38bdf8', marginBottom: '0.35rem', fontSize: '0.92rem' }}>
-          ⏳ Conditions de réservation Atlas Chrono Cars :
+          ⏳ {dict.reservation.termsTitle}
         </strong>
-        En réglant cet acompte de <strong>100 €</strong> via Stripe, ce véhicule vous est <strong>exclusivement réservé pendant 8 jours</strong> et est immédiatement retiré de la vente. Ce montant sera intégralement déduit du prix total lors de l&apos;acquisition.
+        {dict.reservation.term2} {dict.reservation.term3}
       </div>
 
       {errorMessage && (
@@ -87,7 +85,7 @@ export default function StripeReservationButton({ carId, carTitle, carPrice, car
         className={styles.reserveBtn}
       >
         <span>💳</span>
-        {loading ? "Redirection vers Stripe Checkout..." : "Payer 100 € et réserver pour 8 jours"}
+        {loading ? "..." : dict.reservation.btnAction}
       </button>
 
       <div className={styles.securityBar}>
@@ -95,10 +93,7 @@ export default function StripeReservationButton({ carId, carTitle, carPrice, car
           <span>⏳</span> Exclusivité 8 jours
         </div>
         <div className={styles.secItem}>
-          <span>🛡️</span> Acompte déductible
-        </div>
-        <div className={styles.secItem}>
-          <span>🔒</span> SSL 256-bit
+          <span>🛡️</span> {dict.reservation.btnSecure} Stripe
         </div>
       </div>
     </div>
