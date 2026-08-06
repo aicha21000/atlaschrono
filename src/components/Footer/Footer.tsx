@@ -42,7 +42,6 @@ export default async function Footer() {
           <ul>
             <li><Link href="/cars">{dict.navbar.stock}</Link></li>
             <li><Link href="/contact">{dict.navbar.contact}</Link></li>
-            <li><Link href="/admin">{dict.navbar.admin}</Link></li>
           </ul>
         </div>
         <div className={styles.contact}>

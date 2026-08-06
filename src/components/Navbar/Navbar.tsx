@@ -18,7 +18,6 @@ export default async function Navbar() {
           <Link href="/cars" className={styles.link}>{dict.navbar.stock}</Link>
           <Link href="/contact" className={styles.link}>{dict.navbar.contact}</Link>
           <LangSwitcher currentLang={lang} />
-          <Link href="/admin" className={styles.adminBtn}>{dict.navbar.admin}</Link>
         </div>
       </div>
     </nav>
