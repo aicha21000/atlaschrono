@@ -2,10 +2,20 @@ import styles from './page.module.css';
 import Link from 'next/link';
 import { getCars } from '@/actions/cars';
 import { getDictionary } from '@/i18n/getLang';
+import { getSettings } from '@/actions/settings';
 
 export default async function Home() {
-  const allCars = await getCars();
   const dict = await getDictionary();
+  const allCars = await getCars();
+  const settings = await getSettings();
+
+  const translateEnergy = (energy: string) => {
+    if (energy === "Essence") return dict.adminForm?.energyGasoline || energy;
+    if (energy === "Diesel") return dict.adminForm?.energyDiesel || energy;
+    if (energy === "Hybride") return dict.adminForm?.energyHybrid || energy;
+    if (energy === "Électrique") return dict.adminForm?.energyElectric || energy;
+    return energy;
+  };
   // Afficher seulement les 3 plus récents (ceux à la fin du tableau)
   const recentCars = allCars.slice(-3).reverse();
 
@@ -108,7 +118,7 @@ export default async function Home() {
                 <div className={styles.carInfo}>
                   <h3>{car.marque} {car.modele}</h3>
                   <p className={styles.carDetails}>
-                    <span>{car.annee}</span> &bull; <span>{car.kilometrage.toLocaleString('fr-FR')} {dict.home.cardKm}</span> &bull; <span>{car.energie}</span>
+                    <span>{car.annee}</span> &bull; <span>{car.kilometrage.toLocaleString('fr-FR')} {dict.home.cardKm}</span> &bull; <span>{translateEnergy(car.energie)}</span>
                   </p>
                   <p className={styles.carPrice}>{car.prix}{String(car.prix).toUpperCase().includes('DZD') ? '' : ' DZD'}</p>
                   <Link href={`/cars/${car.id}`} className={styles.cardCta} aria-label={`Consulter la fiche technique de la ${car.marque} ${car.modele}`}>
