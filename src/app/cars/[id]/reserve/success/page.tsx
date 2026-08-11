@@ -70,7 +70,7 @@ export default async function ReservationSuccessPage({
           <strong style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.95rem' }}>
             📌 Engagement Atlas Chrono Cars (8 Jours) :
           </strong>
-          Ce véhicule est immédiatement retiré de la vente pendant <strong>8 jours</strong>. Un conseiller commercial va vous contacter sous 24h ouvrées pour organiser le règlement du solde ({car.prix}) ou planifier une visite à notre showroom.
+          Ce véhicule est immédiatement retiré de la vente pendant <strong>8 jours</strong>. Un conseiller commercial va vous contacter sous 24h ouvrées pour organiser le règlement du solde ({car.prix}{String(car.prix).toUpperCase().includes('DZD') ? '' : ' DZD'}) ou planifier une visite à notre showroom.
         </div>
 
         {/* BOUTONS DE RETOUR */}

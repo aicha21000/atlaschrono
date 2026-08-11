@@ -144,7 +144,7 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
               <p className={styles.carDetails}>
                 <span>{car.annee}</span> • <span>{Number(car.kilometrage).toLocaleString('fr-FR')} {dict.home.cardKm}</span> • <span>{translateEnergy(car.energie)}</span>
               </p>
-              <p className={styles.carPrice}>{car.prix}</p>
+              <p className={styles.carPrice}>{car.prix}{String(car.prix).toUpperCase().includes('DZD') ? '' : ' DZD'}</p>
               <Link 
                 href={`/cars/${car.id}`} 
                 className={styles.detailsBtn}

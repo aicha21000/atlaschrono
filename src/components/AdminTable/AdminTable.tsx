@@ -125,7 +125,7 @@ export default function AdminTable({ cars, dict }: AdminTableProps) {
                 </td>
                 <td>
                   <strong style={{ color: 'var(--color-text-primary)', fontSize: '1.05rem' }}>
-                    {car.prix}
+                    {car.prix}{String(car.prix).toUpperCase().includes('DZD') ? '' : ' DZD'}
                   </strong>
                 </td>
                 <td>{Number(car.kilometrage).toLocaleString('fr-FR')} km</td>

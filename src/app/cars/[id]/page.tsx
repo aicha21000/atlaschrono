@@ -72,7 +72,7 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
             })()}
 
             <h1 className={styles.title}>{car.marque} {car.modele}</h1>
-            <p className={styles.price}>{car.prix}</p>
+            <p className={styles.price}>{car.prix}{String(car.prix).toUpperCase().includes('DZD') ? '' : ' DZD'}</p>
             
             <div className={`glass-panel ${styles.quickStats}`}>
               <div className={styles.statItem}>

@@ -110,7 +110,7 @@ export default async function Home() {
                   <p className={styles.carDetails}>
                     <span>{car.annee}</span> &bull; <span>{car.kilometrage.toLocaleString('fr-FR')} {dict.home.cardKm}</span> &bull; <span>{car.energie}</span>
                   </p>
-                  <p className={styles.carPrice}>{car.prix}</p>
+                  <p className={styles.carPrice}>{car.prix}{String(car.prix).toUpperCase().includes('DZD') ? '' : ' DZD'}</p>
                   <Link href={`/cars/${car.id}`} className={styles.cardCta} aria-label={`Consulter la fiche technique de la ${car.marque} ${car.modele}`}>
                     {dict.home.cardCta}
                   </Link>
