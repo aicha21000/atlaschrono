@@ -119,22 +119,22 @@ export default function AdminTable({ cars, dict }: AdminTableProps) {
           <tbody>
             {filteredCars.map((car) => (
               <tr key={car.id}>
-                <td>
+                <td data-label="Véhicule">
                   <div className={styles.carTitle}>{car.marque} {car.modele}</div>
                   <div className={styles.carSub}>{car.annee} • {car.energie} • {car.boite}</div>
                 </td>
-                <td>
+                <td data-label="Prix">
                   <strong style={{ color: 'var(--color-text-primary)', fontSize: '1.05rem' }}>
                     {car.prix}{String(car.prix).toUpperCase().includes('DZD') ? '' : ' DZD'}
                   </strong>
                 </td>
-                <td>{Number(car.kilometrage).toLocaleString('fr-FR')} km</td>
-                <td>
+                <td data-label="Kilométrage">{Number(car.kilometrage).toLocaleString('fr-FR')} km</td>
+                <td data-label="Vues">
                   <strong style={{ color: 'var(--color-accent)' }}>
                     {car.views || 0}
                   </strong>
                 </td>
-                <td>
+                <td data-label="Statut">
                   <select
                     aria-label={`Changer le statut de ${car.marque} ${car.modele}`}
                     value={car.status || "Disponible"}
@@ -148,20 +148,22 @@ export default function AdminTable({ cars, dict }: AdminTableProps) {
                     <option value="Vendu">{dict?.adminForm?.statusSold || "🔴 Vendu"}</option>
                   </select>
                 </td>
-                <td>
-                  <Link href={`/cars/${car.id}`} target="_blank" className={styles.actionBtn}>
-                    Voir
-                  </Link>
-                  <Link href={`/admin/cars/${car.id}/edit`} className={styles.actionBtn}>
-                    Modifier
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => handleDelete(car.id, `${car.marque} ${car.modele}`)}
-                    className={`${styles.actionBtn} ${styles.danger}`}
-                  >
-                    Supprimer
-                  </button>
+                <td data-label="Actions">
+                  <div className={styles.actionsContainer}>
+                    <Link href={`/cars/${car.id}`} target="_blank" className={styles.actionBtn}>
+                      Voir
+                    </Link>
+                    <Link href={`/admin/cars/${car.id}/edit`} className={styles.actionBtn}>
+                      Modifier
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(car.id, `${car.marque} ${car.modele}`)}
+                      className={`${styles.actionBtn} ${styles.danger}`}
+                    >
+                      Supprimer
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
