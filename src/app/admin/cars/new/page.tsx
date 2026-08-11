@@ -6,10 +6,13 @@ import { dictionaries } from '@/i18n/dictionaries';
 import { useRouter } from 'next/navigation';
 import { addCar } from '@/actions/cars';
 import AdminAuthGuard from '@/components/AdminAuthGuard/AdminAuthGuard';
+import { storage } from '@/lib/firebase/config';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function NewCar() {
   const router = useRouter();
-  const [images, setImages] = useState<string[]>([]);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [lang, setLang] = useState<'fr' | 'ar'>('fr');
 
@@ -25,14 +28,40 @@ export default function NewCar() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    const formData = new FormData(e.currentTarget);
-    // On ajoute explicitement les fichiers si nécessaire, mais le <form> le fera seul si l'input a un name="images".
-
     try {
+      const formData = new FormData(e.currentTarget);
+      const carId = Date.now().toString();
+
+      // Upload images
+      for (const file of imageFiles) {
+        const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        const uniqueName = `cars/${carId}/${Date.now()}-${safeName}`;
+        const storageRef = ref(storage, uniqueName);
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+        formData.append('imageUrls', url);
+      }
+
+      // Upload CT
+      const ctInput = document.getElementById('controleTechnique') as HTMLInputElement;
+      if (ctInput && ctInput.files && ctInput.files.length > 0) {
+        const ctFile = ctInput.files[0];
+        const safeName = ctFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        const uniqueName = `cars/${carId}/CT-${Date.now()}-${safeName}`;
+        const storageRef = ref(storage, uniqueName);
+        await uploadBytes(storageRef, ctFile);
+        const url = await getDownloadURL(storageRef);
+        formData.set('controleTechniqueUrl', url);
+      }
+
+      formData.delete('images');
+      formData.delete('controleTechnique');
+
       await addCar(formData);
       alert("✅ Le véhicule a été publié avec succès !");
       router.push('/admin');
     } catch (error) {
+      console.error(error);
       alert("Erreur lors de la publication.");
       setIsSubmitting(false);
     }
@@ -41,13 +70,16 @@ export default function NewCar() {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
-      const newImages = Array.from(files).map(file => URL.createObjectURL(file));
-      setImages(prev => [...prev, ...newImages]);
+      const newFiles = Array.from(files);
+      const newPreviews = newFiles.map(file => URL.createObjectURL(file));
+      setImageFiles(prev => [...prev, ...newFiles]);
+      setImagePreviews(prev => [...prev, ...newPreviews]);
     }
   };
 
   const removeImage = (index: number) => {
-    setImages(prev => prev.filter((_, i) => i !== index));
+    setImageFiles(prev => prev.filter((_, i) => i !== index));
+    setImagePreviews(prev => prev.filter((_, i) => i !== index));
   };
 
   return (
@@ -134,9 +166,9 @@ export default function NewCar() {
                 Cliquez pour ajouter des images ou glissez-les ici
               </label>
 
-              {images.length > 0 && (
+              {imagePreviews.length > 0 && (
                 <div className={styles.imagePreviewContainer}>
-                  {images.map((img, idx) => (
+                  {imagePreviews.map((img, idx) => (
                     <div key={idx} className={styles.imagePreview}>
                       <img src={img} alt={`Preview ${idx}`} />
                       <button 

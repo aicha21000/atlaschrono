@@ -22,34 +22,10 @@ export async function getCars() {
 
 export async function addCar(formData: FormData) {
   const id = Date.now().toString();
-  const savedImages: string[] = [];
-  const imageFiles = formData.getAll('images') as File[];
+  const savedImages = formData.getAll('imageUrls') as string[];
+  const controleTechniquePath = formData.get('controleTechniqueUrl') as string | null;
   
   try {
-    for (const file of imageFiles) {
-      if (file && file.size > 0) {
-        const bytes = await file.arrayBuffer();
-        const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-        const uniqueName = `cars/${id}/${Date.now()}-${safeName}`;
-        
-        const storageRef = ref(storage, uniqueName);
-        await uploadBytes(storageRef, bytes, { contentType: file.type || 'image/jpeg' });
-        const url = await getDownloadURL(storageRef);
-        savedImages.push(url);
-      }
-    }
-
-    let controleTechniquePath: string | undefined = undefined;
-    const ctFile = formData.get('controleTechnique') as File | null;
-    if (ctFile && ctFile.size > 0) {
-      const bytes = await ctFile.arrayBuffer();
-      const safeName = ctFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-      const uniqueName = `cars/${id}/CT-${Date.now()}-${safeName}`;
-      
-      const storageRef = ref(storage, uniqueName);
-      await uploadBytes(storageRef, bytes, { contentType: ctFile.type || 'application/pdf' });
-      controleTechniquePath = await getDownloadURL(storageRef);
-    }
 
     const newCar = {
       marque: formData.get('marque'),
@@ -131,32 +107,8 @@ export async function updateCar(id: string, formData: FormData) {
     
     const currentCar = carSnap.data();
     
-    const imageFiles = formData.getAll('images') as File[];
-    const newImages: string[] = [];
-    for (const file of imageFiles) {
-      if (file && file.size > 0) {
-        const bytes = await file.arrayBuffer();
-        const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-        const uniqueName = `cars/${id}/${Date.now()}-${safeName}`;
-        
-        const storageRef = ref(storage, uniqueName);
-        await uploadBytes(storageRef, bytes, { contentType: file.type || 'image/jpeg' });
-        const url = await getDownloadURL(storageRef);
-        newImages.push(url);
-      }
-    }
-
-    let ctPath = currentCar.controleTechnique;
-    const ctFile = formData.get('controleTechnique') as File | null;
-    if (ctFile && ctFile.size > 0) {
-      const bytes = await ctFile.arrayBuffer();
-      const safeName = ctFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-      const uniqueName = `cars/${id}/CT-${Date.now()}-${safeName}`;
-      
-      const storageRef = ref(storage, uniqueName);
-      await uploadBytes(storageRef, bytes, { contentType: ctFile.type || 'application/pdf' });
-      ctPath = await getDownloadURL(storageRef);
-    }
+    const newImages = formData.getAll('imageUrls') as string[];
+    const ctPath = formData.get('controleTechniqueUrl') as string | null;
 
     const updatedCar = {
       marque: formData.get('marque') || currentCar.marque,

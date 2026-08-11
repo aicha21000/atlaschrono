@@ -7,6 +7,8 @@ import { dictionaries } from '@/i18n/dictionaries';
 import { useRouter } from 'next/navigation';
 import { getCars, updateCar } from '@/actions/cars';
 import AdminAuthGuard from '@/components/AdminAuthGuard/AdminAuthGuard';
+import { storage } from '@/lib/firebase/config';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function EditCar({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -34,13 +36,45 @@ export default function EditCar({ params }: { params: Promise<{ id: string }> })
     e.preventDefault();
     setIsSubmitting(true);
     
-    const formData = new FormData(e.currentTarget);
-
     try {
+      const formData = new FormData(e.currentTarget);
+      const carId = resolvedParams.id;
+
+      // Get files directly from inputs since we don't have state for them here
+      const imagesInput = document.getElementById('images') as HTMLInputElement;
+      if (imagesInput && imagesInput.files) {
+        for (let i = 0; i < imagesInput.files.length; i++) {
+          const file = imagesInput.files[i];
+          if (file && file.size > 0) {
+            const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+            const uniqueName = `cars/${carId}/${Date.now()}-${safeName}`;
+            const storageRef = ref(storage, uniqueName);
+            await uploadBytes(storageRef, file);
+            const url = await getDownloadURL(storageRef);
+            formData.append('imageUrls', url);
+          }
+        }
+      }
+
+      const ctInput = document.getElementById('controleTechnique') as HTMLInputElement;
+      if (ctInput && ctInput.files && ctInput.files.length > 0) {
+        const ctFile = ctInput.files[0];
+        const safeName = ctFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        const uniqueName = `cars/${carId}/CT-${Date.now()}-${safeName}`;
+        const storageRef = ref(storage, uniqueName);
+        await uploadBytes(storageRef, ctFile);
+        const url = await getDownloadURL(storageRef);
+        formData.set('controleTechniqueUrl', url);
+      }
+
+      formData.delete('images');
+      formData.delete('controleTechnique');
+
       await updateCar(resolvedParams.id, formData);
       alert("✅ Les informations du véhicule ont été mises à jour !");
       router.push('/admin');
     } catch (error) {
+      console.error(error);
       alert("Erreur lors de la modification.");
     } finally {
       setIsSubmitting(false);
@@ -130,6 +164,19 @@ export default function EditCar({ params }: { params: Promise<{ id: string }> })
               <div className={styles.inputGroup}>
                 <label htmlFor="description">{dict.adminForm?.presentationLabel || "Présentation complète"}</label>
                 <textarea id="description" name="description" rows={5} defaultValue={car.description} required className={styles.textarea} />
+              </div>
+
+              <div className={styles.inputGroup} style={{ marginTop: '1.5rem' }}>
+                <label htmlFor="images">Ajouter de nouvelles photos</label>
+                <input 
+                  type="file" 
+                  id="images"
+                  name="images"
+                  multiple 
+                  accept="image/*" 
+                  className={styles.input}
+                  style={{ padding: '0.5rem', background: 'var(--color-bg-secondary)' }}
+                />
               </div>
 
               <div className={styles.inputGroup} style={{ marginTop: '1.5rem' }}>
