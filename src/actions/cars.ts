@@ -1,138 +1,148 @@
 "use server";
 
-import fs from 'fs';
-import path from 'path';
 import { revalidatePath } from 'next/cache';
-
-const filePath = path.join(process.cwd(), 'cars.json');
-const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+import { db, storage } from '@/lib/firebase/config';
+import { collection, getDocs, doc, setDoc, deleteDoc, updateDoc, getDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export async function getCars() {
   try {
-    const data = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(data);
+    const querySnapshot = await getDocs(collection(db, 'cars'));
+    const cars: any[] = [];
+    querySnapshot.forEach((doc) => {
+      cars.push({ id: doc.id, ...doc.data() });
+    });
+    // Trier par date d'ajout décroissant (id = timestamp)
+    return cars.sort((a, b) => Number(b.id) - Number(a.id));
   } catch (error) {
+    console.error("Firebase getCars error:", error);
     return [];
   }
 }
 
 export async function addCar(formData: FormData) {
-  const cars = await getCars();
-  
+  const id = Date.now().toString();
   const savedImages: string[] = [];
   const imageFiles = formData.getAll('images') as File[];
   
-  for (const file of imageFiles) {
-    if (file && file.size > 0) {
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const ext = path.extname(file.name) || '.jpg';
-      const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_') || `image${ext}`;
-      const uniqueName = `${Date.now()}-${safeName}`;
-      const savePath = path.join(uploadsDir, uniqueName);
-      
-      fs.writeFileSync(savePath, buffer);
-      savedImages.push(`/uploads/${uniqueName}`);
+  try {
+    for (const file of imageFiles) {
+      if (file && file.size > 0) {
+        const bytes = await file.arrayBuffer();
+        const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        const uniqueName = `cars/${id}/${Date.now()}-${safeName}`;
+        
+        const storageRef = ref(storage, uniqueName);
+        await uploadBytes(storageRef, bytes, { contentType: file.type || 'image/jpeg' });
+        const url = await getDownloadURL(storageRef);
+        savedImages.push(url);
+      }
     }
+
+    let controleTechniquePath: string | undefined = undefined;
+    const ctFile = formData.get('controleTechnique') as File | null;
+    if (ctFile && ctFile.size > 0) {
+      const bytes = await ctFile.arrayBuffer();
+      const safeName = ctFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+      const uniqueName = `cars/${id}/CT-${Date.now()}-${safeName}`;
+      
+      const storageRef = ref(storage, uniqueName);
+      await uploadBytes(storageRef, bytes, { contentType: ctFile.type || 'application/pdf' });
+      controleTechniquePath = await getDownloadURL(storageRef);
+    }
+
+    const newCar = {
+      marque: formData.get('marque'),
+      modele: formData.get('modele'),
+      annee: Number(formData.get('annee')),
+      prix: formData.get('prix'),
+      kilometrage: Number(formData.get('kilometrage')),
+      energie: formData.get('energie'),
+      boite: formData.get('boite'),
+      couleur: formData.get('couleur'),
+      description: formData.get('description'),
+      images: savedImages,
+      controleTechnique: controleTechniquePath || null,
+      status: "Disponible",
+      views: 0
+    };
+
+    await setDoc(doc(db, 'cars', id), newCar);
+
+    revalidatePath('/admin');
+    revalidatePath('/cars');
+    revalidatePath('/');
+    
+    return { success: true, carId: id };
+  } catch (error: any) {
+    console.error("Firebase addCar error:", error);
+    return { success: false, error: error.message };
   }
-
-  let controleTechniquePath: string | undefined = undefined;
-  const ctFile = formData.get('controleTechnique') as File | null;
-  if (ctFile && ctFile.size > 0) {
-    const bytes = await ctFile.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const ext = path.extname(ctFile.name) || '.pdf';
-    const safeName = ctFile.name.replace(/[^a-zA-Z0-9.-]/g, '_') || `ct-doc${ext}`;
-    const uniqueName = `CT-${Date.now()}-${safeName}`;
-    const savePath = path.join(uploadsDir, uniqueName);
-    fs.writeFileSync(savePath, buffer);
-    controleTechniquePath = `/uploads/${uniqueName}`;
-  }
-
-  const newCar = {
-    id: Date.now().toString(),
-    marque: formData.get('marque'),
-    modele: formData.get('modele'),
-    annee: Number(formData.get('annee')),
-    prix: formData.get('prix'),
-    kilometrage: Number(formData.get('kilometrage')),
-    energie: formData.get('energie'),
-    boite: formData.get('boite'),
-    couleur: formData.get('couleur'),
-    description: formData.get('description'),
-    images: savedImages,
-    controleTechnique: controleTechniquePath,
-    status: "Disponible",
-    views: 0
-  };
-
-  cars.push(newCar);
-  fs.writeFileSync(filePath, JSON.stringify(cars, null, 2));
-  
-  revalidatePath('/admin');
-  revalidatePath('/cars');
-  revalidatePath('/');
-  
-  return { success: true, carId: newCar.id };
 }
 
 export async function incrementCarViews(id: string) {
   try {
-    const cars = await getCars();
-    const index = cars.findIndex((c: any) => c.id === id);
-    if (index !== -1) {
-      cars[index].views = (Number(cars[index].views) || 0) + 1;
-      fs.writeFileSync(filePath, JSON.stringify(cars, null, 2));
+    const carRef = doc(db, 'cars', id);
+    const carSnap = await getDoc(carRef);
+    if (carSnap.exists()) {
+      const currentViews = carSnap.data().views || 0;
+      await updateDoc(carRef, { views: currentViews + 1 });
       revalidatePath('/admin');
     }
   } catch (error) {
-    // Ignore error if file write fails
+    // Ignore error
   }
 }
 
 export async function deleteCar(id: string) {
-  const cars = await getCars();
-  const newCars = cars.filter((c: any) => c.id !== id);
-  fs.writeFileSync(filePath, JSON.stringify(newCars, null, 2));
-  
-  revalidatePath('/admin');
-  revalidatePath('/cars');
-  revalidatePath('/');
+  try {
+    await deleteDoc(doc(db, 'cars', id));
+    revalidatePath('/admin');
+    revalidatePath('/cars');
+    revalidatePath('/');
+  } catch (error) {
+    console.error("Firebase deleteCar error:", error);
+  }
 }
 
 export async function updateCarStatus(id: string, newStatus: string) {
-  const cars = await getCars();
-  const index = cars.findIndex((c: any) => c.id === id);
-  if (index !== -1) {
-    cars[index].status = newStatus;
-    fs.writeFileSync(filePath, JSON.stringify(cars, null, 2));
+  try {
+    const carRef = doc(db, 'cars', id);
+    await updateDoc(carRef, { status: newStatus });
     revalidatePath('/admin');
     revalidatePath('/cars');
     revalidatePath('/');
     revalidatePath(`/cars/${id}`);
     return { success: true };
+  } catch (error) {
+    console.error("Firebase updateCarStatus error:", error);
+    return { success: false };
   }
-  return { success: false };
 }
 
 export async function updateCar(id: string, formData: FormData) {
-  const cars = await getCars();
-  const index = cars.findIndex((c: any) => c.id === id);
-  if (index !== -1) {
-    const currentCar = cars[index];
+  try {
+    const carRef = doc(db, 'cars', id);
+    const carSnap = await getDoc(carRef);
+    
+    if (!carSnap.exists()) {
+      return { success: false, error: "Véhicule non trouvé" };
+    }
+    
+    const currentCar = carSnap.data();
     
     const imageFiles = formData.getAll('images') as File[];
     const newImages: string[] = [];
     for (const file of imageFiles) {
       if (file && file.size > 0) {
         const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        const ext = path.extname(file.name) || '.jpg';
-        const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_') || `image${ext}`;
-        const uniqueName = `${Date.now()}-${safeName}`;
-        const savePath = path.join(uploadsDir, uniqueName);
-        fs.writeFileSync(savePath, buffer);
-        newImages.push(`/uploads/${uniqueName}`);
+        const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        const uniqueName = `cars/${id}/${Date.now()}-${safeName}`;
+        
+        const storageRef = ref(storage, uniqueName);
+        await uploadBytes(storageRef, bytes, { contentType: file.type || 'image/jpeg' });
+        const url = await getDownloadURL(storageRef);
+        newImages.push(url);
       }
     }
 
@@ -140,17 +150,15 @@ export async function updateCar(id: string, formData: FormData) {
     const ctFile = formData.get('controleTechnique') as File | null;
     if (ctFile && ctFile.size > 0) {
       const bytes = await ctFile.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const ext = path.extname(ctFile.name) || '.pdf';
-      const safeName = ctFile.name.replace(/[^a-zA-Z0-9.-]/g, '_') || `ct-doc${ext}`;
-      const uniqueName = `CT-${Date.now()}-${safeName}`;
-      const savePath = path.join(uploadsDir, uniqueName);
-      fs.writeFileSync(savePath, buffer);
-      ctPath = `/uploads/${uniqueName}`;
+      const safeName = ctFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+      const uniqueName = `cars/${id}/CT-${Date.now()}-${safeName}`;
+      
+      const storageRef = ref(storage, uniqueName);
+      await uploadBytes(storageRef, bytes, { contentType: ctFile.type || 'application/pdf' });
+      ctPath = await getDownloadURL(storageRef);
     }
 
-    cars[index] = {
-      ...currentCar,
+    const updatedCar = {
       marque: formData.get('marque') || currentCar.marque,
       modele: formData.get('modele') || currentCar.modele,
       annee: Number(formData.get('annee')) || currentCar.annee,
@@ -161,17 +169,20 @@ export async function updateCar(id: string, formData: FormData) {
       couleur: formData.get('couleur') || currentCar.couleur,
       description: formData.get('description') || currentCar.description,
       status: formData.get('status') || currentCar.status,
-      controleTechnique: ctPath,
-      images: newImages.length > 0 ? [...currentCar.images, ...newImages] : currentCar.images
+      controleTechnique: ctPath || null,
+      images: newImages.length > 0 ? [...(currentCar.images || []), ...newImages] : currentCar.images
     };
 
-    fs.writeFileSync(filePath, JSON.stringify(cars, null, 2));
+    await updateDoc(carRef, updatedCar);
+
     revalidatePath('/admin');
     revalidatePath('/cars');
     revalidatePath('/');
     revalidatePath(`/cars/${id}`);
+    
     return { success: true };
+  } catch (error: any) {
+    console.error("Firebase updateCar error:", error);
+    return { success: false, error: error.message };
   }
-  return { success: false };
 }
-

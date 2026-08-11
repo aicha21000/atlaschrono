@@ -1,10 +1,8 @@
 "use server";
 
-import fs from 'fs';
-import path from 'path';
 import { revalidatePath } from 'next/cache';
-
-const settingsPath = path.join(process.cwd(), 'settings.json');
+import { db } from '@/lib/firebase/config';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 export interface Settings {
   companyName: string;
@@ -19,19 +17,20 @@ const defaultSettings: Settings = {
   companyName: "Atlas Chrono Cars",
   address: "Alger Centre, Algérie / France (Importation directe)",
   phone: "+213 555 12 34 56",
-  email: "contact@atlas-chrono.com",
+  email: "rachi69003@gmail.com",
   openingHours: "Samedi - Jeudi : 09h00 - 19h00",
   footerText: "© 2026 Atlas Chrono Cars. Votre partenaire de confiance pour l'importation de véhicules."
 };
 
 export async function getSettings(): Promise<Settings> {
   try {
-    if (fs.existsSync(settingsPath)) {
-      const data = fs.readFileSync(settingsPath, 'utf8');
-      return { ...defaultSettings, ...JSON.parse(data) };
+    const docRef = doc(db, 'settings', 'main');
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { ...defaultSettings, ...(docSnap.data() as Settings) };
     }
   } catch (error) {
-    // Fallback to default
+    console.error("Firebase fetch error (settings):", error);
   }
   return defaultSettings;
 }
@@ -46,7 +45,13 @@ export async function updateSettings(formData: FormData) {
     footerText: (formData.get('footerText') as string) || defaultSettings.footerText,
   };
 
-  fs.writeFileSync(settingsPath, JSON.stringify(newSettings, null, 2));
+  try {
+    const docRef = doc(db, 'settings', 'main');
+    await setDoc(docRef, newSettings);
+  } catch (error) {
+    console.error("Firebase update error (settings):", error);
+    return { success: false, error: "Impossible de sauvegarder les paramètres." };
+  }
 
   revalidatePath('/', 'layout');
   revalidatePath('/contact');
