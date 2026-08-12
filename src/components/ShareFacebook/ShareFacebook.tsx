@@ -25,7 +25,9 @@ export default function ShareFacebook({ label, pitch }: ShareFacebookProps) {
     }
   };
 
-  const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+  const shareUrl = pitch 
+    ? `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(pitch)}`
+    : `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
 
   return (
     <div>
