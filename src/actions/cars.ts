@@ -145,14 +145,14 @@ export async function updateCar(id: string, formData: FormData) {
   }
 }
 
-export async function updateCarPhotos(id: string, existingImagesJson: string) {
+export async function updateCarPhotosAndCt(id: string, existingImagesJson: string, ctPath: string | null) {
   try {
     const carRef = doc(db, 'cars', id);
     const carSnap = await getDoc(carRef);
     if (!carSnap.exists()) return { success: false };
     
     const newImages = JSON.parse(existingImagesJson);
-    await updateDoc(carRef, { images: newImages });
+    await updateDoc(carRef, { images: newImages, controleTechnique: ctPath });
     
     revalidatePath('/admin');
     revalidatePath('/cars');
@@ -161,7 +161,7 @@ export async function updateCarPhotos(id: string, existingImagesJson: string) {
     
     return { success: true };
   } catch (error) {
-    console.error("Firebase updateCarPhotos error:", error);
+    console.error("Firebase updateCarPhotosAndCt error:", error);
     return { success: false };
   }
 }

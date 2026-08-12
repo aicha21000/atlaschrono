@@ -18,6 +18,26 @@ export default function EditCar({ params }: { params: Promise<{ id: string }> })
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [lang, setLang] = useState<'fr' | 'ar'>('fr');
 
+  const getFileNameFromUrl = (url: string) => {
+    if (!url) return "";
+    try {
+      const decoded = decodeURIComponent(url);
+      const parts = decoded.split('?')[0].split('/');
+      let filename = parts[parts.length - 1];
+      if (filename.includes('-')) {
+        const splitByDash = filename.split('-');
+        if (!isNaN(Number(splitByDash[0])) && splitByDash[0].length > 10) {
+          filename = splitByDash.slice(1).join('-');
+        } else if (splitByDash[0] === 'CT' && !isNaN(Number(splitByDash[1])) && splitByDash[1].length > 10) {
+          filename = splitByDash.slice(2).join('-');
+        }
+      }
+      return filename;
+    } catch {
+      return "Fichier inconnu";
+    }
+  };
+
   useEffect(() => {
     if (document.documentElement.lang === 'ar') {
       setLang('ar');
@@ -199,13 +219,18 @@ export default function EditCar({ params }: { params: Promise<{ id: string }> })
                   <label>Photos existantes (Gérer, Supprimer, Réorganiser)</label>
                   <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
                     {existingImages.map((url, index) => (
-                      <div key={index} style={{ position: 'relative', width: '150px', height: '150px', border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden' }}>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={url} alt={`Photo ${index + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        <div style={{ position: 'absolute', bottom: '0', left: '0', right: '0', background: 'rgba(0,0,0,0.6)', padding: '5px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <button type="button" onClick={() => handleMoveLeft(index)} disabled={index === 0} style={{ background: 'none', border: 'none', color: index === 0 ? 'gray' : 'white', cursor: index === 0 ? 'default' : 'pointer' }}>◀️</button>
-                          <button type="button" onClick={() => handleDeleteImage(index)} style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}>🗑️</button>
-                          <button type="button" onClick={() => handleMoveRight(index)} disabled={index === existingImages.length - 1} style={{ background: 'none', border: 'none', color: index === existingImages.length - 1 ? 'gray' : 'white', cursor: index === existingImages.length - 1 ? 'default' : 'pointer' }}>▶️</button>
+                      <div key={index} style={{ position: 'relative', width: '150px', height: '170px', border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                        <div style={{ height: '130px', position: 'relative' }}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={url} alt={`Photo ${index + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          <div style={{ position: 'absolute', bottom: '0', left: '0', right: '0', background: 'rgba(0,0,0,0.6)', padding: '5px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <button type="button" onClick={() => handleMoveLeft(index)} disabled={index === 0} style={{ background: 'none', border: 'none', color: index === 0 ? 'gray' : 'white', cursor: index === 0 ? 'default' : 'pointer' }}>◀️</button>
+                            <button type="button" onClick={() => handleDeleteImage(index)} style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}>🗑️</button>
+                            <button type="button" onClick={() => handleMoveRight(index)} disabled={index === existingImages.length - 1} style={{ background: 'none', border: 'none', color: index === existingImages.length - 1 ? 'gray' : 'white', cursor: index === existingImages.length - 1 ? 'default' : 'pointer' }}>▶️</button>
+                          </div>
+                        </div>
+                        <div style={{ height: '40px', background: 'var(--color-bg-secondary)', padding: '0.3rem', fontSize: '0.75rem', textAlign: 'center', wordBreak: 'break-all', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          {getFileNameFromUrl(url)}
                         </div>
                       </div>
                     ))}
@@ -231,8 +256,26 @@ export default function EditCar({ params }: { params: Promise<{ id: string }> })
                   <span>🛡️</span> Certificat de Contrôle Technique / Rapport d&apos;inspection (Image ou PDF)
                 </label>
                 {car.controleTechnique && (
-                  <div style={{ marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--color-accent)', fontWeight: 600 }}>
-                    ✓ Document actuel : <a href={car.controleTechnique} target="_blank" rel="noreferrer" style={{ textDecoration: 'underline', color: 'var(--color-accent)' }}>Consulter le rapport existant</a>
+                  <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '1rem', background: 'var(--color-bg-secondary)', padding: '1rem', borderRadius: '8px' }}>
+                    <span style={{ fontSize: '1.5rem' }}>📄</span>
+                    <div style={{ flexGrow: 1 }}>
+                      <strong>Document actuel : </strong>
+                      <a href={car.controleTechnique} target="_blank" rel="noreferrer" style={{ textDecoration: 'underline', color: 'var(--color-accent)' }}>
+                        {getFileNameFromUrl(car.controleTechnique)}
+                      </a>
+                    </div>
+                    <button type="button" onClick={() => {
+                      if (window.confirm("Voulez-vous vraiment supprimer le document actuel ? (N'oubliez pas d'enregistrer ensuite)")) {
+                        const ctInput = document.createElement('input');
+                        ctInput.type = 'hidden';
+                        ctInput.name = 'controleTechniqueUrl';
+                        ctInput.value = '';
+                        document.querySelector('form')?.appendChild(ctInput);
+                        setCar({ ...car, controleTechnique: null });
+                      }
+                    }} style={{ padding: '0.5rem 1rem', borderRadius: '6px', background: '#fee2e2', color: '#991b1b', border: '1px solid #fca5a5', cursor: 'pointer', fontWeight: 600 }}>
+                      Supprimer le document
+                    </button>
                   </div>
                 )}
                 <input 

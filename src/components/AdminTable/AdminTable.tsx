@@ -3,7 +3,7 @@
 import styles from './AdminTable.module.css';
 import Link from 'next/link';
 import { useState } from 'react';
-import { updateCarStatus, deleteCar, updateCarPhotos } from '@/actions/cars';
+import { updateCarStatus, deleteCar, updateCarPhotosAndCt } from '@/actions/cars';
 
 interface AdminTableProps {
   cars: any[];
@@ -17,6 +17,27 @@ export default function AdminTable({ cars, dict }: AdminTableProps) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [managingPhotosCar, setManagingPhotosCar] = useState<any | null>(null);
   const [tempImages, setTempImages] = useState<string[]>([]);
+  const [tempCt, setTempCt] = useState<string | null>(null);
+
+  const getFileNameFromUrl = (url: string) => {
+    if (!url) return "";
+    try {
+      const decoded = decodeURIComponent(url);
+      const parts = decoded.split('?')[0].split('/');
+      let filename = parts[parts.length - 1];
+      if (filename.includes('-')) {
+        const splitByDash = filename.split('-');
+        if (!isNaN(Number(splitByDash[0])) && splitByDash[0].length > 10) {
+          filename = splitByDash.slice(1).join('-');
+        } else if (splitByDash[0] === 'CT' && !isNaN(Number(splitByDash[1])) && splitByDash[1].length > 10) {
+          filename = splitByDash.slice(2).join('-');
+        }
+      }
+      return filename;
+    } catch {
+      return "Fichier inconnu";
+    }
+  };
 
   const filteredCars = cars
     .filter(car => {
@@ -163,6 +184,7 @@ export default function AdminTable({ cars, dict }: AdminTableProps) {
                       onClick={() => {
                         setManagingPhotosCar(car);
                         setTempImages(car.images || []);
+                        setTempCt(car.controleTechnique || null);
                       }}
                       className={styles.actionBtn}
                       style={{ background: 'var(--color-bg-secondary)' }}
@@ -205,34 +227,59 @@ export default function AdminTable({ cars, dict }: AdminTableProps) {
             ) : (
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 {tempImages.map((url, index) => (
-                  <div key={index} style={{ position: 'relative', width: '150px', height: '150px', border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden' }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={url} alt={`Photo ${index + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    <div style={{ position: 'absolute', bottom: '0', left: '0', right: '0', background: 'rgba(0,0,0,0.6)', padding: '5px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <button type="button" onClick={() => {
-                        if (index === 0) return;
-                        const newImages = [...tempImages];
-                        const temp = newImages[index - 1];
-                        newImages[index - 1] = newImages[index];
-                        newImages[index] = temp;
-                        setTempImages(newImages);
-                      }} disabled={index === 0} style={{ background: 'none', border: 'none', color: index === 0 ? 'gray' : 'white', cursor: index === 0 ? 'default' : 'pointer' }}>◀️</button>
-                      <button type="button" onClick={() => {
-                        setTempImages(prev => prev.filter((_, i) => i !== index));
-                      }} style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}>🗑️</button>
-                      <button type="button" onClick={() => {
-                        if (index === tempImages.length - 1) return;
-                        const newImages = [...tempImages];
-                        const temp = newImages[index + 1];
-                        newImages[index + 1] = newImages[index];
-                        newImages[index] = temp;
-                        setTempImages(newImages);
-                      }} disabled={index === tempImages.length - 1} style={{ background: 'none', border: 'none', color: index === tempImages.length - 1 ? 'gray' : 'white', cursor: index === tempImages.length - 1 ? 'default' : 'pointer' }}>▶️</button>
+                  <div key={index} style={{ position: 'relative', width: '150px', height: '170px', border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ height: '130px', position: 'relative' }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={url} alt={`Photo ${index + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <div style={{ position: 'absolute', bottom: '0', left: '0', right: '0', background: 'rgba(0,0,0,0.6)', padding: '5px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <button type="button" onClick={() => {
+                          if (index === 0) return;
+                          const newImages = [...tempImages];
+                          const temp = newImages[index - 1];
+                          newImages[index - 1] = newImages[index];
+                          newImages[index] = temp;
+                          setTempImages(newImages);
+                        }} disabled={index === 0} style={{ background: 'none', border: 'none', color: index === 0 ? 'gray' : 'white', cursor: index === 0 ? 'default' : 'pointer' }}>◀️</button>
+                        <button type="button" onClick={() => {
+                          setTempImages(prev => prev.filter((_, i) => i !== index));
+                        }} style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}>🗑️</button>
+                        <button type="button" onClick={() => {
+                          if (index === tempImages.length - 1) return;
+                          const newImages = [...tempImages];
+                          const temp = newImages[index + 1];
+                          newImages[index + 1] = newImages[index];
+                          newImages[index] = temp;
+                          setTempImages(newImages);
+                        }} disabled={index === tempImages.length - 1} style={{ background: 'none', border: 'none', color: index === tempImages.length - 1 ? 'gray' : 'white', cursor: index === tempImages.length - 1 ? 'default' : 'pointer' }}>▶️</button>
+                      </div>
+                    </div>
+                    <div style={{ height: '40px', background: 'var(--color-bg-secondary)', padding: '0.3rem', fontSize: '0.75rem', textAlign: 'center', wordBreak: 'break-all', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {getFileNameFromUrl(url)}
                     </div>
                   </div>
                 ))}
               </div>
             )}
+            
+            <div style={{ marginTop: '2rem', borderTop: '1px solid var(--color-border)', paddingTop: '1.5rem' }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '1rem' }}>Contrôle Technique / Rapport</h3>
+              {tempCt ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'var(--color-bg-secondary)', padding: '1rem', borderRadius: '8px' }}>
+                  <span style={{ fontSize: '1.5rem' }}>📄</span>
+                  <div style={{ flexGrow: 1 }}>
+                    <strong>Document actuel : </strong>
+                    <a href={tempCt} target="_blank" rel="noreferrer" style={{ textDecoration: 'underline', color: 'var(--color-accent)' }}>
+                      {getFileNameFromUrl(tempCt)}
+                    </a>
+                  </div>
+                  <button type="button" onClick={() => setTempCt(null)} style={{ padding: '0.5rem 1rem', borderRadius: '6px', background: '#fee2e2', color: '#991b1b', border: '1px solid #fca5a5', cursor: 'pointer', fontWeight: 600 }}>
+                    Supprimer le document
+                  </button>
+                </div>
+              ) : (
+                <p style={{ fontStyle: 'italic', color: 'var(--color-text-secondary)' }}>Aucun document de contrôle technique n&apos;est associé à ce véhicule.</p>
+              )}
+            </div>
             
             <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
               <button onClick={() => setManagingPhotosCar(null)} style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', background: 'var(--color-bg-secondary)', color: 'var(--color-text-primary)', border: 'none', cursor: 'pointer', fontWeight: 600 }}>Annuler</button>
@@ -240,7 +287,7 @@ export default function AdminTable({ cars, dict }: AdminTableProps) {
                 const btn = e.currentTarget;
                 btn.disabled = true;
                 btn.innerText = 'Enregistrement...';
-                await updateCarPhotos(managingPhotosCar.id, JSON.stringify(tempImages));
+                await updateCarPhotosAndCt(managingPhotosCar.id, JSON.stringify(tempImages), tempCt);
                 setManagingPhotosCar(null);
               }} style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', background: 'var(--color-accent)', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 600 }}>Enregistrer</button>
             </div>
