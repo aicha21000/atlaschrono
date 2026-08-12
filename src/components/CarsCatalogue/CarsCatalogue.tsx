@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import styles from '@/app/cars/page.module.css';
+import { formatPrice } from '@/lib/format';
 
 interface CarsCatalogueProps {
   initialCars: any[];
@@ -144,7 +145,7 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
               <p className={styles.carDetails}>
                 <span>{car.annee}</span> • <span>{Number(car.kilometrage).toLocaleString('fr-FR')} {dict.home.cardKm}</span> • <span>{translateEnergy(car.energie)}</span>
               </p>
-              <p className={styles.carPrice}>{car.prix}{String(car.prix).toUpperCase().includes('DZD') ? '' : ' DZD'}</p>
+              <p className={styles.carPrice}>{formatPrice(car.prix)}</p>
               <Link 
                 href={`/cars/${car.id}`} 
                 className={styles.detailsBtn}

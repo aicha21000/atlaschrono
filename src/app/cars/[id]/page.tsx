@@ -7,6 +7,7 @@ import CarGallery from '@/components/CarGallery/CarGallery';
 import ControleTechniqueViewer from '@/components/ControleTechniqueViewer/ControleTechniqueViewer';
 import StripeReservationButton from '@/components/StripeReservationButton/StripeReservationButton';
 import { getDictionary } from '@/i18n/getLang';
+import { formatPrice } from '@/lib/format';
 
 export default async function CarDetails({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -72,7 +73,7 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
             })()}
 
             <h1 className={styles.title}>{car.marque} {car.modele}</h1>
-            <p className={styles.price}>{car.prix}{String(car.prix).toUpperCase().includes('DZD') ? '' : ' DZD'}</p>
+            <p className={styles.price}>{formatPrice(car.prix)}</p>
             
             <div className={`glass-panel ${styles.quickStats}`}>
               <div className={styles.statItem}>

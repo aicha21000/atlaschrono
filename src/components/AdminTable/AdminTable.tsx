@@ -4,6 +4,7 @@ import styles from './AdminTable.module.css';
 import Link from 'next/link';
 import { useState } from 'react';
 import { updateCarStatus, deleteCar, updateCarPhotosAndCt } from '@/actions/cars';
+import { formatPrice } from '@/lib/format';
 
 interface AdminTableProps {
   cars: any[];
@@ -148,7 +149,7 @@ export default function AdminTable({ cars, dict }: AdminTableProps) {
                 </td>
                 <td data-label="Prix">
                   <strong style={{ color: 'var(--color-text-primary)', fontSize: '1.05rem' }}>
-                    {car.prix}{String(car.prix).toUpperCase().includes('DZD') ? '' : ' DZD'}
+                    {formatPrice(car.prix)}
                   </strong>
                 </td>
                 <td data-label="Kilométrage">{Number(car.kilometrage).toLocaleString('fr-FR')} km</td>
