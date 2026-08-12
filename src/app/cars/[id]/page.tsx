@@ -25,7 +25,11 @@ export async function generateMetadata(
   }
 
   const title = `${car.marque} ${car.modele} ${car.annee} | Atlas Chrono Cars`;
-  const description = `${car.marque} ${car.modele} de ${car.annee}. ${car.kilometrage} km, ${car.energie}, Boite ${car.boite}. ${car.prix ? formatPrice(car.prix) : ''} - Découvrez toutes les options et caractéristiques détaillées sur Atlas Chrono Cars.`;
+  
+  // Standardized sales pitch paragraph
+  const cleanDescription = car.description ? car.description.replace(/\n/g, ' ').replace(/\r/g, '').substring(0, 100).trim() : 'Consultez la fiche complète sur notre site';
+  const description = `🔥 Superbe opportunité ! Découvrez cette magnifique ${car.marque} ${car.modele} de ${car.annee}. Avec ${car.kilometrage} km, moteur ${car.energie}, boîte ${car.boite}. 💰 Prix : ${car.prix ? formatPrice(car.prix) : 'Nous consulter'}. ✨ Options et détails : ${cleanDescription}... 👆 Cliquez pour voir toutes les photos et la réserver !`;
+  
   const ogImage = car.images && car.images.length > 0 ? car.images[0] : undefined;
 
   return {
