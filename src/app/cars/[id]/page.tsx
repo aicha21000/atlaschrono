@@ -9,6 +9,35 @@ import ControleTechniqueViewer from '@/components/ControleTechniqueViewer/Contro
 import StripeReservationButton from '@/components/StripeReservationButton/StripeReservationButton';
 import { getDictionary } from '@/i18n/getLang';
 import { formatPrice } from '@/lib/format';
+import ShareFacebook from '@/components/ShareFacebook/ShareFacebook';
+import { Metadata, ResolvingMetadata } from 'next';
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ id: string }> },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const resolvedParams = await params;
+  const cars = await getCars();
+  const car = cars.find((c: any) => c.id === resolvedParams.id);
+
+  if (!car) {
+    return { title: 'Véhicule introuvable' };
+  }
+
+  const title = `${car.marque} ${car.modele} ${car.annee} | Atlas Chrono Cars`;
+  const description = `${car.marque} ${car.modele} de ${car.annee}. ${car.kilometrage} km, ${car.energie}, Boite ${car.boite}. ${car.prix ? formatPrice(car.prix) : ''} - Découvrez toutes les options et caractéristiques détaillées sur Atlas Chrono Cars.`;
+  const ogImage = car.images && car.images.length > 0 ? car.images[0] : undefined;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: ogImage ? [{ url: ogImage }] : [],
+    },
+  };
+}
 
 export default async function CarDetails({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -79,6 +108,10 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
 
             <h1 className={styles.title}>{car.marque} {car.modele}</h1>
             <p className={styles.price}>{formatPrice(car.prix)}</p>
+            
+            <ShareFacebook label={dict.navbar.contact === 'اتصل بنا' ? 'مشاركة على فيسبوك' : 'Partager sur Facebook'} />
+            <br />
+            <br />
             
             <div className={`glass-panel ${styles.quickStats}`}>
               <div className={styles.statItem}>
