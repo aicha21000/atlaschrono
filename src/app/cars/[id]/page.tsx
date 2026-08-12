@@ -7,7 +7,7 @@ import { headers } from 'next/headers';
 import CarGallery from '@/components/CarGallery/CarGallery';
 import ControleTechniqueViewer from '@/components/ControleTechniqueViewer/ControleTechniqueViewer';
 import StripeReservationButton from '@/components/StripeReservationButton/StripeReservationButton';
-import { getDictionary } from '@/i18n/getLang';
+import { getDictionary, getLang } from '@/i18n/getLang';
 import { formatPrice } from '@/lib/format';
 import ShareFacebook from '@/components/ShareFacebook/ShareFacebook';
 import ShareWhatsApp from '@/components/ShareWhatsApp/ShareWhatsApp';
@@ -27,9 +27,17 @@ export async function generateMetadata(
 
   const title = `${car.marque} ${car.modele} ${car.annee} | Atlas Chrono Cars`;
   
-  // Standardized sales pitch paragraph
-  const cleanDescription = car.description ? car.description.replace(/\n/g, ' ').replace(/\r/g, '').substring(0, 100).trim() : 'Consultez la fiche complète sur notre site';
-  const description = `🔥 Superbe opportunité ! Découvrez cette magnifique ${car.marque} ${car.modele} de ${car.annee}. Avec ${car.kilometrage} km, moteur ${car.energie}, boîte ${car.boite}. 💰 Prix : ${car.prix ? formatPrice(car.prix) : 'Nous consulter'}. ✨ Options et détails : ${cleanDescription}... 👆 Cliquez pour voir toutes les photos et la réserver !`;
+  // Try to determine language from some params or just fallback to generic. 
+  // Since generateMetadata can't easily await getLang() without importing cookies etc, 
+  // actually wait, generateMetadata can await getLang()! Let's do it.
+  const lang = await getLang();
+  
+  const cleanDescription = car.description ? car.description.replace(/\n/g, ' ').replace(/\r/g, '').substring(0, 100).trim() : (lang === 'ar' ? 'اطلع على التفاصيل الكاملة على موقعنا' : 'Consultez la fiche complète sur notre site');
+  const priceText = car.prix ? formatPrice(car.prix) : (lang === 'ar' ? 'اتصل بنا' : 'Nous consulter');
+  
+  const description = lang === 'ar'
+    ? `🔥 فرصة رائعة! اكتشف هذه السيارة المذهلة ${car.marque} ${car.modele} موديل ${car.annee}. عداد المسافات: ${car.kilometrage} كم، المحرك: ${car.energie}، ناقل الحركة: ${car.boite}. 💰 السعر: ${priceText}. ✨ الخيارات والتفاصيل: ${cleanDescription}... 👆 اضغط لرؤية الصور وحجزها!`
+    : `🔥 Superbe opportunité ! Découvrez cette magnifique ${car.marque} ${car.modele} de ${car.annee}. Avec ${car.kilometrage} km, moteur ${car.energie}, boîte ${car.boite}. 💰 Prix : ${priceText}. ✨ Options et détails : ${cleanDescription}... 👆 Cliquez pour voir toutes les photos et la réserver !`;
   
   const ogImage = car.images && car.images.length > 0 ? car.images[0] : undefined;
 
@@ -49,6 +57,7 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
   const cars = await getCars();
   const settings = await getSettings();
   const dict = await getDictionary();
+  const lang = await getLang();
   const car = cars.find((c: any) => c.id === resolvedParams.id);
 
   if (!car) {
@@ -115,8 +124,13 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
             <p className={styles.price}>{formatPrice(car.prix)}</p>
             
             {(() => {
-              const cleanDescription = car.description ? car.description.replace(/\n/g, ' ').replace(/\r/g, '').substring(0, 100).trim() : 'Consultez la fiche complète sur notre site';
-              const pitch = `🔥 Superbe opportunité ! Découvrez cette magnifique ${car.marque} ${car.modele} de ${car.annee}. Avec ${car.kilometrage} km, moteur ${car.energie}, boîte ${car.boite}. 💰 Prix : ${car.prix ? formatPrice(car.prix) : 'Nous consulter'}. ✨ Options et détails : ${cleanDescription}... 👆 Cliquez sur le lien ci-dessous pour voir toutes les photos et la réserver !`;
+              const cleanDescription = car.description ? car.description.replace(/\n/g, ' ').replace(/\r/g, '').substring(0, 100).trim() : (lang === 'ar' ? 'اطلع على التفاصيل الكاملة على موقعنا' : 'Consultez la fiche complète sur notre site');
+              const priceText = car.prix ? formatPrice(car.prix) : (lang === 'ar' ? 'اتصل بنا' : 'Nous consulter');
+              
+              const pitch = lang === 'ar'
+                ? `🔥 فرصة رائعة! اكتشف هذه السيارة المذهلة ${car.marque} ${car.modele} موديل ${car.annee}. عداد المسافات: ${car.kilometrage} كم، المحرك: ${translateEnergy(car.energie)}، ناقل الحركة: ${translateGearbox(car.boite)}. 💰 السعر: ${priceText}. ✨ الخيارات والتفاصيل: ${cleanDescription}... 👆 اضغط على الرابط أدناه لرؤية جميع الصور وحجزها!`
+                : `🔥 Superbe opportunité ! Découvrez cette magnifique ${car.marque} ${car.modele} de ${car.annee}. Avec ${car.kilometrage} km, moteur ${translateEnergy(car.energie)}, boîte ${translateGearbox(car.boite)}. 💰 Prix : ${priceText}. ✨ Options et détails : ${cleanDescription}... 👆 Cliquez sur le lien ci-dessous pour voir toutes les photos et la réserver !`;
+              
               return (
                 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                   <ShareFacebook label={dict.navbar.contact === 'اتصل بنا' ? 'مشاركة على فيسبوك' : 'Partager sur Facebook'} pitch={pitch} />
