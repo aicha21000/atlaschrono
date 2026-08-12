@@ -51,11 +51,11 @@ export default async function Footer() {
           <p>✉️ {settings.email}</p>
         </div>
         <div className={styles.links}>
-          <h4>{dict.legalTitle || "Informations Légales"}</h4>
+          <h4>{dict.footer.legalTitle || "Informations Légales"}</h4>
           <ul>
-            <li><Link href="/terms">{dict.legalTerms || "CGU & Mentions Légales"}</Link></li>
-            <li><Link href="/privacy">{dict.legalPrivacy || "Confidentialité (Loi 18-07)"}</Link></li>
-            <li><Link href="/charter">{dict.legalCharter || "Charte de sécurité"}</Link></li>
+            <li><Link href="/terms">{dict.footer.legalTerms || "CGU & Mentions Légales"}</Link></li>
+            <li><Link href="/privacy">{dict.footer.legalPrivacy || "Confidentialité (Loi 18-07)"}</Link></li>
+            <li><Link href="/charter">{dict.footer.legalCharter || "Charte de sécurité"}</Link></li>
             <li><Link href="/legal">{dict.legal?.title || "Mentions Légales"}</Link></li>
           </ul>
         </div>
