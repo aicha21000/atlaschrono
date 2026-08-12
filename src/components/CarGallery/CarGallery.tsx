@@ -41,13 +41,35 @@ export default function CarGallery({ images, altText }: CarGalleryProps) {
     setIsAutoPlaying(false); // Stop autoplay when user interacts
   };
 
+  const handlePrev = () => {
+    setActiveIndex((current) => (current === 0 ? images!.length - 1 : current - 1));
+    setIsAutoPlaying(false);
+  };
+
+  const handleNext = () => {
+    setActiveIndex((current) => (current + 1) % images!.length);
+    setIsAutoPlaying(false);
+  };
+
   return (
     <div className={styles.gallery}>
       <div className={styles.mainImage}>
+        {images.length > 1 && (
+          <button className={`${styles.arrowBtn} ${styles.arrowLeft}`} onClick={handlePrev} aria-label="Image précédente">
+            ❮
+          </button>
+        )}
+        
         <img 
           src={images[activeIndex]} 
           alt={`${altText} - Vue ${activeIndex + 1}`} 
         />
+        
+        {images.length > 1 && (
+          <button className={`${styles.arrowBtn} ${styles.arrowRight}`} onClick={handleNext} aria-label="Image suivante">
+            ❯
+          </button>
+        )}
       </div>
       
       {images.length > 1 && (
