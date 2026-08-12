@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 
 interface ShareFacebookProps {
   label: string;
+  pitch?: string;
 }
 
-export default function ShareFacebook({ label }: ShareFacebookProps) {
+export default function ShareFacebook({ label, pitch }: ShareFacebookProps) {
   const [url, setUrl] = useState('');
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     setUrl(window.location.href);
@@ -15,13 +17,23 @@ export default function ShareFacebook({ label }: ShareFacebookProps) {
 
   if (!url) return null;
 
+  const handleShare = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (pitch) {
+      navigator.clipboard.writeText(pitch);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+    }
+  };
+
   const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
 
   return (
-    <a 
-      href={shareUrl} 
-      target="_blank" 
-      rel="noopener noreferrer"
+    <div>
+      <a 
+        href={shareUrl} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        onClick={handleShare}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -44,5 +56,11 @@ export default function ShareFacebook({ label }: ShareFacebookProps) {
       </svg>
       {label}
     </a>
+    {copied && (
+      <span style={{ display: 'block', fontSize: '0.8rem', color: '#166534', marginTop: '0.5rem', fontWeight: 600 }}>
+        ✅ Texte copié ! Vous pouvez le coller sur Facebook.
+      </span>
+    )}
+    </div>
   );
 }
