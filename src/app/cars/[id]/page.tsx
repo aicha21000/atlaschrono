@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getCars, incrementCarViews } from '@/actions/cars';
 import { getSettings } from '@/actions/settings';
 import { notFound } from 'next/navigation';
+import { headers } from 'next/headers';
 import CarGallery from '@/components/CarGallery/CarGallery';
 import ControleTechniqueViewer from '@/components/ControleTechniqueViewer/ControleTechniqueViewer';
 import StripeReservationButton from '@/components/StripeReservationButton/StripeReservationButton';
@@ -20,7 +21,11 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
     notFound();
   }
 
-  await incrementCarViews(resolvedParams.id);
+  const headersList = await headers();
+  const rawIp = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'IP inconnue';
+  const ip = rawIp.split(',')[0].trim();
+
+  await incrementCarViews(resolvedParams.id, ip);
 
   const translateEnergy = (energy: string) => {
     if (energy === "Essence") return dict.adminForm?.energyGasoline || energy;

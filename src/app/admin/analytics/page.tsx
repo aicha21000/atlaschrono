@@ -77,6 +77,28 @@ export default async function AnalyticsPage() {
                     <span>Vues totales</span>
                   </div>
 
+                  {car.recentVisitors && car.recentVisitors.length > 0 && (
+                    <div style={{ marginTop: '1rem', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
+                      <details style={{ cursor: 'pointer', fontSize: '0.9rem' }}>
+                        <summary style={{ fontWeight: 600, color: 'var(--color-text-secondary)', userSelect: 'none' }}>
+                          👀 Historique des visites (IPs)
+                        </summary>
+                        <div style={{ marginTop: '0.75rem', maxHeight: '150px', overflowY: 'auto', background: 'var(--color-bg-secondary)', padding: '0.75rem', borderRadius: '8px' }}>
+                          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                            {car.recentVisitors.map((visit: { ip: string, date: string }, i: number) => (
+                              <li key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.25rem 0', borderBottom: i < car.recentVisitors.length - 1 ? '1px solid var(--color-border)' : 'none' }}>
+                                <span style={{ fontFamily: 'monospace', color: 'var(--color-accent)' }}>{visit.ip}</span>
+                                <span style={{ color: 'var(--color-text-secondary)', fontSize: '0.8rem' }}>
+                                  {new Date(visit.date).toLocaleString('fr-FR')}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </details>
+                    </div>
+                  )}
+
                   <div className={styles.actions}>
                     <Link href={`/cars/${car.id}`} target="_blank" className={styles.actionBtn}>
                       Voir fiche

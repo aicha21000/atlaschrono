@@ -56,13 +56,27 @@ export async function addCar(formData: FormData) {
   }
 }
 
-export async function incrementCarViews(id: string) {
+export async function incrementCarViews(id: string, ip?: string) {
   try {
     const carRef = doc(db, 'cars', id);
     const carSnap = await getDoc(carRef);
     if (carSnap.exists()) {
-      const currentViews = carSnap.data().views || 0;
-      await updateDoc(carRef, { views: currentViews + 1 });
+      const data = carSnap.data();
+      const currentViews = data.views || 0;
+      let recentVisitors = data.recentVisitors || [];
+      
+      if (ip) {
+        recentVisitors.unshift({ ip, date: new Date().toISOString() });
+        // Keep only the last 50 visits
+        if (recentVisitors.length > 50) {
+          recentVisitors = recentVisitors.slice(0, 50);
+        }
+      }
+      
+      await updateDoc(carRef, { 
+        views: currentViews + 1,
+        recentVisitors
+      });
       revalidatePath('/admin');
     }
   } catch (error) {
