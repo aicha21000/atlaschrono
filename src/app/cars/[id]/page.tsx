@@ -10,6 +10,7 @@ import StripeReservationButton from '@/components/StripeReservationButton/Stripe
 import { getDictionary } from '@/i18n/getLang';
 import { formatPrice } from '@/lib/format';
 import ShareFacebook from '@/components/ShareFacebook/ShareFacebook';
+import ShareWhatsApp from '@/components/ShareWhatsApp/ShareWhatsApp';
 import { Metadata, ResolvingMetadata } from 'next';
 
 export async function generateMetadata(
@@ -116,7 +117,12 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
             {(() => {
               const cleanDescription = car.description ? car.description.replace(/\n/g, ' ').replace(/\r/g, '').substring(0, 100).trim() : 'Consultez la fiche complète sur notre site';
               const pitch = `🔥 Superbe opportunité ! Découvrez cette magnifique ${car.marque} ${car.modele} de ${car.annee}. Avec ${car.kilometrage} km, moteur ${car.energie}, boîte ${car.boite}. 💰 Prix : ${car.prix ? formatPrice(car.prix) : 'Nous consulter'}. ✨ Options et détails : ${cleanDescription}... 👆 Cliquez sur le lien ci-dessous pour voir toutes les photos et la réserver !`;
-              return <ShareFacebook label={dict.navbar.contact === 'اتصل بنا' ? 'مشاركة على فيسبوك' : 'Partager sur Facebook'} pitch={pitch} />;
+              return (
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <ShareFacebook label={dict.navbar.contact === 'اتصل بنا' ? 'مشاركة على فيسبوك' : 'Partager sur Facebook'} pitch={pitch} />
+                  <ShareWhatsApp label={dict.navbar.contact === 'اتصل بنا' ? 'مشاركة عبر واتساب' : 'Partager sur WhatsApp'} pitch={pitch} />
+                </div>
+              );
             })()}
             <br />
             <br />
