@@ -109,6 +109,12 @@ export async function updateCar(id: string, formData: FormData) {
     
     const newImages = formData.getAll('imageUrls') as string[];
     const ctPath = formData.get('controleTechniqueUrl') as string | null;
+    const existingImagesJson = formData.get('existingImages') as string | null;
+
+    let baseImages = currentCar.images || [];
+    if (existingImagesJson) {
+      baseImages = JSON.parse(existingImagesJson);
+    }
 
     const updatedCar = {
       marque: formData.get('marque') || currentCar.marque,
@@ -121,8 +127,8 @@ export async function updateCar(id: string, formData: FormData) {
       couleur: formData.get('couleur') || currentCar.couleur,
       description: formData.get('description') || currentCar.description,
       status: formData.get('status') || currentCar.status,
-      controleTechnique: ctPath || null,
-      images: newImages.length > 0 ? [...(currentCar.images || []), ...newImages] : currentCar.images
+      controleTechnique: ctPath || currentCar.controleTechnique || null,
+      images: [...baseImages, ...newImages]
     };
 
     await updateDoc(carRef, updatedCar);
@@ -136,5 +142,26 @@ export async function updateCar(id: string, formData: FormData) {
   } catch (error: any) {
     console.error("Firebase updateCar error:", error);
     return { success: false, error: error.message };
+  }
+}
+
+export async function updateCarPhotos(id: string, existingImagesJson: string) {
+  try {
+    const carRef = doc(db, 'cars', id);
+    const carSnap = await getDoc(carRef);
+    if (!carSnap.exists()) return { success: false };
+    
+    const newImages = JSON.parse(existingImagesJson);
+    await updateDoc(carRef, { images: newImages });
+    
+    revalidatePath('/admin');
+    revalidatePath('/cars');
+    revalidatePath('/');
+    revalidatePath(`/cars/${id}`);
+    
+    return { success: true };
+  } catch (error) {
+    console.error("Firebase updateCarPhotos error:", error);
+    return { success: false };
   }
 }

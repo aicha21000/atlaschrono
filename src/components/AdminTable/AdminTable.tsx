@@ -3,7 +3,7 @@
 import styles from './AdminTable.module.css';
 import Link from 'next/link';
 import { useState } from 'react';
-import { updateCarStatus, deleteCar } from '@/actions/cars';
+import { updateCarStatus, deleteCar, updateCarPhotos } from '@/actions/cars';
 
 interface AdminTableProps {
   cars: any[];
@@ -15,6 +15,8 @@ export default function AdminTable({ cars, dict }: AdminTableProps) {
   const [statusFilter, setStatusFilter] = useState("Tous");
   const [sortBy, setSortBy] = useState("recent");
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [managingPhotosCar, setManagingPhotosCar] = useState<any | null>(null);
+  const [tempImages, setTempImages] = useState<string[]>([]);
 
   const filteredCars = cars
     .filter(car => {
@@ -158,6 +160,17 @@ export default function AdminTable({ cars, dict }: AdminTableProps) {
                     </Link>
                     <button
                       type="button"
+                      onClick={() => {
+                        setManagingPhotosCar(car);
+                        setTempImages(car.images || []);
+                      }}
+                      className={styles.actionBtn}
+                      style={{ background: 'var(--color-bg-secondary)' }}
+                    >
+                      Photos
+                    </button>
+                    <button
+                      type="button"
                       onClick={() => handleDelete(car.id, `${car.marque} ${car.modele}`)}
                       className={`${styles.actionBtn} ${styles.danger}`}
                     >
@@ -178,6 +191,62 @@ export default function AdminTable({ cars, dict }: AdminTableProps) {
           </tbody>
         </table>
       </div>
+
+      {managingPhotosCar && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', zIndex: 9999, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div style={{ background: 'var(--color-bg-primary)', padding: '2rem', borderRadius: '12px', width: '90%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', alignItems: 'center' }}>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Photos : {managingPhotosCar.marque} {managingPhotosCar.modele}</h2>
+              <button onClick={() => setManagingPhotosCar(null)} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--color-text-primary)' }}>✕</button>
+            </div>
+            
+            {tempImages.length === 0 ? (
+              <p>Aucune photo pour ce véhicule.</p>
+            ) : (
+              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                {tempImages.map((url, index) => (
+                  <div key={index} style={{ position: 'relative', width: '150px', height: '150px', border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={url} alt={`Photo ${index + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div style={{ position: 'absolute', bottom: '0', left: '0', right: '0', background: 'rgba(0,0,0,0.6)', padding: '5px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <button type="button" onClick={() => {
+                        if (index === 0) return;
+                        const newImages = [...tempImages];
+                        const temp = newImages[index - 1];
+                        newImages[index - 1] = newImages[index];
+                        newImages[index] = temp;
+                        setTempImages(newImages);
+                      }} disabled={index === 0} style={{ background: 'none', border: 'none', color: index === 0 ? 'gray' : 'white', cursor: index === 0 ? 'default' : 'pointer' }}>◀️</button>
+                      <button type="button" onClick={() => {
+                        setTempImages(prev => prev.filter((_, i) => i !== index));
+                      }} style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}>🗑️</button>
+                      <button type="button" onClick={() => {
+                        if (index === tempImages.length - 1) return;
+                        const newImages = [...tempImages];
+                        const temp = newImages[index + 1];
+                        newImages[index + 1] = newImages[index];
+                        newImages[index] = temp;
+                        setTempImages(newImages);
+                      }} disabled={index === tempImages.length - 1} style={{ background: 'none', border: 'none', color: index === tempImages.length - 1 ? 'gray' : 'white', cursor: index === tempImages.length - 1 ? 'default' : 'pointer' }}>▶️</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+              <button onClick={() => setManagingPhotosCar(null)} style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', background: 'var(--color-bg-secondary)', color: 'var(--color-text-primary)', border: 'none', cursor: 'pointer', fontWeight: 600 }}>Annuler</button>
+              <button onClick={async (e) => {
+                const btn = e.currentTarget;
+                btn.disabled = true;
+                btn.innerText = 'Enregistrement...';
+                await updateCarPhotos(managingPhotosCar.id, JSON.stringify(tempImages));
+                setManagingPhotosCar(null);
+              }} style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', background: 'var(--color-accent)', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 600 }}>Enregistrer</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -14,6 +14,7 @@ export default function EditCar({ params }: { params: Promise<{ id: string }> })
   const resolvedParams = use(params);
   const router = useRouter();
   const [car, setCar] = useState<any>(null);
+  const [existingImages, setExistingImages] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [lang, setLang] = useState<'fr' | 'ar'>('fr');
 
@@ -28,9 +29,34 @@ export default function EditCar({ params }: { params: Promise<{ id: string }> })
   useEffect(() => {
     getCars().then(cars => {
       const found = cars.find((c: any) => c.id === resolvedParams.id);
-      if (found) setCar(found);
+      if (found) {
+        setCar(found);
+        setExistingImages(found.images || []);
+      }
     });
   }, [resolvedParams.id]);
+
+  const handleDeleteImage = (index: number) => {
+    setExistingImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleMoveLeft = (index: number) => {
+    if (index === 0) return;
+    const newImages = [...existingImages];
+    const temp = newImages[index - 1];
+    newImages[index - 1] = newImages[index];
+    newImages[index] = temp;
+    setExistingImages(newImages);
+  };
+
+  const handleMoveRight = (index: number) => {
+    if (index === existingImages.length - 1) return;
+    const newImages = [...existingImages];
+    const temp = newImages[index + 1];
+    newImages[index + 1] = newImages[index];
+    newImages[index] = temp;
+    setExistingImages(newImages);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -69,6 +95,8 @@ export default function EditCar({ params }: { params: Promise<{ id: string }> })
 
       formData.delete('images');
       formData.delete('controleTechnique');
+
+      formData.append('existingImages', JSON.stringify(existingImages));
 
       await updateCar(resolvedParams.id, formData);
       alert("✅ Les informations du véhicule ont été mises à jour !");
@@ -165,6 +193,25 @@ export default function EditCar({ params }: { params: Promise<{ id: string }> })
                 <label htmlFor="description">{dict.adminForm?.presentationLabel || "Présentation complète"}</label>
                 <textarea id="description" name="description" rows={5} defaultValue={car.description} required className={styles.textarea} />
               </div>
+
+              {existingImages.length > 0 && (
+                <div className={styles.inputGroup} style={{ marginTop: '1.5rem' }}>
+                  <label>Photos existantes (Gérer, Supprimer, Réorganiser)</label>
+                  <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
+                    {existingImages.map((url, index) => (
+                      <div key={index} style={{ position: 'relative', width: '150px', height: '150px', border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden' }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={url} alt={`Photo ${index + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <div style={{ position: 'absolute', bottom: '0', left: '0', right: '0', background: 'rgba(0,0,0,0.6)', padding: '5px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <button type="button" onClick={() => handleMoveLeft(index)} disabled={index === 0} style={{ background: 'none', border: 'none', color: index === 0 ? 'gray' : 'white', cursor: index === 0 ? 'default' : 'pointer' }}>◀️</button>
+                          <button type="button" onClick={() => handleDeleteImage(index)} style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}>🗑️</button>
+                          <button type="button" onClick={() => handleMoveRight(index)} disabled={index === existingImages.length - 1} style={{ background: 'none', border: 'none', color: index === existingImages.length - 1 ? 'gray' : 'white', cursor: index === existingImages.length - 1 ? 'default' : 'pointer' }}>▶️</button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className={styles.inputGroup} style={{ marginTop: '1.5rem' }}>
                 <label htmlFor="images">Ajouter de nouvelles photos</label>
