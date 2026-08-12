@@ -3,6 +3,7 @@ import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
+import CookieBanner from "@/components/CookieBanner/CookieBanner";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -16,7 +17,7 @@ const jakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
-import { getLang } from "@/i18n/getLang";
+import { getLang, getDictionary } from "@/i18n/getLang";
 
 export const metadata: Metadata = {
   title: "Atlas Chrono Cars | Importation Directe & Vente Auto",
@@ -29,6 +30,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const lang = await getLang();
+  const dict = await getDictionary();
   const dir = lang === 'ar' ? 'rtl' : 'ltr';
 
   return (
@@ -39,6 +41,7 @@ export default async function RootLayout({
           {children}
         </main>
         <Footer />
+        <CookieBanner dict={dict} />
       </body>
     </html>
   );

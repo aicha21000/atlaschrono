@@ -11,7 +11,11 @@ export const dictionaries = {
       quickLinks: "Liens Rapides",
       contactTitle: "Contact",
       facebook: "📘 Suivre Atlas Chrono Cars sur Facebook →",
-      copyright: "Votre partenaire de confiance pour l'importation de véhicules."
+      copyright: "Votre partenaire de confiance pour l'importation de véhicules.",
+      legalTitle: "Informations Légales",
+      legalTerms: "CGU & Mentions Légales",
+      legalPrivacy: "Confidentialité (Loi 18-07)",
+      legalCharter: "Charte de sécurité"
     },
     home: {
       heroBadge: "✨ Votre importateur automobile de confiance",
@@ -139,6 +143,44 @@ export const dictionaries = {
       messagePlaceholder: "Comment pouvons-nous vous aider ?",
       submit: "Envoyer le message",
       successMessage: "Votre message a été envoyé avec succès ! Nous vous recontacterons très vite."
+    },
+    legal: {
+      title: "Mentions Légales",
+      companyName: "Atlas Chrono Cars",
+      hosting: "Hébergement",
+      hostingText: "Ce site est hébergé par Vercel Inc. et les données sont sécurisées sur Google Firebase.",
+      ipProp: "Propriété intellectuelle",
+      ipText: "L'ensemble de ce site relève de la législation algérienne et internationale sur le droit d'auteur et la propriété intellectuelle.",
+    },
+    terms: {
+      title: "Conditions Générales d'Utilisation et de Vente",
+      intro: "L'utilisation de ce site implique l'acceptation pleine et entière des conditions générales d'utilisation décrites ci-après.",
+      sales: "Achat et Réservation",
+      salesText: "La réservation d'un véhicule via la plateforme Stripe constitue un acompte bloquant le véhicule pendant 8 jours. Cet acompte est déductible du prix de vente final.",
+      import: "Processus d'importation",
+      importText: "Atlas Chrono Cars s'engage à assurer toutes les démarches douanières pour une livraison clé en main en Algérie."
+    },
+    privacy: {
+      title: "Politique de Confidentialité",
+      law: "Conformité à la Loi 18-07",
+      lawText: "Conformément à la Loi 18-07 relative à la protection des personnes physiques dans le traitement des données à caractère personnel en Algérie, vous disposez d'un droit d'accès, de rectification et de suppression de vos données.",
+      dataCollected: "Données collectées",
+      dataText: "Nous collectons les données fournies via nos formulaires (nom, téléphone, email), ainsi que votre adresse IP à des fins de statistiques et de sécurité.",
+      rights: "Vos droits",
+      rightsText: "Vous pouvez exercer vos droits en nous contactant directement via notre formulaire ou par téléphone."
+    },
+    charter: {
+      title: "Charte de Confiance & Sécurité",
+      transparency: "Transparence totale",
+      transparencyText: "Nous nous engageons à fournir le kilométrage réel et vérifié, ainsi qu'un contrôle technique strict pour chaque véhicule.",
+      payment: "Sécurité des paiements",
+      paymentText: "Tous nos paiements en ligne sont sécurisés par Stripe, assurant un chiffrement complet de vos données bancaires."
+    },
+    cookieBanner: {
+      text: "En poursuivant votre navigation, vous acceptez l'utilisation de cookies et le traitement de votre adresse IP pour des statistiques de fréquentation et de sécurité.",
+      accept: "Accepter",
+      decline: "Refuser",
+      policyLink: "Politique de confidentialité"
     }
   },
   ar: {
@@ -153,7 +195,11 @@ export const dictionaries = {
       quickLinks: "روابط سريعة",
       contactTitle: "اتصل بنا",
       facebook: "📘 تابع أطلس كرونو كارز على فيسبوك ←",
-      copyright: "شريكك الموثوق لاستيراد السيارات."
+      copyright: "شريكك الموثوق لاستيراد السيارات.",
+      legalTitle: "معلومات قانونية",
+      legalTerms: "الشروط والمعلومات القانونية",
+      legalPrivacy: "الخصوصية (القانون 18-07)",
+      legalCharter: "ميثاق الأمان"
     },
     home: {
       heroBadge: "✨ مستورد السيارات الموثوق بك",
@@ -281,6 +327,44 @@ export const dictionaries = {
       messagePlaceholder: "كيف يمكننا مساعدتك؟",
       submit: "إرسال الرسالة",
       successMessage: "تم إرسال رسالتك بنجاح! سنتصل بك قريباً جداً."
+    },
+    legal: {
+      title: "المعلومات القانونية",
+      companyName: "أطلس كرونو كارز",
+      hosting: "الاستضافة",
+      hostingText: "يتم استضافة هذا الموقع بواسطة Vercel Inc. والبيانات مؤمنة على Google Firebase.",
+      ipProp: "الملكية الفكرية",
+      ipText: "يخضع هذا الموقع بأكمله للتشريعات الجزائرية والدولية المتعلقة بحقوق النشر والملكية الفكرية.",
+    },
+    terms: {
+      title: "الشروط والأحكام العامة",
+      intro: "يعني استخدام هذا الموقع القبول الكامل للشروط والأحكام العامة الموضحة أدناه.",
+      sales: "الشراء والحجز",
+      salesText: "يعد حجز مركبة عبر منصة Stripe عربوناً يحجز المركبة لمدة 8 أيام. يتم خصم هذا العربون من سعر البيع النهائي.",
+      import: "عملية الاستيراد",
+      importText: "تلتزم أطلس كرونو كارز بضمان جميع الإجراءات الجمركية لتسليم المفتاح في اليد في الجزائر."
+    },
+    privacy: {
+      title: "سياسة الخصوصية",
+      law: "التوافق مع القانون 18-07",
+      lawText: "وفقاً للقانون 18-07 المتعلق بحماية الأشخاص الطبيعيين في معالجة البيانات ذات الطابع الشخصي في الجزائر، لديك الحق في الوصول إلى بياناتك وتصحيحها وحذفها.",
+      dataCollected: "البيانات المجمعة",
+      dataText: "نقوم بجمع البيانات المقدمة عبر نماذجنا (الاسم، الهاتف، البريد الإلكتروني)، وكذلك عنوان IP الخاص بك لأغراض الإحصائيات والأمن.",
+      rights: "حقوقك",
+      rightsText: "يمكنك ممارسة حقوقك بالاتصال بنا مباشرة عبر النموذج الخاص بنا أو عن طريق الهاتف."
+    },
+    charter: {
+      title: "ميثاق الثقة والأمان",
+      transparency: "شفافية تامة",
+      transparencyText: "نلتزم بتوفير مسافة مقطوعة حقيقية ومحققة، بالإضافة إلى فحص فني صارم لكل سيارة.",
+      payment: "أمان الدفع",
+      paymentText: "جميع مدفوعاتنا عبر الإنترنت مؤمنة بواسطة Stripe، مما يضمن تشفيراً كاملاً لبياناتك المصرفية."
+    },
+    cookieBanner: {
+      text: "بمواصلة التصفح، فإنك توافق على استخدام ملفات تعريف الارتباط ومعالجة عنوان IP الخاص بك لإحصائيات الزيارات والأمان.",
+      accept: "موافق",
+      decline: "رفض",
+      policyLink: "سياسة الخصوصية"
     }
   }
 };

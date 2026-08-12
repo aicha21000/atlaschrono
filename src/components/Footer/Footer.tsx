@@ -50,6 +50,15 @@ export default async function Footer() {
           <p>📞 {settings.phone}</p>
           <p>✉️ {settings.email}</p>
         </div>
+        <div className={styles.links}>
+          <h4>{dict.legalTitle || "Informations Légales"}</h4>
+          <ul>
+            <li><Link href="/terms">{dict.legalTerms || "CGU & Mentions Légales"}</Link></li>
+            <li><Link href="/privacy">{dict.legalPrivacy || "Confidentialité (Loi 18-07)"}</Link></li>
+            <li><Link href="/charter">{dict.legalCharter || "Charte de sécurité"}</Link></li>
+            <li><Link href="/legal">{dict.legal?.title || "Mentions Légales"}</Link></li>
+          </ul>
+        </div>
       </div>
       <div className={styles.bottom}>
         <div className="container">
