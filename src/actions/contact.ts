@@ -31,7 +31,7 @@ export async function sendContactEmail(formData: FormData) {
     const mailOptions = {
       from: `"${name}" <${user}>`,
       replyTo: email,
-      to: user, // Envoyer à l'adresse Gmail elle-même
+      to: "contact@atlaschrono.fr", // Envoyer à l'adresse professionnelle
       subject: `[Contact Showroom] ${subject || "Nouveau message"}`,
       text: `Vous avez reçu un nouveau message de ${name} (${email}).\n\nSujet : ${subject}\n\nMessage :\n${message}`,
       html: `
