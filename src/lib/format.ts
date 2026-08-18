@@ -1,4 +1,4 @@
-export function formatPrice(price: string | number | undefined | null): string {
+export function formatPrice(price: string | number | undefined | null, lang: string = 'fr'): string {
   if (!price) return "0 DZD";
   const priceStr = String(price);
   
@@ -11,9 +11,13 @@ export function formatPrice(price: string | number | undefined | null): string {
     return priceStr + ' DZD';
   }
   
+  // Arabic formatting: no space separation for thousands
+  if (lang === 'ar') {
+    return `${rawPrice} DZD`;
+  }
+  
   // Format with spaces for thousands (French locale standard for numbers)
   // e.g. 1000000 -> "1 000 000"
-  // Note: toLocaleString('fr-FR') uses a narrow no-break space, we can replace it with a regular space or keep it.
   const formattedNumber = rawPrice.toLocaleString('fr-FR').replace(/\s/g, ' ');
   
   return `${formattedNumber} DZD`;

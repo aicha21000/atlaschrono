@@ -1,13 +1,14 @@
 import styles from './page.module.css';
 import { getCars } from '@/actions/cars';
 import CarsCatalogue from '@/components/CarsCatalogue/CarsCatalogue';
-import { getDictionary } from '@/i18n/getLang';
+import { getDictionary, getLang } from '@/i18n/getLang';
 
 export const dynamic = 'force-dynamic';
 
 export default async function CarsPage() {
   const cars = await getCars();
   const dict = await getDictionary();
+  const lang = await getLang();
 
   const uniqueBrands = Array.from(new Set(cars.map((c: any) => c.marque).filter(Boolean))) as string[];
   const uniqueEnergies = Array.from(new Set(cars.map((c: any) => c.energie).filter(Boolean))) as string[];
@@ -25,6 +26,7 @@ export default async function CarsPage() {
           uniqueBrands={uniqueBrands} 
           uniqueEnergies={uniqueEnergies} 
           dict={dict}
+          lang={lang}
         />
       </div>
     </div>

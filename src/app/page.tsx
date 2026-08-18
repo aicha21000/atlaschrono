@@ -1,12 +1,13 @@
 import styles from './page.module.css';
 import Link from 'next/link';
 import { getCars } from '@/actions/cars';
-import { getDictionary } from '@/i18n/getLang';
+import { getDictionary, getLang } from '@/i18n/getLang';
 import { getSettings } from '@/actions/settings';
 import { formatPrice } from '@/lib/format';
 
 export default async function Home() {
   const dict = await getDictionary();
+  const lang = await getLang();
   const allCars = await getCars();
   const settings = await getSettings();
 
@@ -121,7 +122,7 @@ export default async function Home() {
                   <p className={styles.carDetails}>
                     <span>{car.annee}</span> &bull; <span>{car.kilometrage.toLocaleString('fr-FR')} {dict.home.cardKm}</span> &bull; <span>{translateEnergy(car.energie)}</span>
                   </p>
-                  <p className={styles.carPrice}>{formatPrice(car.prix)}</p>
+                  <p className={styles.carPrice}>{formatPrice(car.prix, lang)}</p>
                   <Link href={`/cars/${car.id}`} className={styles.cardCta} aria-label={`Consulter la fiche technique de la ${car.marque} ${car.modele}`}>
                     {dict.home.cardCta}
                   </Link>

@@ -33,7 +33,7 @@ export async function generateMetadata(
   const lang = await getLang();
   
   const cleanDescription = car.description ? car.description.replace(/\n/g, ' ').replace(/\r/g, '').substring(0, 100).trim() : (lang === 'ar' ? 'اطلع على التفاصيل الكاملة على موقعنا' : 'Consultez la fiche complète sur notre site');
-  const priceText = car.prix ? formatPrice(car.prix) : (lang === 'ar' ? 'اتصل بنا' : 'Nous consulter');
+  const priceText = car.prix ? formatPrice(car.prix, lang) : (lang === 'ar' ? 'اتصل بنا' : 'Nous consulter');
   
   const description = lang === 'ar'
     ? `🔥 فرصة رائعة! اكتشف هذه السيارة المذهلة ${car.marque} ${car.modele} موديل ${car.annee}. عداد المسافات: ${car.kilometrage} كم، المحرك: ${car.energie}، ناقل الحركة: ${car.boite}. 💰 السعر: ${priceText}. ✨ الخيارات والتفاصيل: ${cleanDescription}... 👆 اضغط لرؤية الصور وحجزها!`
@@ -121,11 +121,11 @@ export default async function CarDetails({ params }: { params: Promise<{ id: str
             })()}
 
             <h1 className={styles.title}>{car.marque} {car.modele}</h1>
-            <p className={styles.price}>{formatPrice(car.prix)}</p>
+            <p className={styles.price}>{formatPrice(car.prix, lang)}</p>
             
             {(() => {
               const cleanDescription = car.description ? car.description.replace(/\n/g, ' ').replace(/\r/g, '').substring(0, 100).trim() : (lang === 'ar' ? 'اطلع على التفاصيل الكاملة على موقعنا' : 'Consultez la fiche complète sur notre site');
-              const priceText = car.prix ? formatPrice(car.prix) : (lang === 'ar' ? 'اتصل بنا' : 'Nous consulter');
+              const priceText = car.prix ? formatPrice(car.prix, lang) : (lang === 'ar' ? 'اتصل بنا' : 'Nous consulter');
               
               const pitch = lang === 'ar'
                 ? `🔥 فرصة رائعة! اكتشف هذه السيارة المذهلة ${car.marque} ${car.modele} موديل ${car.annee}. عداد المسافات: ${car.kilometrage} كم، المحرك: ${translateEnergy(car.energie)}، ناقل الحركة: ${translateGearbox(car.boite)}. 💰 السعر: ${priceText}. ✨ الخيارات والتفاصيل: ${cleanDescription}... 👆 اضغط على الرابط أدناه لرؤية جميع الصور وحجزها!`

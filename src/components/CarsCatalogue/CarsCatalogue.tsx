@@ -9,9 +9,10 @@ interface CarsCatalogueProps {
   uniqueBrands: string[];
   uniqueEnergies: string[];
   dict: any;
+  lang?: string;
 }
 
-export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergies, dict }: CarsCatalogueProps) {
+export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergies, dict, lang = 'fr' }: CarsCatalogueProps) {
   const [marque, setMarque] = useState("Toutes");
   const [energie, setEnergie] = useState("Toutes");
   const [statut, setStatut] = useState("Tous");
@@ -145,7 +146,7 @@ export default function CarsCatalogue({ initialCars, uniqueBrands, uniqueEnergie
               <p className={styles.carDetails}>
                 <span>{car.annee}</span> • <span>{Number(car.kilometrage).toLocaleString('fr-FR')} {dict.home.cardKm}</span> • <span>{translateEnergy(car.energie)}</span>
               </p>
-              <p className={styles.carPrice}>{formatPrice(car.prix)}</p>
+              <p className={styles.carPrice}>{formatPrice(car.prix, lang)}</p>
               <Link 
                 href={`/cars/${car.id}`} 
                 className={styles.detailsBtn}

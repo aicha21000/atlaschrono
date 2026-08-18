@@ -5,6 +5,7 @@ import { getCars } from '@/actions/cars';
 import { confirmReservation } from '@/actions/stripe';
 import { notFound } from 'next/navigation';
 import { formatPrice } from '@/lib/format';
+import { getLang } from '@/i18n/getLang';
 
 export default async function ReservationSuccessPage({
   params,
@@ -18,6 +19,7 @@ export default async function ReservationSuccessPage({
 
   const cars = await getCars();
   const car = cars.find((c: any) => c.id === resolvedParams.id);
+  const lang = await getLang();
 
   if (!car) {
     notFound();
@@ -71,7 +73,7 @@ export default async function ReservationSuccessPage({
           <strong style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.95rem' }}>
             📌 Engagement Atlas Chrono Cars (8 Jours) :
           </strong>
-          Ce véhicule est immédiatement retiré de la vente pendant <strong>8 jours</strong>. Un conseiller commercial va vous contacter sous 24h ouvrées pour organiser le règlement du solde ({formatPrice(car.prix)}) ou planifier une visite à notre showroom.
+          Ce véhicule est immédiatement retiré de la vente pendant <strong>8 jours</strong>. Un conseiller commercial va vous contacter sous 24h ouvrées pour organiser le règlement du solde ({formatPrice(car.prix, lang)}) ou planifier une visite à notre showroom.
         </div>
 
         {/* BOUTONS DE RETOUR */}
